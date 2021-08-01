@@ -30,6 +30,7 @@ namespace XeviousPlayer2
         private bool Entrou = false;
         private string TextoBtSelecionado = "";
         private int BtSelecionado = -1;
+        private object Cont;
 
         public Programacao()
         {
@@ -51,14 +52,14 @@ namespace XeviousPlayer2
                     {
                         string Nome = reader.GetString(0);
                         string nmBot = "Bt" + Cont.ToString(); ;
-                        CarregaBotao(nmBot, Nome, Cont);
+                        CarregaBotao(nmBot, Nome, Cont, this.panel1);
                         Cont++;
                     }
                 }
             }
         }
 
-        private void CarregaBotao(string Nome, string Texto, int I)
+        private void CarregaBotao(string Nome, string Texto, int I, Panel Painel)
         {
             Button bt = new Button();
             bt.AllowDrop = true;
@@ -73,10 +74,7 @@ namespace XeviousPlayer2
             bt.Tag = I.ToString();
             bt.Cursor = Cursors.Hand;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
-            // this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
-            // bt.Click += new System.EventHandler(btLista_Click);
-            // bt.MouseDown
-            this.panel1.Controls.Add(bt);
+            Painel.Controls.Add(bt);
         }
 
         private void bt_MouseDown(object sender, MouseEventArgs e)
@@ -123,10 +121,19 @@ namespace XeviousPlayer2
 
         private void panel2_DragDrop(object sender, DragEventArgs e)
         {
-            this.panel1.Controls[BtSelecionado].Text = e.Data.GetData(DataFormats.Text).ToString();
-            int PosX = e.X;
-            int PosY = e.Y;
-            this.Text = "X = " + e.X.ToString() + " Y = " + e.Y.ToString();
+            string Texto = this.panel1.Controls[BtSelecionado].Text;
+            // this.panel1.Controls[BtSelecionado].Text = e.Data.GetData(DataFormats.Text).ToString();
+            //int PosX = e.X;
+            //int PosY = e.Y;
+            // string Tague = this.panel1.Controls[BtSelecionado].Tag.ToString();
+            // int Cont = int.Parse(Tague);            
+            this.panel1.Controls[BtSelecionado].Dispose();
+            // this.Text = "X = " + e.X.ToString() + " Y = " + e.Y.ToString();
+            int Cont = this.panel2.Controls.Count;
+            string nmBot = "Bt" + Cont.ToString();            
+            CarregaBotao(nmBot, Texto, Cont, this.panel2);
+            this.panel2.Controls[Cont].Top = e.Y;
+            // this.panel2.Controls[Cont].Left = e.X;
         }
     }
 }
