@@ -74,8 +74,16 @@ namespace XeviousPlayer2
             bt.Tag = I.ToString();
             bt.Cursor = Cursors.Hand;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
+            //bt.MouseMove += new MouseEventHandler(this.bt_MouseMove);
             Painel.Controls.Add(bt);
         }
+
+        // (object sender, MouseEventArgs e)
+
+        //private void bt_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    this.Text = "X = " + e.X.ToString() + " Y = " + e.Y.ToString();
+        //}
 
         private void bt_MouseDown(object sender, MouseEventArgs e)
         {
@@ -116,24 +124,32 @@ namespace XeviousPlayer2
             if (e.Data.GetDataPresent(DataFormats.Text))
                 e.Effect = DragDropEffects.Copy;
             else
-                e.Effect = DragDropEffects.None;
+                e.Effect = DragDropEffects.None;            
         }
 
         private void panel2_DragDrop(object sender, DragEventArgs e)
         {
             string Texto = this.panel1.Controls[BtSelecionado].Text;
-            // this.panel1.Controls[BtSelecionado].Text = e.Data.GetData(DataFormats.Text).ToString();
-            //int PosX = e.X;
-            //int PosY = e.Y;
-            // string Tague = this.panel1.Controls[BtSelecionado].Tag.ToString();
-            // int Cont = int.Parse(Tague);            
             this.panel1.Controls[BtSelecionado].Dispose();
-            // this.Text = "X = " + e.X.ToString() + " Y = " + e.Y.ToString();
             int Cont = this.panel2.Controls.Count;
-            string nmBot = "Bt" + Cont.ToString();            
+            string nmBot = "Bt" + Cont.ToString();
             CarregaBotao(nmBot, Texto, Cont, this.panel2);
-            this.panel2.Controls[Cont].Top = e.Y;
-            // this.panel2.Controls[Cont].Left = e.X;
+            int MaxAltura = 400;
+            float PosYBSolt = e.Y - 227;
+            float PropBt = PosYBSolt / 418;
+            float NvPos = PropBt * MaxAltura;
+            string sPos = NvPos.ToString();
+            string[] arrPos = sPos.Split(',');
+            int iPos = int.Parse(arrPos[0]);
+            this.panel2.Controls[Cont].Top = iPos;
+        }
+
+        private void Programacao_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode==Keys.Escape)
+            {
+                Close();
+            }
         }
     }
 }

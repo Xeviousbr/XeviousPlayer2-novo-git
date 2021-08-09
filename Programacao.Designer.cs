@@ -69,6 +69,7 @@
             // panel2
             // 
             this.panel2.AllowDrop = true;
+            this.panel2.BackColor = System.Drawing.Color.Red;
             this.panel2.Location = new System.Drawing.Point(206, 25);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 422);
@@ -135,7 +136,6 @@
             this.button1.TabIndex = 9;
             this.button1.Text = "Salvar";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button1_MouseDown);
             // 
             // Programacao
             // 
@@ -153,9 +153,11 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
+            this.KeyPreview = true;
             this.Name = "Programacao";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Programacao";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Programacao_KeyUp);
             this.ResumeLayout(false);
 
         }
