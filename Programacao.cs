@@ -74,9 +74,17 @@ namespace XeviousPlayer2
             bt.Tag = I.ToString();
             bt.Cursor = Cursors.Hand;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
+
+            // bt.DragOver += new MouseEventHandler(this.bt_DragOver);
+
             //bt.MouseMove += new MouseEventHandler(this.bt_MouseMove);
             Painel.Controls.Add(bt);
         }
+
+        /* private void bt_DragOver(object sender, DragEventArgs e)
+        {
+
+        } */
 
         // (object sender, MouseEventArgs e)
 
@@ -112,8 +120,6 @@ namespace XeviousPlayer2
 
         private void button1_MouseDown(object sender, MouseEventArgs e)
         {
-            // button1.DoDragDrop(button1.Text, DragDropEffects.Copy |DragDropEffects.Move);
-            // this.DoDragDrop(button1, DragDropEffects.Move);
             this.XX = button1.Left +e.X;
             this.YY = button1.Top+ e.Y;
             this.Entrou = true;
@@ -129,27 +135,28 @@ namespace XeviousPlayer2
 
         private void panel2_DragDrop(object sender, DragEventArgs e)
         {
-            string Texto = this.panel1.Controls[BtSelecionado].Text;
-            this.panel1.Controls[BtSelecionado].Dispose();
             int Cont = this.panel2.Controls.Count;
             string nmBot = "Bt" + Cont.ToString();
-            CarregaBotao(nmBot, Texto, Cont, this.panel2);
-            int MaxAltura = 400;
             float PosYBSolt = e.Y - 227;
             float PropBt = PosYBSolt / 418;
+            float Momento = 1440 * PropBt;
+            int Hora = (int)Momento / 60;
+            int Minuto = (int)Momento - (Hora * 60);
+            string Texto = this.panel1.Controls[BtSelecionado].Text + " " +Hora.ToString() + ":" + Minuto.ToString("00");
+            CarregaBotao(nmBot, Texto, Cont, this.panel2);
+            int MaxAltura = 400;            
             float NvPos = PropBt * MaxAltura;
             string sPos = NvPos.ToString();
             string[] arrPos = sPos.Split(',');
             int iPos = int.Parse(arrPos[0]);
-            this.panel2.Controls[Cont].Top = iPos;
+            this.panel2.Controls[Cont].Top = iPos;           
         }
 
         private void Programacao_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode==Keys.Escape)
-            {
                 Close();
-            }
         }
+
     }
 }
