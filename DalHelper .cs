@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 
 // http://www.macoratti.net/17/04/cshp_sqlite1.htm
+// teste
 
 namespace XeviousPlayer2
 {
