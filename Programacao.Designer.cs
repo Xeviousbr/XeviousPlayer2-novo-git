@@ -47,6 +47,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 422);
             this.panel1.TabIndex = 0;
+            this.panel1.Tag = "0";
             // 
             // label1
             // 
@@ -74,6 +75,7 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 422);
             this.panel2.TabIndex = 2;
+            this.panel2.Tag = "1";
             this.panel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel2_DragDrop);
             this.panel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel2_DragEnter);
             // 
@@ -93,6 +95,7 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(200, 422);
             this.panel3.TabIndex = 4;
+            this.panel3.Tag = "2";
             // 
             // label4
             // 
@@ -110,6 +113,7 @@
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(200, 422);
             this.panel4.TabIndex = 6;
+            this.panel4.Tag = "3";
             // 
             // label5
             // 
@@ -127,6 +131,7 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(200, 422);
             this.panel5.TabIndex = 8;
+            this.panel5.Tag = "4";
             // 
             // button1
             // 

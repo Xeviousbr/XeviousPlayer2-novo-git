@@ -27,11 +27,13 @@ namespace XeviousPlayer2
 
         private int XX;
         private int YY;
+        private int pnSelecionado = 0;
+        private int BtSelecionado = -1;
         private bool Entrou = false;
         private string TextoBtSelecionado = "";
-        private int BtSelecionado = -1;
+        private string Tague = "";
         private object Cont;
-
+        
         public Programacao()
         {
             InitializeComponent();
@@ -61,7 +63,7 @@ namespace XeviousPlayer2
 
         private void CarregaBotao(string Nome, string Texto, int I, Panel Painel)
         {
-            Button bt = new Button();
+            Button bt = new CustomButton();
             bt.AllowDrop = true;
             bt.AutoSize = true;
             bt.Location = new Point(3, 3);
@@ -71,8 +73,9 @@ namespace XeviousPlayer2
             bt.Top = I * 20;
             bt.Text = Texto;
             bt.UseVisualStyleBackColor = true;
-            bt.Tag = I.ToString();
+            bt.Tag = Painel.Tag +"|" + I.ToString();
             bt.Cursor = Cursors.Hand;
+            bt.ForeColor = Color.Aqua;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
 
             // bt.DragOver += new MouseEventHandler(this.bt_DragOver);
@@ -97,27 +100,23 @@ namespace XeviousPlayer2
         {
             Button EsseBt = ((Button)sender);
             TextoBtSelecionado = EsseBt.Text;
-            string Tague = EsseBt.Tag.ToString();
-            int.TryParse(Tague, out BtSelecionado);
-
+            this.Tague = EsseBt.Tag.ToString();
+            string[] partes = Tague.Split('|');
+            // int.TryParse(Tague, out this.BtSelecionado);
+            this.pnSelecionado = Convert.ToInt16(partes[0]);
+            this.BtSelecionado = Convert.ToInt16(partes[1]);
             EsseBt.DoDragDrop(TextoBtSelecionado, DragDropEffects.Copy | DragDropEffects.Move);
-
-            // ((Button)sender).DoDragDrop("button1.Text", DragDropEffects.Move);
-            // ((Button)sender).DoDragDrop("button1.Text", DragDropEffects.Copy | DragDropEffects.Move);
-            // string Texto = sender.Text;
-
-
-            //((Button)sender).Top = e.Location.X;
-            //((Button)sender).Left = e.Location.Y;
-
-            //Size dragSize = SystemInformation.DragSize;
-            //dragBoxFromMouseDown = new Rectangle(
-            //    new Point(e.X - (dragSize.Width / 2),
-            //              e.Y - (dragSize.Height / 2)),
-            //    dragSize);
-
         }
-
+        // ((Button)sender).DoDragDrop("button1.Text", DragDropEffects.Move);
+        // ((Button)sender).DoDragDrop("button1.Text", DragDropEffects.Copy | DragDropEffects.Move);
+        // string Texto = sender.Text;
+        //((Button)sender).Top = e.Location.X;
+        //((Button)sender).Left = e.Location.Y;
+        //Size dragSize = SystemInformation.DragSize;
+        //dragBoxFromMouseDown = new Rectangle(
+        //    new Point(e.X - (dragSize.Width / 2),
+        //              e.Y - (dragSize.Height / 2)),
+        //    dragSize);
         private void button1_MouseDown(object sender, MouseEventArgs e)
         {
             this.XX = button1.Left +e.X;
@@ -126,7 +125,8 @@ namespace XeviousPlayer2
         }
 
         private void panel2_DragEnter(object sender, DragEventArgs e)
-        {
+        { 
+            // Ocorre quando o botão ta sendo movido pelo Painel2
             if (e.Data.GetDataPresent(DataFormats.Text))
                 e.Effect = DragDropEffects.Copy;
             else
@@ -135,21 +135,37 @@ namespace XeviousPlayer2
 
         private void panel2_DragDrop(object sender, DragEventArgs e)
         {
-            int Cont = this.panel2.Controls.Count;
-            string nmBot = "Bt" + Cont.ToString();
+            // Ocorre quando se solta o botão
+            int MaxAltura = 400;
             float PosYBSolt = e.Y - 227;
             float PropBt = PosYBSolt / 418;
-            float Momento = 1440 * PropBt;
-            int Hora = (int)Momento / 60;
-            int Minuto = (int)Momento - (Hora * 60);
-            string Texto = this.panel1.Controls[BtSelecionado].Text + " " +Hora.ToString() + ":" + Minuto.ToString("00");
-            CarregaBotao(nmBot, Texto, Cont, this.panel2);
-            int MaxAltura = 400;            
             float NvPos = PropBt * MaxAltura;
             string sPos = NvPos.ToString();
             string[] arrPos = sPos.Split(',');
             int iPos = int.Parse(arrPos[0]);
-            this.panel2.Controls[Cont].Top = iPos;           
+
+            // Dedução do novo horário
+            float Momento = 1440 * PropBt;
+            int Hora = (int)Momento / 60;
+            int Minuto = (int)Momento - (Hora * 60);
+            string Texto = this.panel1.Controls[BtSelecionado].Text + " " + Hora.ToString() + ":" + Minuto.ToString("00");
+
+            if (this.pnSelecionado==0)
+            {
+                // Soltura do painel inicial, deveria ser para todos os tres outros paineis
+                // mas por enquanto é só um
+                int Cont = this.panel2.Controls.Count;
+                string nmBot = "Bt" + Cont.ToString();                
+                CarregaBotao(nmBot, Texto, Cont, this.panel2);
+                this.panel2.Controls[Cont].Top = iPos;
+            } else
+            {
+                // Pego e solto no mesmo painel num dos tres
+                string[] partes = Tague.Split('|');
+                int Item = Convert.ToInt16(partes[1]);
+                this.panel2.Controls[Item].Top = iPos;
+                this.panel2.Controls[Item].Text = Texto;
+            }
         }
 
         private void Programacao_KeyUp(object sender, KeyEventArgs e)
