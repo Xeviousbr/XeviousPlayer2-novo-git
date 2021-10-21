@@ -70,14 +70,13 @@
             // panel2
             // 
             this.panel2.AllowDrop = true;
-            this.panel2.BackColor = System.Drawing.Color.Red;
             this.panel2.Location = new System.Drawing.Point(206, 25);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 422);
             this.panel2.TabIndex = 2;
             this.panel2.Tag = "1";
             this.panel2.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel2_DragDrop);
-            this.panel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel2_DragEnter);
+            this.panel2.DragEnter += new System.Windows.Forms.DragEventHandler(this.Paineis_DragEnter);
             // 
             // label3
             // 
@@ -96,6 +95,8 @@
             this.panel3.Size = new System.Drawing.Size(200, 422);
             this.panel3.TabIndex = 4;
             this.panel3.Tag = "2";
+            this.panel3.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel3_DragDrop);
+            this.panel3.DragEnter += new System.Windows.Forms.DragEventHandler(this.Paineis_DragEnter);
             // 
             // label4
             // 
@@ -114,6 +115,8 @@
             this.panel4.Size = new System.Drawing.Size(200, 422);
             this.panel4.TabIndex = 6;
             this.panel4.Tag = "3";
+            this.panel4.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel4_DragDrop);
+            this.panel4.DragEnter += new System.Windows.Forms.DragEventHandler(this.Paineis_DragEnter);
             // 
             // label5
             // 
@@ -132,6 +135,8 @@
             this.panel5.Size = new System.Drawing.Size(200, 422);
             this.panel5.TabIndex = 8;
             this.panel5.Tag = "4";
+            this.panel5.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel5_DragDrop);
+            this.panel5.DragEnter += new System.Windows.Forms.DragEventHandler(this.Paineis_DragEnter);
             // 
             // button1
             // 

@@ -124,16 +124,15 @@ namespace XeviousPlayer2
             this.Entrou = true;
         }
 
-        private void panel2_DragEnter(object sender, DragEventArgs e)
-        { 
-            // Ocorre quando o botão ta sendo movido pelo Painel2
+        private void Paineis_DragEnter(object sender, DragEventArgs e)
+        {
             if (e.Data.GetDataPresent(DataFormats.Text))
                 e.Effect = DragDropEffects.Copy;
             else
-                e.Effect = DragDropEffects.None;            
+                e.Effect = DragDropEffects.None;
         }
 
-        private void panel2_DragDrop(object sender, DragEventArgs e)
+        private void Paineis_DragDrop(ref DragEventArgs e, ref Panel Painel)
         {
             // Ocorre quando se solta o botão
             int MaxAltura = 400;
@@ -150,22 +149,42 @@ namespace XeviousPlayer2
             int Minuto = (int)Momento - (Hora * 60);
             string Texto = this.panel1.Controls[BtSelecionado].Text + " " + Hora.ToString() + ":" + Minuto.ToString("00");
 
-            if (this.pnSelecionado==0)
+            if (this.pnSelecionado == 0)
             {
                 // Soltura do painel inicial, deveria ser para todos os tres outros paineis
                 // mas por enquanto é só um
-                int Cont = this.panel2.Controls.Count;
-                string nmBot = "Bt" + Cont.ToString();                
-                CarregaBotao(nmBot, Texto, Cont, this.panel2);
-                this.panel2.Controls[Cont].Top = iPos;
-            } else
+                int Cont = Painel.Controls.Count;
+                string nmBot = "Bt" + Cont.ToString();
+                CarregaBotao(nmBot, Texto, Cont, Painel);
+                Painel.Controls[Cont].Top = iPos;
+            }
+            else
             {
                 // Pego e solto no mesmo painel num dos tres
                 string[] partes = Tague.Split('|');
                 int Item = Convert.ToInt16(partes[1]);
-                this.panel2.Controls[Item].Top = iPos;
-                this.panel2.Controls[Item].Text = Texto;
+                Painel.Controls[Item].Top = iPos;
+                Painel.Controls[Item].Text = Texto;
             }
+        }
+
+        private void panel2_DragDrop(object sender, DragEventArgs e)
+        {
+            this.Paineis_DragDrop(ref e, ref this.panel2);
+        }
+        private void panel3_DragDrop(object sender, DragEventArgs e)
+        {
+            this.Paineis_DragDrop(ref e, ref this.panel3);
+        }
+
+        private void panel4_DragDrop(object sender, DragEventArgs e)
+        {
+            this.Paineis_DragDrop(ref e, ref this.panel4);
+        }
+
+        private void panel5_DragDrop(object sender, DragEventArgs e)
+        {
+            this.Paineis_DragDrop(ref e, ref this.panel5);
         }
 
         private void Programacao_KeyUp(object sender, KeyEventArgs e)
