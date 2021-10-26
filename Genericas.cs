@@ -38,15 +38,12 @@ namespace XeviousPlayer2
                 }
             }
             Nome = Nome.Replace(@"/", " ");
-
             // Verificar se os 3 primeiros caracteres são numericos, se for, retirar
             // Verificar se os 2 primeiros caracteres são numericos, se for, retirar
-            if (Nome.Substring(2, 2) == "0 ")
-                Nome = Nome.Substring(2);
-
-            // Retirar o nome da banda
+            if (Nome.Length>2)
+                if (Nome.Substring(2, 2) == "0 ")
+                    Nome = Nome.Substring(2);
             Nome = TiraNomeDaBanda(Nome, Banda);
-
             return Nome;
         }
 
@@ -68,8 +65,9 @@ namespace XeviousPlayer2
                             Nome = Nome.Substring(Banda.Length + 2);
                         else
                             Nome = Nome.Substring(PosBanda - 1) + Nome.Substring(PosBanda + Banda.Length);
-                if (Nome.ToLower().Substring(3) == "the")
-                    Nome = Nome.Substring(3);
+                if (Nome.Length>2)
+                    if (Nome.ToLower().Substring(3) == "the")
+                        Nome = Nome.Substring(3);
             }
             return Nome;
         }

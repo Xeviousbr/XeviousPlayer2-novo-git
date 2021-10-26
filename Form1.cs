@@ -689,7 +689,15 @@ namespace XeviousPlayer2
         {
             if (myPlayer.Playing)
             {
-                myPlayer.Stop();
+                try
+                {
+                    myPlayer.Stop();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                
             }
             this.TratarFinalDaMusica = false;
             myPlayer.Play(Musica);
@@ -699,7 +707,6 @@ namespace XeviousPlayer2
             }
             else
             {
-                // Show media metadata properties (here for audio media only)
                 if (!myPlayer.Has.Video)
                 {
                     panel1.Visible = false;
@@ -716,18 +723,13 @@ namespace XeviousPlayer2
                         if (Nome.Length < 2)
                             Nome = Gen.RetNomePeloCaminho(Musica);
                     }
-
-                    // myPlayer.Pause();
                     lbMusica.Text = Gen.TrataNome(Nome, metaData.Artist);
                     lbArtista.Text = metaData.Artist;
                     lbAlbum.Text = metaData.Album;
                     lbGenero.Text = metaData.Genre;
                     lbAno.Text = metaData.Year;
-
                     lbLocal.Text = Musica;
-
                     lbBandaNome.Text = lbArtista.Text + " " + lbMusica.Text;
-
                     Status.Text = "Tocando " + Nome + " de " + metaData.Artist;
                     myOverlay.subtitlesLabel.Text = metaData.Artist + "\r\n" + Nome;
 
@@ -1224,6 +1226,7 @@ namespace XeviousPlayer2
                 this.listView.Items[this.IndiceNaLista].Selected = false;
             }
             this.IndiceNaLista++;
+            // this.IndiceNaLista = this.IndiceNaLista < 1 ? 1 : this.IndiceNaLista;
             string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
             this.Toca(Tocar);
             this.listView.Items[this.IndiceNaLista].Focused = true;
@@ -1287,7 +1290,21 @@ namespace XeviousPlayer2
         private void listView_Click(object sender, EventArgs e)
         {
             string Tocar = listView.SelectedItems[0].SubItems[1].Text;
+
+            // Se ficar muito lento da pra colocar uma coluna na Grid pra ser o indice
+            this.AjustaIndice(Tocar);
+
             this.Toca(Tocar);
+        }
+
+        private void AjustaIndice(string tocar)
+        {
+            for (int i = 0; i < this.listView.Items.Count; i++)
+                if (listView.Items[i].SubItems[1].Text == tocar)
+                {
+                    this.IndiceNaLista = i;
+                    break;
+                }
         }
     }
 }
