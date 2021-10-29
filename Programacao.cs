@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Drawing;
@@ -136,7 +137,11 @@ namespace XeviousPlayer2
         {
             // Ocorre quando se solta o botão
             int MaxAltura = 400;
-            float PosYBSolt = e.Y - 227;
+            // float PosYBSolt = e.Y - 227;
+
+            float PosYBSolt = e.Y + 673;
+            // 
+
             float PropBt = PosYBSolt / 418;
             float NvPos = PropBt * MaxAltura;
             string sPos = NvPos.ToString();
@@ -193,5 +198,39 @@ namespace XeviousPlayer2
                 Close();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            List<Progr> Progrs = new List<Progr>();
+            this.ContProgs(ref Progrs, ref this.panel2, 1);
+            this.ContProgs(ref Progrs, ref this.panel3, 2);
+            this.ContProgs(ref Progrs, ref this.panel4, 3);
+            this.ContProgs(ref Progrs, ref this.panel5, 4);
+            // Gravar na Base
+        }
+
+        private void ContProgs(ref List<Progr> progrs, ref Panel Painel, int Tipo)
+        {
+            for (int i = 0; i < Painel.Controls.Count; i++)
+            {
+                Progr EssaProg = new Progr();
+                EssaProg.IdProg = 0;
+                string sTempo = Painel.Controls[i].Text;
+                string sHora = sTempo.Substring(sTempo.Length - 5, 5);
+                string[] sPartes = sHora.Split(':');
+                int Hora = Convert.ToInt16(sPartes[0]);
+                int Minu = Convert.ToInt16(sPartes[1]);
+                EssaProg.Tempo = new DateTime(2001, 1, 1, Hora, Minu, 0);
+                EssaProg.Tipo = Tipo;
+                progrs.Add(EssaProg);
+            }
+        }
     }
+
+    partial class Progr
+    {
+        public int IdProg = 0;
+        public DateTime Tempo;
+        public int Tipo = 0;
+    }
+
 }
