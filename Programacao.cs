@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Data.SQLite;
 using System.Drawing;
 using System.Windows.Forms;
+using XeviousPlayer2.tbs;
 
 // https://docs.microsoft.com/pt-br/dotnet/desktop/winforms/advanced/walkthrough-performing-a-drag-and-drop-operation-in-windows-forms?view=netframeworkdesktop-4.8
 
@@ -78,24 +79,8 @@ namespace XeviousPlayer2
             bt.Cursor = Cursors.Hand;
             bt.ForeColor = Color.Aqua;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
-
-            // bt.DragOver += new MouseEventHandler(this.bt_DragOver);
-
-            //bt.MouseMove += new MouseEventHandler(this.bt_MouseMove);
             Painel.Controls.Add(bt);
         }
-
-        /* private void bt_DragOver(object sender, DragEventArgs e)
-        {
-
-        } */
-
-        // (object sender, MouseEventArgs e)
-
-        //private void bt_MouseMove(object sender, MouseEventArgs e)
-        //{
-        //    this.Text = "X = " + e.X.ToString() + " Y = " + e.Y.ToString();
-        //}
 
         private void bt_MouseDown(object sender, MouseEventArgs e)
         {
@@ -108,16 +93,7 @@ namespace XeviousPlayer2
             this.BtSelecionado = Convert.ToInt16(partes[1]);
             EsseBt.DoDragDrop(TextoBtSelecionado, DragDropEffects.Copy | DragDropEffects.Move);
         }
-        // ((Button)sender).DoDragDrop("button1.Text", DragDropEffects.Move);
-        // ((Button)sender).DoDragDrop("button1.Text", DragDropEffects.Copy | DragDropEffects.Move);
-        // string Texto = sender.Text;
-        //((Button)sender).Top = e.Location.X;
-        //((Button)sender).Left = e.Location.Y;
-        //Size dragSize = SystemInformation.DragSize;
-        //dragBoxFromMouseDown = new Rectangle(
-        //    new Point(e.X - (dragSize.Width / 2),
-        //              e.Y - (dragSize.Height / 2)),
-        //    dragSize);
+
         private void button1_MouseDown(object sender, MouseEventArgs e)
         {
             this.XX = button1.Left +e.X;
@@ -137,11 +113,7 @@ namespace XeviousPlayer2
         {
             // Ocorre quando se solta o botão
             int MaxAltura = 400;
-            // float PosYBSolt = e.Y - 227;
-
             float PosYBSolt = e.Y + 673;
-            // 
-
             float PropBt = PosYBSolt / 418;
             float NvPos = PropBt * MaxAltura;
             string sPos = NvPos.ToString();
@@ -205,7 +177,12 @@ namespace XeviousPlayer2
             this.ContProgs(ref Progrs, ref this.panel3, 2);
             this.ContProgs(ref Progrs, ref this.panel4, 3);
             this.ContProgs(ref Progrs, ref this.panel5, 4);
-            // Gravar na Base
+            // Colocar o [ ] Loop de inserção
+            tbHorarios tbH = new tbHorarios();
+            tbH.HorIn = DateTime.Now;
+            tbH.Lista = 1;
+            tbH.Periodicidade = 1;
+            tbH.Adiciona();
         }
 
         private void ContProgs(ref List<Progr> progrs, ref Panel Painel, int Tipo)
