@@ -1144,7 +1144,7 @@ namespace XeviousPlayer2
                         string Lugar = reader.GetString(2);
 
                         // É NECESSÁRIO UM AJUSTE DE SQL, pra trocar de para H:
-                        // Lugar = Lugar.Replace("D:", "H:");
+                        Lugar = Lugar.Replace("F:", "E:");
 
                         string Vezes = reader.GetInt16(3).ToString();
                         string TocadoEm = reader.GetDateTime(4).ToString();

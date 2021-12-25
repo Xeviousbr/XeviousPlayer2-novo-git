@@ -113,7 +113,7 @@ namespace XeviousPlayer2
         {
             // Ocorre quando se solta o botão
             int MaxAltura = 400;
-            float PosYBSolt = e.Y + 673;
+            float PosYBSolt = e.Y - 227;
             float PropBt = PosYBSolt / 418;
             float NvPos = PropBt * MaxAltura;
             string sPos = NvPos.ToString();
