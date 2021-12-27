@@ -177,12 +177,16 @@ namespace XeviousPlayer2
             this.ContProgs(ref Progrs, ref this.panel3, 2);
             this.ContProgs(ref Progrs, ref this.panel4, 3);
             this.ContProgs(ref Progrs, ref this.panel5, 4);
-            // Colocar o [ ] Loop de inserção
             tbHorarios tbH = new tbHorarios();
-            tbH.HorIn = DateTime.Now;
-            tbH.Lista = 1;
-            tbH.Periodicidade = 1;
-            tbH.Adiciona();
+            tbH.Zera();
+            foreach (var item in Progrs)
+            {                
+                tbH.HorIn = DateTime.Now;
+                tbH.Lista = item.IdProg;
+                tbH.Periodicidade = item.Tipo;
+                tbH.HorIn = item.Tempo;
+                tbH.Adiciona();
+            }
         }
 
         private void ContProgs(ref List<Progr> progrs, ref Panel Painel, int Tipo)

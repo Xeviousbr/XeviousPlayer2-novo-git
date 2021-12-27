@@ -31,5 +31,20 @@ namespace XeviousPlayer2.tbs
             }
         }
 
+        internal void Zera()
+        {
+            try
+            {
+                using (var cmd = DalHelper.DbConnection().CreateCommand())
+                {
+                    cmd.CommandText = "Delete From Horario";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
