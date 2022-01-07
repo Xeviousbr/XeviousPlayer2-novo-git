@@ -700,7 +700,12 @@ namespace XeviousPlayer2
                 
             }
             this.TratarFinalDaMusica = false;
+
+#if DEBUG
+            // Não toca
+#else
             myPlayer.Play(Musica);
+#endif
             if (myPlayer.LastError)
             {
                 MessageBox.Show(myPlayer.LastErrorString);

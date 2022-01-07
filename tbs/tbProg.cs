@@ -5,7 +5,7 @@ using System.Text;
 
 namespace XeviousPlayer2.tbs
 {
-    public class tbHorarios
+    public class tbProg
     {
         public int ID { get; set; }
         public DateTime HorIn { get; set; }
@@ -18,7 +18,7 @@ namespace XeviousPlayer2.tbs
             {
                 using (var cmd = DalHelper.DbConnection().CreateCommand())
                 {
-                    cmd.CommandText = "INSERT INTO Horario (HorIn, Lista, Periodicidade) values (@HorIn, @Lista, @Periodicidade)";
+                    cmd.CommandText = "INSERT INTO Prog (HorIn, Lista, Periodicidade) values (@HorIn, @Lista, @Periodicidade)";
                     cmd.Parameters.AddWithValue("@HorIn", HorIn);
                     cmd.Parameters.AddWithValue("@Lista", Lista);
                     cmd.Parameters.AddWithValue("@Periodicidade", Periodicidade);
@@ -37,7 +37,7 @@ namespace XeviousPlayer2.tbs
             {
                 using (var cmd = DalHelper.DbConnection().CreateCommand())
                 {
-                    cmd.CommandText = "Delete From Horario";
+                    cmd.CommandText = "Delete From Prog";
                     cmd.ExecuteNonQuery();
                 }
             }

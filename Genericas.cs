@@ -56,18 +56,21 @@ namespace XeviousPlayer2
 
         private static string TiraNomeDaBanda(string Nome, string Banda)
         {
-            int PosBanda = Nome.LastIndexOf(Banda);
-            if (Banda.Length>0)
+            if (Banda!=null)
             {
-                if ((PosBanda > -1) && (Nome.Length > Banda.Length))
-                    if (PosBanda == 0)
-                        if ((Nome.Length - Banda.Length) > 2)
-                            Nome = Nome.Substring(Banda.Length + 2);
-                        else
-                            Nome = Nome.Substring(PosBanda - 1) + Nome.Substring(PosBanda + Banda.Length);
-                if (Nome.Length>2)
-                    if (Nome.ToLower().Substring(3) == "the")
-                        Nome = Nome.Substring(3);
+                int PosBanda = Nome.LastIndexOf(Banda);
+                if (Banda.Length > 0)
+                {
+                    if ((PosBanda > -1) && (Nome.Length > Banda.Length))
+                        if (PosBanda == 0)
+                            if ((Nome.Length - Banda.Length) > 2)
+                                Nome = Nome.Substring(Banda.Length + 2);
+                            else
+                                Nome = Nome.Substring(PosBanda - 1) + Nome.Substring(PosBanda + Banda.Length);
+                    if (Nome.Length > 2)
+                        if (Nome.ToLower().Substring(3) == "the")
+                            Nome = Nome.Substring(3);
+                }
             }
             return Nome;
         }

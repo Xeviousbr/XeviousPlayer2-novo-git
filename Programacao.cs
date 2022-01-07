@@ -29,22 +29,24 @@ namespace XeviousPlayer2
 
         private int XX;
         private int YY;
-        private int pnSelecionado = 0;
-        private int BtSelecionado = -1;
+        // private int pnSelecionado = 0;
+        // private int BtSelecionado = -1;
         private bool Entrou = false;
         private string TextoBtSelecionado = "";
         private string Tague = "";
         private object Cont;
-        
+        private BotaoSelec OBotaoSelec = null;
+
         public Programacao()
         {
             InitializeComponent();
-            Listas();            
+            Listas();
+            this.OBotaoSelec = new BotaoSelec();
         }
 
         private void Listas()
         {
-            string SQL = "Select Nome From Listas";
+            string SQL = "Select IdLista, Nome From Listas";
             string ret = DalHelper.Consulta(SQL);
             SQLiteCommand command = new SQLiteCommand(SQL.ToString(), DalHelper.DbConnection());
             using (DbDataReader reader = command.ExecuteReader())
@@ -54,16 +56,17 @@ namespace XeviousPlayer2
                     int Cont = 0;
                     while (reader.Read())
                     {
-                        string Nome = reader.GetString(0);
+                        Int16 IdLista = reader.GetInt16(0);
+                        string Nome = reader.GetString(1);
                         string nmBot = "Bt" + Cont.ToString(); ;
-                        CarregaBotao(nmBot, Nome, Cont, this.panel1);
+                        CarregaBotao(nmBot, Nome, Cont, this.panel1, IdLista);
                         Cont++;
                     }
                 }
             }
         }
 
-        private void CarregaBotao(string Nome, string Texto, int I, Panel Painel)
+        private void CarregaBotao(string Nome, string Texto, int I, Panel Painel, Int16 IdLista)
         {
             Button bt = new CustomButton();
             bt.AllowDrop = true;
@@ -75,7 +78,7 @@ namespace XeviousPlayer2
             bt.Top = I * 20;
             bt.Text = Texto;
             bt.UseVisualStyleBackColor = true;
-            bt.Tag = Painel.Tag +"|" + I.ToString();
+            bt.Tag = Painel.Tag + "|" + I.ToString() + "|" + IdLista.ToString();
             bt.Cursor = Cursors.Hand;
             bt.ForeColor = Color.Aqua;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
@@ -88,9 +91,13 @@ namespace XeviousPlayer2
             TextoBtSelecionado = EsseBt.Text;
             this.Tague = EsseBt.Tag.ToString();
             string[] partes = Tague.Split('|');
-            // int.TryParse(Tague, out this.BtSelecionado);
-            this.pnSelecionado = Convert.ToInt16(partes[0]);
-            this.BtSelecionado = Convert.ToInt16(partes[1]);
+
+            this.OBotaoSelec.pnSelecionado = Convert.ToInt16(partes[0]);
+            this.OBotaoSelec.BtSelecionado = Convert.ToInt16(partes[1]);
+            this.OBotaoSelec.IdLista = Convert.ToInt16(partes[2]);
+            // this.pnSelecionado = Convert.ToInt16(partes[0]);
+            // this.BtSelecionado = Convert.ToInt16(partes[1]);
+
             EsseBt.DoDragDrop(TextoBtSelecionado, DragDropEffects.Copy | DragDropEffects.Move);
         }
 
@@ -124,15 +131,16 @@ namespace XeviousPlayer2
             float Momento = 1440 * PropBt;
             int Hora = (int)Momento / 60;
             int Minuto = (int)Momento - (Hora * 60);
-            string Texto = this.panel1.Controls[BtSelecionado].Text + " " + Hora.ToString() + ":" + Minuto.ToString("00");
 
-            if (this.pnSelecionado == 0)
+            string Texto = this.panel1.Controls[this.OBotaoSelec.BtSelecionado].Text + " " + Hora.ToString() + ":" + Minuto.ToString("00");
+
+            if (this.OBotaoSelec.pnSelecionado == 0)
             {
-                // Soltura do painel inicial, deveria ser para todos os tres outros paineis
-                // mas por enquanto é só um
                 int Cont = Painel.Controls.Count;
                 string nmBot = "Bt" + Cont.ToString();
-                CarregaBotao(nmBot, Texto, Cont, Painel);
+
+                // Proparar o ID da lista como parametro
+                CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista);
                 Painel.Controls[Cont].Top = iPos;
             }
             else
@@ -143,6 +151,7 @@ namespace XeviousPlayer2
                 Painel.Controls[Item].Top = iPos;
                 Painel.Controls[Item].Text = Texto;
             }
+            button1.Enabled = true;
         }
 
         private void panel2_DragDrop(object sender, DragEventArgs e)
@@ -177,7 +186,7 @@ namespace XeviousPlayer2
             this.ContProgs(ref Progrs, ref this.panel3, 2);
             this.ContProgs(ref Progrs, ref this.panel4, 3);
             this.ContProgs(ref Progrs, ref this.panel5, 4);
-            tbHorarios tbH = new tbHorarios();
+            tbProg tbH = new tbProg();
             tbH.Zera();
             foreach (var item in Progrs)
             {                
@@ -187,6 +196,8 @@ namespace XeviousPlayer2
                 tbH.HorIn = item.Tempo;
                 tbH.Adiciona();
             }
+            this.DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void ContProgs(ref List<Progr> progrs, ref Panel Painel, int Tipo)
@@ -202,8 +213,11 @@ namespace XeviousPlayer2
                 int Minu = Convert.ToInt16(sPartes[1]);
                 EssaProg.Tempo = new DateTime(2001, 1, 1, Hora, Minu, 0);
                 EssaProg.Tipo = Tipo;
+                string Tague = ((Button)Painel.Controls[i]).Tag.ToString();
+                string[] sPartesTag = Tague.Split('|');
+                EssaProg.IdProg = Convert.ToInt16(sPartesTag[2]);
                 progrs.Add(EssaProg);
-            }
+            }            
         }
     }
 
@@ -212,6 +226,13 @@ namespace XeviousPlayer2
         public int IdProg = 0;
         public DateTime Tempo;
         public int Tipo = 0;
+    }
+
+    partial class BotaoSelec
+    {
+        public int pnSelecionado = 0;
+        public int BtSelecionado = -1;
+        public Int16 IdLista = 0;
     }
 
 }
