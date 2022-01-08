@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SQLite;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 using XeviousPlayer2.tbs;
 
@@ -29,8 +30,6 @@ namespace XeviousPlayer2
 
         private int XX;
         private int YY;
-        // private int pnSelecionado = 0;
-        // private int BtSelecionado = -1;
         private bool Entrou = false;
         private string TextoBtSelecionado = "";
         private string Tague = "";
@@ -43,7 +42,6 @@ namespace XeviousPlayer2
             Listas();
             this.OBotaoSelec = new BotaoSelec();
         }
-
         private void Listas()
         {
             string SQL = "Select IdLista, Nome From Listas";
@@ -91,13 +89,9 @@ namespace XeviousPlayer2
             TextoBtSelecionado = EsseBt.Text;
             this.Tague = EsseBt.Tag.ToString();
             string[] partes = Tague.Split('|');
-
             this.OBotaoSelec.pnSelecionado = Convert.ToInt16(partes[0]);
             this.OBotaoSelec.BtSelecionado = Convert.ToInt16(partes[1]);
             this.OBotaoSelec.IdLista = Convert.ToInt16(partes[2]);
-            // this.pnSelecionado = Convert.ToInt16(partes[0]);
-            // this.BtSelecionado = Convert.ToInt16(partes[1]);
-
             EsseBt.DoDragDrop(TextoBtSelecionado, DragDropEffects.Copy | DragDropEffects.Move);
         }
 
@@ -158,6 +152,7 @@ namespace XeviousPlayer2
         {
             this.Paineis_DragDrop(ref e, ref this.panel2);
         }
+
         private void panel3_DragDrop(object sender, DragEventArgs e)
         {
             this.Paineis_DragDrop(ref e, ref this.panel3);
@@ -218,6 +213,53 @@ namespace XeviousPlayer2
                 EssaProg.IdProg = Convert.ToInt16(sPartesTag[2]);
                 progrs.Add(EssaProg);
             }            
+        }
+
+        private void Programacao_Load(object sender, EventArgs e)
+        {
+            StringBuilder SQL = new StringBuilder();
+            SQL.Append("SELECT Prog.ID, Prog.HorIn, Prog.Lista, Prog.Periodicidade, Listas.Nome ");
+            SQL.Append("FROM Prog ");
+            SQL.Append("inner join Listas on Listas.IdLista = Prog.Lista ");
+            SQL.Append("ORDER BY Prog.Periodicidade");
+            SQLiteCommand command = new SQLiteCommand(SQL.ToString(), DalHelper.DbConnection());
+            using (DbDataReader reader = command.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Int16 Id = reader.GetInt16(0);
+                        DateTime HorIn = reader.GetDateTime(1);
+                        Int16 IdLista = reader.GetInt16(2);
+                        Int16 Peri = reader.GetInt16(3);
+                        string Nome = reader.GetString(4);
+                        string Texto = Nome + " " + HorIn.ToLocalTime();
+                        string nmBot = "Bt" + Id.ToString();
+                        switch (Peri)
+                        {
+                            case 1:
+                                CarregaBotao(nmBot, Nome, Id, panel2, IdLista);
+                                break;
+                            case 2:
+                                CarregaBotao(nmBot, Nome, Id, panel3, IdLista);
+                                break;
+                            case 3:
+                                CarregaBotao(nmBot, Nome, Id, panel4, IdLista);
+                                break;
+                            case 4:
+                                CarregaBotao(nmBot, Nome, Id, panel5, IdLista);
+                                break;
+                            default:
+                                CarregaBotao(nmBot, Nome, Id, panel1, IdLista);
+                                break;
+                        } 
+                    }
+                }
+            }
+
+
+
         }
     }
 

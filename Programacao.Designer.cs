@@ -170,6 +170,7 @@
             this.Name = "Programacao";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Programacao";
+            this.Load += new System.EventHandler(this.Programacao_Load);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Programacao_KeyUp);
             this.ResumeLayout(false);
 
