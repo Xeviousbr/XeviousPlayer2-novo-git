@@ -42,6 +42,51 @@ namespace XeviousPlayer2
             Listas();
             this.OBotaoSelec = new BotaoSelec();
         }
+
+        private void Programacao_Load(object sender, EventArgs e)
+        {
+            StringBuilder SQL = new StringBuilder();
+            SQL.Append("SELECT Prog.ID, Prog.HorIn, Prog.Lista, Prog.Periodicidade, Listas.Nome ");
+            SQL.Append("FROM Prog ");
+            SQL.Append("inner join Listas on Listas.IdLista = Prog.Lista ");
+            SQL.Append("ORDER BY Prog.Periodicidade");
+            SQLiteCommand command = new SQLiteCommand(SQL.ToString(), DalHelper.DbConnection());
+            using (DbDataReader reader = command.ExecuteReader())
+            {
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Int16 Id = reader.GetInt16(0);
+                        DateTime HorIn = reader.GetDateTime(1);
+                        Int16 IdLista = reader.GetInt16(2);
+                        Int16 Peri = reader.GetInt16(3);
+                        string Nome = reader.GetString(4);
+                        string Texto = Nome + " " + HorIn.ToLocalTime();
+                        string nmBot = "Bt" + Id.ToString();
+                        switch (Peri)
+                        {
+                            case 1:
+                                CarregaBotao(nmBot, Nome, Id, panel2, IdLista);
+                                break;
+                            case 2:
+                                CarregaBotao(nmBot, Nome, Id, panel3, IdLista);
+                                break;
+                            case 3:
+                                CarregaBotao(nmBot, Nome, Id, panel4, IdLista);
+                                break;
+                            case 4:
+                                CarregaBotao(nmBot, Nome, Id, panel5, IdLista);
+                                break;
+                            default:
+                                CarregaBotao(nmBot, Nome, Id, panel1, IdLista);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
         private void Listas()
         {
             string SQL = "Select IdLista, Nome From Listas";
@@ -76,7 +121,11 @@ namespace XeviousPlayer2
             bt.Top = I * 20;
             bt.Text = Texto;
             bt.UseVisualStyleBackColor = true;
-            bt.Tag = Painel.Tag + "|" + I.ToString() + "|" + IdLista.ToString();
+
+            int NrBts = panel2.Controls.Count;
+            bt.Tag = Painel.Tag + "|" + NrBts.ToString() + "|" + IdLista.ToString();
+            // bt.Tag = Painel.Tag + "|" + I.ToString() + "|" + IdLista.ToString();
+
             bt.Cursor = Cursors.Hand;
             bt.ForeColor = Color.Aqua;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
@@ -215,52 +264,6 @@ namespace XeviousPlayer2
             }            
         }
 
-        private void Programacao_Load(object sender, EventArgs e)
-        {
-            StringBuilder SQL = new StringBuilder();
-            SQL.Append("SELECT Prog.ID, Prog.HorIn, Prog.Lista, Prog.Periodicidade, Listas.Nome ");
-            SQL.Append("FROM Prog ");
-            SQL.Append("inner join Listas on Listas.IdLista = Prog.Lista ");
-            SQL.Append("ORDER BY Prog.Periodicidade");
-            SQLiteCommand command = new SQLiteCommand(SQL.ToString(), DalHelper.DbConnection());
-            using (DbDataReader reader = command.ExecuteReader())
-            {
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        Int16 Id = reader.GetInt16(0);
-                        DateTime HorIn = reader.GetDateTime(1);
-                        Int16 IdLista = reader.GetInt16(2);
-                        Int16 Peri = reader.GetInt16(3);
-                        string Nome = reader.GetString(4);
-                        string Texto = Nome + " " + HorIn.ToLocalTime();
-                        string nmBot = "Bt" + Id.ToString();
-                        switch (Peri)
-                        {
-                            case 1:
-                                CarregaBotao(nmBot, Nome, Id, panel2, IdLista);
-                                break;
-                            case 2:
-                                CarregaBotao(nmBot, Nome, Id, panel3, IdLista);
-                                break;
-                            case 3:
-                                CarregaBotao(nmBot, Nome, Id, panel4, IdLista);
-                                break;
-                            case 4:
-                                CarregaBotao(nmBot, Nome, Id, panel5, IdLista);
-                                break;
-                            default:
-                                CarregaBotao(nmBot, Nome, Id, panel1, IdLista);
-                                break;
-                        } 
-                    }
-                }
-            }
-
-
-
-        }
     }
 
     partial class Progr
