@@ -35,6 +35,7 @@ namespace XeviousPlayer2
         private string Tague = "";
         private object Cont;
         private BotaoSelec OBotaoSelec = null;
+        private int MaxAltura = 400;
 
         public Programacao()
         {
@@ -51,6 +52,7 @@ namespace XeviousPlayer2
             SQL.Append("inner join Listas on Listas.IdLista = Prog.Lista ");
             SQL.Append("ORDER BY Prog.Periodicidade");
             SQLiteCommand command = new SQLiteCommand(SQL.ToString(), DalHelper.DbConnection());
+            // DateTime Dt0 = new DateTime(2001, 1, 1);
             using (DbDataReader reader = command.ExecuteReader())
             {
                 if (reader.HasRows)
@@ -62,24 +64,31 @@ namespace XeviousPlayer2
                         Int16 IdLista = reader.GetInt16(2);
                         Int16 Peri = reader.GetInt16(3);
                         string Nome = reader.GetString(4);
-                        string Texto = Nome + " " + HorIn.ToLocalTime();
+                        Single siHora = HorIn.Hour;
+                        Single siMinute = HorIn.Minute;
+                        Single sMinuto = siMinute / 60;
+                        siHora += sMinuto;
+                        Single Prop = siHora / 24;
+                        Single Top = this.MaxAltura * Prop;
+                        string Hora = HorIn.Hour.ToString("00") + ":" + siMinute.ToString("00");
+                        string Texto = Nome + Hora;
                         string nmBot = "Bt" + Id.ToString();
                         switch (Peri)
                         {
                             case 1:
-                                CarregaBotao(nmBot, Nome, Id, panel2, IdLista);
+                                CarregaBotao(nmBot, Texto, Id, panel2, IdLista, Top);
                                 break;
                             case 2:
-                                CarregaBotao(nmBot, Nome, Id, panel3, IdLista);
+                                CarregaBotao(nmBot, Texto, Id, panel3, IdLista, Top);
                                 break;
                             case 3:
-                                CarregaBotao(nmBot, Nome, Id, panel4, IdLista);
+                                CarregaBotao(nmBot, Texto, Id, panel4, IdLista, Top);
                                 break;
                             case 4:
-                                CarregaBotao(nmBot, Nome, Id, panel5, IdLista);
+                                CarregaBotao(nmBot, Texto, Id, panel5, IdLista, Top);
                                 break;
                             default:
-                                CarregaBotao(nmBot, Nome, Id, panel1, IdLista);
+                                CarregaBotao(nmBot, Texto, Id, panel1, IdLista, Top);
                                 break;
                         }
                     }
@@ -101,15 +110,16 @@ namespace XeviousPlayer2
                     {
                         Int16 IdLista = reader.GetInt16(0);
                         string Nome = reader.GetString(1);
-                        string nmBot = "Bt" + Cont.ToString(); ;
-                        CarregaBotao(nmBot, Nome, Cont, this.panel1, IdLista);
+                        string nmBot = "Bt" + Cont.ToString();
+                        int Top = Cont * 20;
+                        CarregaBotao(nmBot, Nome, Cont, this.panel1, IdLista, Top);
                         Cont++;
                     }
                 }
             }
         }
 
-        private void CarregaBotao(string Nome, string Texto, int I, Panel Painel, Int16 IdLista)
+        private void CarregaBotao(string Nome, string Texto, int I, Panel Painel, Int16 IdLista, Single Top)
         {
             Button bt = new CustomButton();
             bt.AllowDrop = true;
@@ -118,7 +128,10 @@ namespace XeviousPlayer2
             bt.Name = Nome;
             bt.Size = new Size(194, 23);
             bt.TabIndex = 11;
-            bt.Top = I * 20;
+
+            bt.Top = (int)Top;
+            // bt.Top = I * 20;
+
             bt.Text = Texto;
             bt.UseVisualStyleBackColor = true;
 
@@ -146,8 +159,8 @@ namespace XeviousPlayer2
 
         private void button1_MouseDown(object sender, MouseEventArgs e)
         {
-            this.XX = button1.Left +e.X;
-            this.YY = button1.Top+ e.Y;
+            this.XX = button1.Left + e.X;
+            this.YY = button1.Top + e.Y;
             this.Entrou = true;
         }
 
@@ -162,10 +175,10 @@ namespace XeviousPlayer2
         private void Paineis_DragDrop(ref DragEventArgs e, ref Panel Painel)
         {
             // Ocorre quando se solta o botão
-            int MaxAltura = 400;
+            // int MaxAltura = 400;
             float PosYBSolt = e.Y - 227;
             float PropBt = PosYBSolt / 418;
-            float NvPos = PropBt * MaxAltura;
+            float NvPos = PropBt * this.MaxAltura;
             string sPos = NvPos.ToString();
             string[] arrPos = sPos.Split(',');
             int iPos = int.Parse(arrPos[0]);
@@ -174,17 +187,19 @@ namespace XeviousPlayer2
             float Momento = 1440 * PropBt;
             int Hora = (int)Momento / 60;
             int Minuto = (int)Momento - (Hora * 60);
-
-            string Texto = this.panel1.Controls[this.OBotaoSelec.BtSelecionado].Text + " " + Hora.ToString() + ":" + Minuto.ToString("00");
-
+            if (TextoBtSelecionado.IndexOf(":") > 0)
+            {
+                TextoBtSelecionado = TextoBtSelecionado.Substring(0, TextoBtSelecionado.Length - 5);
+                TextoBtSelecionado = TextoBtSelecionado.Trim();
+            }
+            string Texto = TextoBtSelecionado + " " + Hora.ToString() + ":" + Minuto.ToString("00");
             if (this.OBotaoSelec.pnSelecionado == 0)
             {
                 int Cont = Painel.Controls.Count;
                 string nmBot = "Bt" + Cont.ToString();
 
                 // Proparar o ID da lista como parametro
-                CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista);
-                Painel.Controls[Cont].Top = iPos;
+                CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista, iPos);
             }
             else
             {
@@ -219,12 +234,13 @@ namespace XeviousPlayer2
 
         private void Programacao_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode==Keys.Escape)
+            if (e.KeyCode == Keys.Escape)
                 Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             List<Progr> Progrs = new List<Progr>();
             this.ContProgs(ref Progrs, ref this.panel2, 1);
             this.ContProgs(ref Progrs, ref this.panel3, 2);
@@ -233,7 +249,7 @@ namespace XeviousPlayer2
             tbProg tbH = new tbProg();
             tbH.Zera();
             foreach (var item in Progrs)
-            {                
+            {
                 tbH.HorIn = DateTime.Now;
                 tbH.Lista = item.IdProg;
                 tbH.Periodicidade = item.Tipo;
@@ -241,6 +257,7 @@ namespace XeviousPlayer2
                 tbH.Adiciona();
             }
             this.DialogResult = DialogResult.OK;
+            this.Cursor = Cursors.Default;
             Close();
         }
 
@@ -261,7 +278,7 @@ namespace XeviousPlayer2
                 string[] sPartesTag = Tague.Split('|');
                 EssaProg.IdProg = Convert.ToInt16(sPartesTag[2]);
                 progrs.Add(EssaProg);
-            }            
+            }
         }
 
     }
