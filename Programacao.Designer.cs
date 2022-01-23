@@ -43,11 +43,14 @@
             // 
             // panel1
             // 
+            this.panel1.AllowDrop = true;
             this.panel1.Location = new System.Drawing.Point(0, 25);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(200, 422);
             this.panel1.TabIndex = 0;
             this.panel1.Tag = "0";
+            this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.Paineis_DragEnter);
             // 
             // label1
             // 

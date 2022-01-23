@@ -52,7 +52,6 @@ namespace XeviousPlayer2
             SQL.Append("inner join Listas on Listas.IdLista = Prog.Lista ");
             SQL.Append("ORDER BY Prog.Periodicidade");
             SQLiteCommand command = new SQLiteCommand(SQL.ToString(), DalHelper.DbConnection());
-            // DateTime Dt0 = new DateTime(2001, 1, 1);
             using (DbDataReader reader = command.ExecuteReader())
             {
                 if (reader.HasRows)
@@ -128,17 +127,11 @@ namespace XeviousPlayer2
             bt.Name = Nome;
             bt.Size = new Size(194, 23);
             bt.TabIndex = 11;
-
             bt.Top = (int)Top;
-            // bt.Top = I * 20;
-
-            bt.Text = Texto;
-            bt.UseVisualStyleBackColor = true;
-
-            int NrBts = panel2.Controls.Count;
+            int NrBts = Painel.Controls.Count;
             bt.Tag = Painel.Tag + "|" + NrBts.ToString() + "|" + IdLista.ToString();
-            // bt.Tag = Painel.Tag + "|" + I.ToString() + "|" + IdLista.ToString();
-
+            bt.Text = Texto;
+            bt.UseVisualStyleBackColor = true;                        
             bt.Cursor = Cursors.Hand;
             bt.ForeColor = Color.Aqua;
             bt.MouseDown += new MouseEventHandler(this.bt_MouseDown);
@@ -197,13 +190,10 @@ namespace XeviousPlayer2
             {
                 int Cont = Painel.Controls.Count;
                 string nmBot = "Bt" + Cont.ToString();
-
-                // Proparar o ID da lista como parametro
                 CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista, iPos);
             }
             else
             {
-                // Pego e solto no mesmo painel num dos tres
                 string[] partes = Tague.Split('|');
                 int Item = Convert.ToInt16(partes[1]);
                 Painel.Controls[Item].Top = iPos;
@@ -265,22 +255,46 @@ namespace XeviousPlayer2
         {
             for (int i = 0; i < Painel.Controls.Count; i++)
             {
-                Progr EssaProg = new Progr();
-                EssaProg.IdProg = 0;
-                string sTempo = Painel.Controls[i].Text;
-                string sHora = sTempo.Substring(sTempo.Length - 5, 5);
-                string[] sPartes = sHora.Split(':');
-                int Hora = Convert.ToInt16(sPartes[0]);
-                int Minu = Convert.ToInt16(sPartes[1]);
-                EssaProg.Tempo = new DateTime(2001, 1, 1, Hora, Minu, 0);
-                EssaProg.Tipo = Tipo;
-                string Tague = ((Button)Painel.Controls[i]).Tag.ToString();
-                string[] sPartesTag = Tague.Split('|');
-                EssaProg.IdProg = Convert.ToInt16(sPartesTag[2]);
-                progrs.Add(EssaProg);
+                if (Painel.Controls[i].Visible)
+                {
+                    Progr EssaProg = new Progr();
+                    EssaProg.IdProg = 0;
+                    string sTempo = Painel.Controls[i].Text;
+                    string sHora = sTempo.Substring(sTempo.Length - 5, 5);
+                    string[] sPartes = sHora.Split(':');
+                    int Hora = Convert.ToInt16(sPartes[0]);
+                    int Minu = Convert.ToInt16(sPartes[1]);
+                    EssaProg.Tempo = new DateTime(2001, 1, 1, Hora, Minu, 0);
+                    EssaProg.Tipo = Tipo;
+                    string Tague = ((Button)Painel.Controls[i]).Tag.ToString();
+                    string[] sPartesTag = Tague.Split('|');
+                    EssaProg.IdProg = Convert.ToInt16(sPartesTag[2]);
+                    progrs.Add(EssaProg);
+
+                }
             }
         }
 
+        private void panel1_DragDrop(object sender, DragEventArgs e)
+        {
+            switch (this.OBotaoSelec.pnSelecionado)
+            {
+                case 2:
+                    panel3.Controls[this.OBotaoSelec.BtSelecionado].Visible = false;
+                    break;
+                case 3:
+                    panel4.Controls[this.OBotaoSelec.BtSelecionado].Visible = false;
+                    break;
+                case 4:
+                    panel5.Controls[this.OBotaoSelec.BtSelecionado].Visible = false;
+                    break;
+                default: // 1
+                    panel2.Controls[this.OBotaoSelec.BtSelecionado].Visible = false; 
+                    break;
+
+            }
+            button1.Enabled = true;
+        }
     }
 
     partial class Progr
