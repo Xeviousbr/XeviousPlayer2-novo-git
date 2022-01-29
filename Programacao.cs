@@ -7,20 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using XeviousPlayer2.tbs;
 
-// https://docs.microsoft.com/pt-br/dotnet/desktop/winforms/advanced/walkthrough-performing-a-drag-and-drop-operation-in-windows-forms?view=netframeworkdesktop-4.8
-
-//Fazer 4 listas
-//a primeira tem as listas 
-//se carrega elas para as listas 
-//quando se solta, define a hora 
-//primeira lista é todos os dias
-//Segunda dias de semana 
-//Terceira, sabados
-//Quarta, domingo 
-
-// Maior lista em termos de tamanho de nome
-// Musica para motoqueiros
-
 namespace XeviousPlayer2
 {
     public partial class Programacao : Form
@@ -165,6 +151,57 @@ namespace XeviousPlayer2
                 e.Effect = DragDropEffects.None;
         }
 
+        /*
+        private void Paineis_DragDrop(ref DragEventArgs e, ref Panel Painel)
+        {
+            // Ocorre quando se solta o botão
+            float PosYBSolt = e.Y - 227;
+            float PropBt = PosYBSolt / 418;
+            float NvPos = PropBt * this.MaxAltura;
+            string sPos = NvPos.ToString();
+            string[] arrPos = sPos.Split(',');
+            int iPos = int.Parse(arrPos[0]);
+
+            // Dedução do novo horário
+            float Momento = 1440 * PropBt;
+            int Hora = (int)Momento / 60;
+            int Minuto = (int)Momento - (Hora * 60);
+
+            string[] partes = this.Tague.Split('|');
+            int Item = Convert.ToInt16(partes[1]);
+            Int16 NrPainelOrigem = Convert.ToInt16(Painel.Tag.ToString());
+            this.Text = "Origem = " + this.OBotaoSelec.pnSelecionado.ToString() + "Botão de nr " + partes[1] +" Destino = " + Painel.Tag;
+
+            if (TextoBtSelecionado.IndexOf(":") > 0)
+            {
+                TextoBtSelecionado = TextoBtSelecionado.Substring(0, TextoBtSelecionado.Length - 5);
+                TextoBtSelecionado = TextoBtSelecionado.Trim();
+            }
+            string Texto = TextoBtSelecionado + " " + Hora.ToString() + ":" + Minuto.ToString("00");
+            if (this.OBotaoSelec.pnSelecionado == 0)
+            {
+                // Entra aqui quando se pega o botão do primeiro painel e se coloca numa programação
+                int Cont = Painel.Controls.Count;
+                string nmBot = "Bt" + Cont.ToString();
+                CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista, iPos);
+            }
+            else
+            {
+                if (this.OBotaoSelec.pnSelecionado == NrPainelOrigem)
+                {
+                    Painel.Controls[Item].Top = iPos;
+                    Painel.Controls[Item].Text = Texto;
+                } else
+                {
+                    this.ApagaBotao(this.OBotaoSelec.pnSelecionado);
+                    int Cont = Painel.Controls.Count;
+                    string nmBot = "Bt" + Cont.ToString();
+                    CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista, iPos);
+                }
+            }
+            button1.Enabled = true;
+        }*/
+
         private void Paineis_DragDrop(ref DragEventArgs e, ref Panel Painel)
         {
             // Ocorre quando se solta o botão
@@ -180,6 +217,12 @@ namespace XeviousPlayer2
             float Momento = 1440 * PropBt;
             int Hora = (int)Momento / 60;
             int Minuto = (int)Momento - (Hora * 60);
+
+            string[] partes = this.Tague.Split('|');
+            int Item = Convert.ToInt16(partes[1]);
+            Int16 NrPainelOrigem = Convert.ToInt16(Painel.Tag.ToString());
+            this.Text = "Origem = " + this.OBotaoSelec.pnSelecionado.ToString() + "Botão de nr " + partes[1] + " Destino = " + Painel.Tag;
+
             if (TextoBtSelecionado.IndexOf(":") > 0)
             {
                 TextoBtSelecionado = TextoBtSelecionado.Substring(0, TextoBtSelecionado.Length - 5);
@@ -188,17 +231,25 @@ namespace XeviousPlayer2
             string Texto = TextoBtSelecionado + " " + Hora.ToString() + ":" + Minuto.ToString("00");
             if (this.OBotaoSelec.pnSelecionado == 0)
             {
+                // Entra aqui quando é para apagar o botão
                 int Cont = Painel.Controls.Count;
                 string nmBot = "Bt" + Cont.ToString();
                 CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista, iPos);
             }
             else
-            {
-                string[] partes = Tague.Split('|');
-                int Item = Convert.ToInt16(partes[1]);
-                Painel.Controls[Item].Top = iPos;
-                Painel.Controls[Item].Text = Texto;
-            }
+                if (this.OBotaoSelec.pnSelecionado == NrPainelOrigem)
+                {
+                    Painel.Controls[Item].Top = iPos;
+                    Painel.Controls[Item].Text = Texto;
+                }
+                else
+                {
+                    this.ApagaBotao();
+                    int Cont = Painel.Controls.Count;
+                    string nmBot = "Bt" + Cont.ToString();
+                    CarregaBotao(nmBot, Texto, Cont, Painel, this.OBotaoSelec.IdLista, iPos);
+
+                }
             button1.Enabled = true;
         }
 
@@ -227,7 +278,7 @@ namespace XeviousPlayer2
             if (e.KeyCode == Keys.Escape)
                 Close();
         }
-
+        
         private void button1_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
@@ -277,6 +328,11 @@ namespace XeviousPlayer2
 
         private void panel1_DragDrop(object sender, DragEventArgs e)
         {
+            this.ApagaBotao();
+        }
+
+        private void ApagaBotao()
+        {
             switch (this.OBotaoSelec.pnSelecionado)
             {
                 case 2:
@@ -289,13 +345,15 @@ namespace XeviousPlayer2
                     panel5.Controls[this.OBotaoSelec.BtSelecionado].Visible = false;
                     break;
                 default: // 1
-                    panel2.Controls[this.OBotaoSelec.BtSelecionado].Visible = false; 
+                    panel2.Controls[this.OBotaoSelec.BtSelecionado].Visible = false;
                     break;
-
             }
             button1.Enabled = true;
         }
+
+
     }
+
 
     partial class Progr
     {
