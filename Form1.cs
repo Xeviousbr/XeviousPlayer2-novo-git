@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Data.Common;
+using XeviousPlayer2.tbs;
 
 namespace XeviousPlayer2
 {
@@ -611,16 +612,25 @@ namespace XeviousPlayer2
 
             //ColocaSkin();
 
+            //Toca(@"H:\Temp\Mp3Novos\Ave Maria  Aria Vol 2  Cafe del Mar.mp3");
             string[] arguments = Environment.GetCommandLineArgs();
             if (arguments.Length > 1)
             {
                 Toca(arguments[1].ToString());
-            } else
-            {
-                setaLista(1);
             }
-            //int x = 0;
+            else
+            {
+                VePrograma();
+                // setaLista(1);
+            }
 
+        }
+
+        private void VePrograma()
+        {
+            tbProg tbH = new tbProg();
+            tbH.getProg();
+            setaLista(tbH.Lista);
         }
 
         // Show display overlay at start up
@@ -701,11 +711,14 @@ namespace XeviousPlayer2
             }
             this.TratarFinalDaMusica = false;
 
-#if DEBUG
-            // Não toca
-#else
-            myPlayer.Play(Musica);
-#endif
+            // myPlayer.Play(Musica);
+
+            //#if DEBUG
+            //            // Não toca
+            //#else
+            //            myPlayer.Play(Musica);
+            //#endif
+
             if (myPlayer.LastError)
             {
                 MessageBox.Show(myPlayer.LastErrorString);
