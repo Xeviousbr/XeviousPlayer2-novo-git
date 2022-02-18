@@ -12,14 +12,17 @@ namespace XeviousPlayer2.tbs
         public string PathBase { get; set; }
         public int Skin { get; set; }
 
+        public bool Progr { get; set; }
+
         public tbConfig() {
-            SQLiteCommand command = new SQLiteCommand("Select PathBase, Skin From Config", DalHelper.sqliteConnection);
+            SQLiteCommand command = new SQLiteCommand("Select PathBase, Skin, Progr From Config", DalHelper.sqliteConnection);
             using (DbDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     this.PathBase = reader.GetString(0);
                     this.Skin = reader.GetInt32(1);
+                    this.Progr = (reader.GetInt32(2) == 1);
                 }
             }
         }

@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem(new string[] {
             "111",
             "Nome",
             "Lugar",
             "0",
             "01/01/2021",
             "10"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem(new string[] {
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem(new string[] {
             "222",
             "Nome2",
             "Lugar2",
@@ -111,6 +111,9 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.lbTempo = new System.Windows.Forms.Label();
             this.lbBandaNome = new System.Windows.Forms.Label();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.ligadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.desligadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -212,10 +215,11 @@
             this.toolStripButton19,
             this.toolStripButton20,
             this.toolStripButton21,
-            this.toolStripButton22});
+            this.toolStripButton22,
+            this.toolStripSplitButton1});
             this.toolStrip1.Location = new System.Drawing.Point(150, 562);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(516, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(595, 39);
             this.toolStrip1.TabIndex = 13;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -757,11 +761,11 @@
             this.listView.HideSelection = false;
             this.listView.HotTracking = true;
             this.listView.HoverSelection = true;
-            listViewItem1.StateImageIndex = 0;
-            listViewItem2.StateImageIndex = 0;
+            listViewItem7.StateImageIndex = 0;
+            listViewItem8.StateImageIndex = 0;
             this.listView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2});
+            listViewItem7,
+            listViewItem8});
             this.listView.Location = new System.Drawing.Point(16, 219);
             this.listView.Name = "listView";
             this.listView.Size = new System.Drawing.Size(720, 305);
@@ -846,6 +850,30 @@
             this.lbBandaNome.TabIndex = 32;
             this.lbBandaNome.Text = "Artista";
             this.lbBandaNome.Visible = false;
+            // 
+            // toolStripSplitButton1
+            // 
+            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ligadoToolStripMenuItem,
+            this.desligadoToolStripMenuItem});
+            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
+            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(48, 36);
+            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
+            // 
+            // ligadoToolStripMenuItem
+            // 
+            this.ligadoToolStripMenuItem.Name = "ligadoToolStripMenuItem";
+            this.ligadoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ligadoToolStripMenuItem.Text = "Ligado";
+            // 
+            // desligadoToolStripMenuItem
+            // 
+            this.desligadoToolStripMenuItem.Name = "desligadoToolStripMenuItem";
+            this.desligadoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.desligadoToolStripMenuItem.Text = "Desligado";
             // 
             // Form1
             // 
@@ -969,6 +997,9 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label lbTempo;
         private System.Windows.Forms.Label lbBandaNome;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
+        private System.Windows.Forms.ToolStripMenuItem ligadoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem desligadoToolStripMenuItem;
     }
 }
 
