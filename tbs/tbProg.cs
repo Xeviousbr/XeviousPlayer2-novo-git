@@ -69,17 +69,29 @@ namespace XeviousPlayer2.tbs
             {
                 string Hora = DateTime.Now.ToLocalTime().ToString().Substring(11, 8);
                 string SQL = "Select ID, HorIn, Lista From Prog Where Periodicidade in (" + SelDias + ") and HorIn < '2001-01-01 "+Hora+"' order by HorIn desc limit 1 ";
-                SQLiteCommand command = new SQLiteCommand(SQL, DalHelper.sqliteConnection);
-                using (DbDataReader reader = command.ExecuteReader())
+                if (Consulta(SQL)==false)
                 {
-                    while (reader.Read())
-                    {
-                        this.ID = reader.GetInt16(0);
-                        this.HorIn = reader.GetDateTime(1);
-                        this.Lista = reader.GetInt16(2);
-                    }
+                    SQL = "Select ID, HorIn, Lista From Prog Where Periodicidade in (" + SelDias + ") order by HorIn desc limit 1 ";
+                    Consulta(SQL);
                 }
             }
+        }
+
+        private bool Consulta(string SQL)
+        {
+            bool ret = false;
+            SQLiteCommand command = new SQLiteCommand(SQL, DalHelper.sqliteConnection);
+            using (DbDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    this.ID = reader.GetInt16(0);
+                    this.HorIn = reader.GetDateTime(1);
+                    this.Lista = reader.GetInt16(2);
+                    ret = true;
+                }
+            }
+            return ret;
         }
     }
 }

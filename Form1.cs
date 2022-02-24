@@ -1324,5 +1324,19 @@ namespace XeviousPlayer2
                     break;
                 }
         }
+
+        private void ligadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tbs.tbConfig Config = new tbs.tbConfig();
+            Config.Progr = true;
+            Config.Salva();
+        }
+
+        private void desligadoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tbs.tbConfig Config = new tbs.tbConfig();
+            Config.Progr = false;
+            Config.Salva();
+        }
     }
 }

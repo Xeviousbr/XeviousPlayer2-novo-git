@@ -26,5 +26,12 @@ namespace XeviousPlayer2.tbs
                 }
             }
         }
+
+        internal void Salva()
+        {
+            string sProgr = "0";
+            if (this.Progr == true) sProgr = "1";
+            DalHelper.ExecSql("Update Config set Progr = " + sProgr);
+        }
     }
 }
