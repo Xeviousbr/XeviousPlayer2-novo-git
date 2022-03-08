@@ -620,8 +620,10 @@ namespace XeviousPlayer2
             }
             else
             {
-                VePrograma();
-                // setaLista(1);
+                tbConfig Config = new tbConfig();
+                Config.Carrega();
+                if (Config.Progr)
+                    VePrograma();
             }
 
         }
