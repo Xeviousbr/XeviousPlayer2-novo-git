@@ -615,17 +615,17 @@ namespace XeviousPlayer2
             //Toca(@"H:\Temp\Mp3Novos\Ave Maria  Aria Vol 2  Cafe del Mar.mp3");
             string[] arguments = Environment.GetCommandLineArgs();
             if (arguments.Length > 1)
-            {
                 Toca(arguments[1].ToString());
-            }
             else
             {
                 tbConfig Config = new tbConfig();
                 Config.Carrega();
                 if (Config.Progr)
+                {
+                    tsProg.Image = ligadoToolStripMenuItem.Image;
                     VePrograma();
+                }
             }
-
         }
 
         private void VePrograma()
@@ -1332,6 +1332,7 @@ namespace XeviousPlayer2
             tbs.tbConfig Config = new tbs.tbConfig();
             Config.Progr = true;
             Config.Salva();
+            tsProg.Image = ligadoToolStripMenuItem.Image;
         }
 
         private void desligadoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1339,6 +1340,12 @@ namespace XeviousPlayer2
             tbs.tbConfig Config = new tbs.tbConfig();
             Config.Progr = false;
             Config.Salva();
+            tsProg.Image = desligadoToolStripMenuItem.Image;
+        }
+
+        private void tsProg_ButtonClick(object sender, EventArgs e)
+        {
+
         }
     }
 }

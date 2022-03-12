@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
             "111",
@@ -65,7 +66,7 @@
             this.toolStripButton20 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton21 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton22 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsProg = new System.Windows.Forms.ToolStripSplitButton();
             this.ligadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.desligadoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -109,11 +110,12 @@
             this.Nome = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Lugar = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.label2 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.lbTempo = new System.Windows.Forms.Label();
             this.lbBandaNome = new System.Windows.Forms.Label();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -123,9 +125,9 @@
             this.pnlDetalhes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picImg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SuspendLayout();
             // 
             // trackBar1
@@ -216,7 +218,7 @@
             this.toolStripButton20,
             this.toolStripButton21,
             this.toolStripButton22,
-            this.toolStripSplitButton1});
+            this.tsProg});
             this.toolStrip1.Location = new System.Drawing.Point(150, 562);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(595, 39);
@@ -376,30 +378,33 @@
             this.toolStripButton22.Text = "toolStripButton22";
             this.toolStripButton22.Click += new System.EventHandler(this.toolStripButton22_Click);
             // 
-            // toolStripSplitButton1
+            // tsProg
             // 
-            this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsProg.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsProg.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ligadoToolStripMenuItem,
             this.desligadoToolStripMenuItem});
-            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
-            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(48, 36);
-            this.toolStripSplitButton1.Text = "toolStripSplitButton1";
+            this.tsProg.Image = global::XeviousPlayer2.Properties.Resources.ProgOFF;
+            this.tsProg.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsProg.Name = "tsProg";
+            this.tsProg.Size = new System.Drawing.Size(48, 36);
+            this.tsProg.Text = "Programação";
+            this.tsProg.ButtonClick += new System.EventHandler(this.tsProg_ButtonClick);
             // 
             // ligadoToolStripMenuItem
             // 
+            this.ligadoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ligadoToolStripMenuItem.Image")));
             this.ligadoToolStripMenuItem.Name = "ligadoToolStripMenuItem";
-            this.ligadoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.ligadoToolStripMenuItem.Text = "Ligado";
+            this.ligadoToolStripMenuItem.Size = new System.Drawing.Size(196, 38);
+            this.ligadoToolStripMenuItem.Text = "Ligar";
             this.ligadoToolStripMenuItem.Click += new System.EventHandler(this.ligadoToolStripMenuItem_Click);
             // 
             // desligadoToolStripMenuItem
             // 
+            this.desligadoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("desligadoToolStripMenuItem.Image")));
             this.desligadoToolStripMenuItem.Name = "desligadoToolStripMenuItem";
-            this.desligadoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.desligadoToolStripMenuItem.Text = "Desligado";
+            this.desligadoToolStripMenuItem.Size = new System.Drawing.Size(196, 38);
+            this.desligadoToolStripMenuItem.Text = "Desligar";
             this.desligadoToolStripMenuItem.Click += new System.EventHandler(this.desligadoToolStripMenuItem_Click);
             // 
             // statusStrip
@@ -757,7 +762,6 @@
             // 
             // pictureBox4
             // 
-            this.pictureBox4.Image = global::XeviousPlayer2.Properties.Resources.collapse_arrow_127px;
             this.pictureBox4.Location = new System.Drawing.Point(695, 128);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(22, 18);
@@ -821,38 +825,6 @@
             this.label2.Visible = false;
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(742, 562);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(30, 30);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 17;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(16, 562);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(30, 30);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 16;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(711, 44);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(22, 18);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox3.TabIndex = 21;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Visible = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click_1);
-            // 
             // lbTempo
             // 
             this.lbTempo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -876,6 +848,45 @@
             this.lbBandaNome.TabIndex = 32;
             this.lbBandaNome.Text = "Artista";
             this.lbBandaNome.Visible = false;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "icons8_toggle_off.ico");
+            this.imageList1.Images.SetKeyName(1, "icons8_toggle_on.ico");
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(711, 44);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(22, 18);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 21;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Visible = false;
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click_1);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(742, 562);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(30, 30);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 17;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(16, 562);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(30, 30);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
@@ -922,9 +933,9 @@
             this.pnlDetalhes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picImg)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -999,9 +1010,10 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label lbTempo;
         private System.Windows.Forms.Label lbBandaNome;
-        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
+        private System.Windows.Forms.ToolStripSplitButton tsProg;
         private System.Windows.Forms.ToolStripMenuItem ligadoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem desligadoToolStripMenuItem;
+        private System.Windows.Forms.ImageList imageList1;
     }
 }
 
