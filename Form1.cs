@@ -106,6 +106,7 @@ namespace XeviousPlayer2
         private long eToEnd = -1;
         private int IndiceNaLista;
         private bool TratarFinalDaMusica = true;
+        private bool ProgLigada = false;
 
         #region Main
 
@@ -620,7 +621,8 @@ namespace XeviousPlayer2
             {
                 tbConfig Config = new tbConfig();
                 Config.Carrega();
-                if (Config.Progr)
+                this.ProgLigada = Config.Progr;
+                if (this.ProgLigada)
                 {
                     tsProg.Image = ligadoToolStripMenuItem.Image;
                     VePrograma();
@@ -713,7 +715,11 @@ namespace XeviousPlayer2
             }
             this.TratarFinalDaMusica = false;
 
-            // myPlayer.Play(Musica);
+            myPlayer.Play(Musica);
+
+#if DEBUG
+            myPlayer.Audio.Volume = 1;
+#endif
 
             //#if DEBUG
             //            // Não toca
@@ -757,7 +763,7 @@ namespace XeviousPlayer2
                     // Se tiver, colocar as informações 
                 } else
                 {
-                    MessageBox.Show("O programa ainda não esta adaptado para funcionar vídeo");
+                    MessageBox.Show("O programa ainda não esta adaptado para funcionar esse vídeo");
                 }
             }
             this.eToEnd = -1;
@@ -1181,7 +1187,7 @@ namespace XeviousPlayer2
             this.listView.Refresh();
 
             this.IndiceNaLista = -1;
-            ProxMusica();
+            ProxMusica(false);
 
             //string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
             //this.Toca(Tocar);
@@ -1238,9 +1244,20 @@ namespace XeviousPlayer2
         //    this.listView.ListViewItemSorter = new ListViewItemComparer(e.Column);
         //}
 
-        private void ProxMusica()
+        private void ProxMusica(bool PreverProgramacao=true)
         {
-            if (this.IndiceNaLista>-1)
+            if (PreverProgramacao)
+            {
+                if (this.ProgLigada == true)
+                {
+                    int x = 0;
+                    // VERIFICAR SE NESTE MOMENTO, A PROGRAMAÇÃO CERTA É A QUE TA TOCANDO
+                    // SENÃO, CHAMAR A PROGRAMAÇÃO
+                    // Sair da função
+                }
+            }
+
+            if (this.IndiceNaLista > -1)
             {
                 this.listView.Items[this.IndiceNaLista].Focused = false;
                 this.listView.Items[this.IndiceNaLista].Selected = false;
@@ -1249,11 +1266,23 @@ namespace XeviousPlayer2
             // this.IndiceNaLista = this.IndiceNaLista < 1 ? 1 : this.IndiceNaLista;
             string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
             this.Toca(Tocar);
+
+            //this.listView.Items[this.IndiceNaLista].Focused = true;
+            //this.listView.Items[this.IndiceNaLista].Selected = true;
+            //lbVezes.Text = this.listView.Items[this.IndiceNaLista].SubItems[2].Text;
+            //lbTocou.Text = this.listView.Items[this.IndiceNaLista].SubItems[3].Text;
+            //lbTam.Text = this.listView.Items[this.IndiceNaLista].SubItems[4].Text;
+            this.ColocaDadosMusica();
+        }
+
+        private void ColocaDadosMusica()
+        {
             this.listView.Items[this.IndiceNaLista].Focused = true;
             this.listView.Items[this.IndiceNaLista].Selected = true;
             lbVezes.Text = this.listView.Items[this.IndiceNaLista].SubItems[2].Text;
             lbTocou.Text = this.listView.Items[this.IndiceNaLista].SubItems[3].Text;
             lbTam.Text = this.listView.Items[this.IndiceNaLista].SubItems[4].Text;
+
         }
 
         #region Mostrar e ocultar Detalhes
@@ -1333,6 +1362,7 @@ namespace XeviousPlayer2
             Config.Progr = true;
             Config.Salva();
             tsProg.Image = ligadoToolStripMenuItem.Image;
+            this.ProgLigada = Config.Progr;
         }
 
         private void desligadoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1341,6 +1371,7 @@ namespace XeviousPlayer2
             Config.Progr = false;
             Config.Salva();
             tsProg.Image = desligadoToolStripMenuItem.Image;
+            this.ProgLigada = Config.Progr;
         }
 
         private void tsProg_ButtonClick(object sender, EventArgs e)
