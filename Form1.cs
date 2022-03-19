@@ -107,6 +107,7 @@ namespace XeviousPlayer2
         private int IndiceNaLista;
         private bool TratarFinalDaMusica = true;
         private bool ProgLigada = false;
+        private int ListaAtu = -1;
 
         #region Main
 
@@ -634,7 +635,8 @@ namespace XeviousPlayer2
         {
             tbProg tbH = new tbProg();
             tbH.getProg();
-            setaLista(tbH.Lista);
+            this.ListaAtu = tbH.Lista;
+            setaLista(this.ListaAtu);
         }
 
         // Show display overlay at start up
@@ -702,7 +704,6 @@ namespace XeviousPlayer2
         private void Toca(string Musica)
         {
             if (myPlayer.Playing)
-            {
                 try
                 {
                     myPlayer.Stop();
@@ -711,26 +712,10 @@ namespace XeviousPlayer2
                 {
                     Console.WriteLine(e);
                 }
-                
-            }
             this.TratarFinalDaMusica = false;
-
             myPlayer.Play(Musica);
-
-#if DEBUG
-            myPlayer.Audio.Volume = 1;
-#endif
-
-            //#if DEBUG
-            //            // Não toca
-            //#else
-            //            myPlayer.Play(Musica);
-            //#endif
-
             if (myPlayer.LastError)
-            {
                 MessageBox.Show(myPlayer.LastErrorString);
-            }
             else
             {
                 if (!myPlayer.Has.Video)
@@ -1247,16 +1232,17 @@ namespace XeviousPlayer2
         private void ProxMusica(bool PreverProgramacao=true)
         {
             if (PreverProgramacao)
-            {
                 if (this.ProgLigada == true)
                 {
-                    int x = 0;
-                    // VERIFICAR SE NESTE MOMENTO, A PROGRAMAÇÃO CERTA É A QUE TA TOCANDO
-                    // SENÃO, CHAMAR A PROGRAMAÇÃO
-                    // Sair da função
+                    tbProg tbH = new tbProg();
+                    tbH.getProg();
+                    if (tbH.Lista!= this.ListaAtu)
+                    {
+                        this.ListaAtu = tbH.Lista;
+                        setaLista(this.ListaAtu);
+                        return;
+                    }
                 }
-            }
-
             if (this.IndiceNaLista > -1)
             {
                 this.listView.Items[this.IndiceNaLista].Focused = false;
