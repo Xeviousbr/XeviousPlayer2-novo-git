@@ -18,7 +18,7 @@ namespace XeviousPlayer2
             textBox1.Text = Config.PathBase;
             cbSkin.SelectedIndex = Config.Skin;
             vazio = false;
-            ColocaSkin(Config.Skin);
+            //ColocaSkin(Config.Skin);
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -31,6 +31,7 @@ namespace XeviousPlayer2
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 textBox1.Text = folderBrowserDialog1.SelectedPath;
+                button4.Enabled = true;
             }
         }
 
@@ -95,6 +96,11 @@ namespace XeviousPlayer2
             fProg.ShowDialog();
             fProg.Dispose();
             this.Close();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            button4.Enabled = (textBox1.Text.Length > 4);
         }
     }
 

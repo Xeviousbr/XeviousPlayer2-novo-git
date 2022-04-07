@@ -713,7 +713,9 @@ namespace XeviousPlayer2
                     Console.WriteLine(e);
                 }
             this.TratarFinalDaMusica = false;
+
             myPlayer.Play(Musica);
+
             if (myPlayer.LastError)
                 MessageBox.Show(myPlayer.LastErrorString);
             else
@@ -1249,16 +1251,14 @@ namespace XeviousPlayer2
                 this.listView.Items[this.IndiceNaLista].Selected = false;
             }
             this.IndiceNaLista++;
-            // this.IndiceNaLista = this.IndiceNaLista < 1 ? 1 : this.IndiceNaLista;
-            string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
-            this.Toca(Tocar);
-
-            //this.listView.Items[this.IndiceNaLista].Focused = true;
-            //this.listView.Items[this.IndiceNaLista].Selected = true;
-            //lbVezes.Text = this.listView.Items[this.IndiceNaLista].SubItems[2].Text;
-            //lbTocou.Text = this.listView.Items[this.IndiceNaLista].SubItems[3].Text;
-            //lbTam.Text = this.listView.Items[this.IndiceNaLista].SubItems[4].Text;
-            this.ColocaDadosMusica();
+            if (this.listView.Items.Count>0)
+            {
+                string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
+                float VolAnt = myPlayer.Audio.Volume;
+                this.Toca(Tocar);
+                myPlayer.Audio.Volume = VolAnt;
+                this.ColocaDadosMusica();
+            }
         }
 
         private void ColocaDadosMusica()

@@ -41,8 +41,19 @@ namespace XeviousPlayer2
             // Verificar se os 3 primeiros caracteres são numericos, se for, retirar
             // Verificar se os 2 primeiros caracteres são numericos, se for, retirar
             if (Nome.Length>2)
-                if (Nome.Substring(2, 2) == "0 ")
+            {
+                string Ped2 = "";
+                try
+                {
+                    Ped2 = Nome.Substring(2, 2);
+                }
+                catch (Exception)
+                {
+                    // 
+                }
+                if (Ped2 == "0 ")
                     Nome = Nome.Substring(2);
+            }
             Nome = TiraNomeDaBanda(Nome, Banda);
             return Nome;
         }
