@@ -360,6 +360,7 @@
             // toolStripButton21
             // 
             this.toolStripButton21.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton21.Enabled = false;
             this.toolStripButton21.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton21.Image")));
             this.toolStripButton21.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton21.Name = "toolStripButton21";
@@ -375,7 +376,7 @@
             this.toolStripButton22.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton22.Name = "toolStripButton22";
             this.toolStripButton22.Size = new System.Drawing.Size(36, 36);
-            this.toolStripButton22.Text = "toolStripButton22";
+            this.toolStripButton22.Text = "Configurações";
             this.toolStripButton22.Click += new System.EventHandler(this.toolStripButton22_Click);
             // 
             // tsProg
@@ -395,7 +396,7 @@
             // 
             this.ligadoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ligadoToolStripMenuItem.Image")));
             this.ligadoToolStripMenuItem.Name = "ligadoToolStripMenuItem";
-            this.ligadoToolStripMenuItem.Size = new System.Drawing.Size(196, 38);
+            this.ligadoToolStripMenuItem.Size = new System.Drawing.Size(132, 38);
             this.ligadoToolStripMenuItem.Text = "Ligar";
             this.ligadoToolStripMenuItem.Click += new System.EventHandler(this.ligadoToolStripMenuItem_Click);
             // 
@@ -403,7 +404,7 @@
             // 
             this.desligadoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("desligadoToolStripMenuItem.Image")));
             this.desligadoToolStripMenuItem.Name = "desligadoToolStripMenuItem";
-            this.desligadoToolStripMenuItem.Size = new System.Drawing.Size(196, 38);
+            this.desligadoToolStripMenuItem.Size = new System.Drawing.Size(132, 38);
             this.desligadoToolStripMenuItem.Text = "Desligar";
             this.desligadoToolStripMenuItem.Click += new System.EventHandler(this.desligadoToolStripMenuItem_Click);
             // 

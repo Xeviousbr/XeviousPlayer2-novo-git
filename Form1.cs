@@ -713,9 +713,10 @@ namespace XeviousPlayer2
                     Console.WriteLine(e);
                 }
             this.TratarFinalDaMusica = false;
-
             myPlayer.Play(Musica);
-
+#if DEBUG
+            myPlayer.Audio.Volume = (float)0.01;
+#endif
             if (myPlayer.LastError)
                 MessageBox.Show(myPlayer.LastErrorString);
             else
@@ -750,12 +751,12 @@ namespace XeviousPlayer2
                     // Se tiver, colocar as informações 
                 } else
                 {
-                    MessageBox.Show("O programa ainda não esta adaptado para funcionar esse vídeo");
+                    // VIDEO
+                    panel1.Visible = true;
                 }
             }
             this.eToEnd = -1;
             this.TratarFinalDaMusica = true;
-
         }
 
         //private void PauseMedia()
@@ -1254,7 +1255,12 @@ namespace XeviousPlayer2
             if (this.listView.Items.Count>0)
             {
                 string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
-                float VolAnt = myPlayer.Audio.Volume;
+                float VolAnt = 0;
+#if DEBUG
+                VolAnt = (float)0.01;
+#else
+                VolAnt = myPlayer.Audio.Volume;
+#endif
                 this.Toca(Tocar);
                 myPlayer.Audio.Volume = VolAnt;
                 this.ColocaDadosMusica();
