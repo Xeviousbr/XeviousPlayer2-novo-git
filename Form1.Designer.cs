@@ -192,9 +192,9 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(18)))), ((int)(((byte)(18)))));
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Location = new System.Drawing.Point(15, 347);
+            this.panel1.Location = new System.Drawing.Point(16, 223);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(305, 181);
+            this.panel1.Size = new System.Drawing.Size(720, 305);
             this.panel1.TabIndex = 1;
             this.panel1.Visible = false;
             // 
@@ -221,7 +221,7 @@
             this.tsProg});
             this.toolStrip1.Location = new System.Drawing.Point(150, 562);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(595, 39);
+            this.toolStrip1.Size = new System.Drawing.Size(564, 39);
             this.toolStrip1.TabIndex = 13;
             this.toolStrip1.Text = "toolStrip1";
             // 
