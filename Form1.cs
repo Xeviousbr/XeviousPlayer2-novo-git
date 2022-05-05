@@ -721,39 +721,33 @@ namespace XeviousPlayer2
                 MessageBox.Show(myPlayer.LastErrorString);
             else
             {
-                if (!myPlayer.Has.Video)
+                metaData = myPlayer.Media.GetMetadata();
+                string Nome = "";
+                if (metaData.Title == null)
+                    Nome = Gen.RetNomePeloCaminho(Musica);
+                else
+                {
+                    Nome = metaData.Title;
+                    if (Nome.Length < 2)
+                        Nome = Gen.RetNomePeloCaminho(Musica);
+                }
+                lbMusica.Text = Gen.TrataNome(Nome, metaData.Artist);
+                lbArtista.Text = metaData.Artist;
+                lbAlbum.Text = metaData.Album;
+                lbGenero.Text = metaData.Genre;
+                lbAno.Text = metaData.Year;
+                lbLocal.Text = Musica;
+                lbBandaNome.Text = lbArtista.Text + " " + lbMusica.Text;
+                Status.Text = "Tocando " + Nome + " de " + metaData.Artist;
+                myOverlay.subtitlesLabel.Text = metaData.Artist + "\r\n" + Nome;
+                panel1.Visible = myPlayer.Has.Video;
+                if (!panel1.Visible)
                 {
                     panel1.Visible = false;
-                    metaData = myPlayer.Media.GetMetadata();
-                    panel1.BackgroundImageLayout = ImageLayout.Zoom;
                     if (metaData.Image != null)
                         picImg.Image = metaData.Image;
-                    string Nome = "";
-                    if (metaData.Title == null)
-                        Nome = Gen.RetNomePeloCaminho(Musica);
-                    else
-                    {
-                        Nome = metaData.Title;
-                        if (Nome.Length < 2)
-                            Nome = Gen.RetNomePeloCaminho(Musica);
-                    }
-                    lbMusica.Text = Gen.TrataNome(Nome, metaData.Artist);
-                    lbArtista.Text = metaData.Artist;
-                    lbAlbum.Text = metaData.Album;
-                    lbGenero.Text = metaData.Genre;
-                    lbAno.Text = metaData.Year;
-                    lbLocal.Text = Musica;
-                    lbBandaNome.Text = lbArtista.Text + " " + lbMusica.Text;
-                    Status.Text = "Tocando " + Nome + " de " + metaData.Artist;
-                    myOverlay.subtitlesLabel.Text = metaData.Artist + "\r\n" + Nome;
-
-                    // Pesquisar na base de dados, se tem a musica
-                    // Se tiver, colocar as informações 
-                } else
-                {
-                    // VIDEO
-                    panel1.Visible = true;
                 }
+                    
             }
             this.eToEnd = -1;
             this.TratarFinalDaMusica = true;
