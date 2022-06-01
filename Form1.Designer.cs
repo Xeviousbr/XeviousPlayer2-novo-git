@@ -197,6 +197,7 @@
             this.panel1.Size = new System.Drawing.Size(720, 305);
             this.panel1.TabIndex = 1;
             this.panel1.Visible = false;
+            this.panel1.DoubleClick += new System.EventHandler(this.panel1_DoubleClick);
             // 
             // toolStrip1
             // 

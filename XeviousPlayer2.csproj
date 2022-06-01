@@ -126,6 +126,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Full.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Full.Designer.cs">
+      <DependentUpon>Full.cs</DependentUpon>
+    </Compile>
     <Compile Include="Genericas.cs" />
     <Compile Include="OperacoesBD.cs" />
     <Compile Include="Overlay.cs">
@@ -159,6 +165,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Full.resx">
+      <DependentUpon>Full.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Overlay.resx">
       <DependentUpon>Overlay.cs</DependentUpon>

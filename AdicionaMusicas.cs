@@ -53,16 +53,17 @@ namespace XeviousPlayer2
             foreach (FileInfo Arq in dirInfo.GetFiles())
             {
                 if (Gen.OPENMEDIA_DIALOG_FILTER.Contains(Arq.Extension))
-                {
                     if (Arq.Length>0) 
                         leMusica(Arq);
-                }
                 this.Lidos++;
-                progressBar1.Value = Lidos;
-                //if (this.Lidos > 16)
-                //{
-                //    break;
-                //}
+                try
+                {
+                    progressBar1.Value = Lidos;
+                }
+                catch (Exception)
+                {
+                    // Não faz nada
+                }
             }
         }
 
@@ -72,9 +73,11 @@ namespace XeviousPlayer2
             myPlayer.Mute = true;
             myPlayer.Play(arq.FullName);
             Metadata data = myPlayer.Media.GetMetadata();
+            //myPlayer.Stop();
+            //myPlayer.Dispose();
+            Opbd.AdicionaNoBD(data, arq.Length, arq.FullName);
             myPlayer.Stop();
             myPlayer.Dispose();
-            Opbd.AdicionaNoBD(data, arq.Length, arq.FullName);
         }
 
         private void VeTotal(string sPath)

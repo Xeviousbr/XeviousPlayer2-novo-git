@@ -108,6 +108,7 @@ namespace XeviousPlayer2
         private bool TratarFinalDaMusica = true;
         private bool ProgLigada = false;
         private int ListaAtu = -1;
+        private string TocandoAgora = "";
 
         #region Main
 
@@ -117,7 +118,7 @@ namespace XeviousPlayer2
 
             myPlayer                = new Player();     // create a player
             myPlayer.Display.Window = panel1;           // and set its display to panel1
-            myPlayer.Repeat         = true;             // repeat media playback when finished
+            myPlayer.Repeat         = false;             // repeat media playback when finished
 
             myPlayer.SleepDisabled  = true;             // prevent the computer from entering sleep mode
 
@@ -635,7 +636,12 @@ namespace XeviousPlayer2
         {
             tbProg tbH = new tbProg();
             tbH.getProg();
-            this.ListaAtu = tbH.Lista;
+
+            // ATC
+            // SEMPRE 1 PQ NA IMPORTAÇÃO TO ZERANDO AS LISTAS
+            this.ListaAtu = 1;
+            // this.ListaAtu = tbH.Lista;
+
             setaLista(this.ListaAtu);
         }
 
@@ -714,6 +720,7 @@ namespace XeviousPlayer2
                 }
             this.TratarFinalDaMusica = false;
             myPlayer.Play(Musica);
+            this.TocandoAgora = Musica;
 #if DEBUG
             myPlayer.Audio.Volume = (float)0.01;
 #endif
@@ -741,7 +748,7 @@ namespace XeviousPlayer2
                 Status.Text = "Tocando " + Nome + " de " + metaData.Artist;
                 myOverlay.subtitlesLabel.Text = metaData.Artist + "\r\n" + Nome;
                 panel1.Visible = myPlayer.Has.Video;
-                if (!panel1.Visible)
+                if (!myPlayer.Has.Video)
                 {
                     panel1.Visible = false;
                     if (metaData.Image != null)
@@ -803,7 +810,14 @@ namespace XeviousPlayer2
                     {
                         this.ProxMusica();
                     }
-                }
+                    else
+                    {
+                        if (e.ToEnd == 0)
+                        {
+                            this.ProxMusica();
+                        }
+                    }
+                } 
                 this.eToEnd = e.ToEnd;
             }
         }
@@ -1232,7 +1246,12 @@ namespace XeviousPlayer2
                 if (this.ProgLigada == true)
                 {
                     tbProg tbH = new tbProg();
-                    tbH.getProg();
+
+                    // ATC
+                    // FIXO 1 POR CAUSA DA IMPORTAÇÃO DE LISTAS QUE TA ZERANDO
+                    // tbH.getProg();
+                    tbH.Lista = 1;
+
                     if (tbH.Lista!= this.ListaAtu)
                     {
                         this.ListaAtu = tbH.Lista;
@@ -1363,6 +1382,14 @@ namespace XeviousPlayer2
         private void tsProg_ButtonClick(object sender, EventArgs e)
         {
 
+        }
+
+        private void panel1_DoubleClick(object sender, EventArgs e)
+        {
+            int x = 0 ;
+            Full cFull = new Full();
+            cFull.Show();
+            cFull.Toca(this.TocandoAgora);
         }
     }
 }
