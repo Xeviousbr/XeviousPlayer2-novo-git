@@ -88,37 +88,42 @@ namespace XeviousPlayer2
 
         private static string RetiraLetras(string Texto, string letras, bool Finais = false)
         {
-            bool Sair = false;
-            bool Achou = false;
-            do
+            if (Texto.Length <2)            
+                return Texto;
+            else
             {
-                Achou = false;
-                for (int i = 0; i < letras.Length; i++)
+                bool Sair = false;
+                bool Achou = false;
+                do
                 {
-                    char Letra = letras[i];
-                    if (Finais == false)
+                    Achou = false;
+                    for (int i = 0; i < letras.Length; i++)
                     {
-                        // if (Texto[1]!=null)
-                        if (Texto!=null)
-                            if (Texto[1] == Letra)
+                        char Letra = letras[i];
+                        if (Finais == false)
+                        {
+                            // if (Texto[1]!=null)
+                            if (Texto != null)
+                                if (Texto[1] == Letra)
+                                {
+                                    Texto = Texto.Substring(2);
+                                    Achou = true;
+                                }
+                        }
+                        else
+                        {
+                            if (Texto[Texto.Length - 1] == Letra)
                             {
-                                Texto = Texto.Substring(2);
+                                Texto = Texto.Substring(0, Texto.Length - 1);
                                 Achou = true;
                             }
-                    }
-                    else
-                    {
-                        if (Texto[Texto.Length - 1] == Letra)
-                        {
-                            Texto = Texto.Substring(0, Texto.Length - 1);
-                            Achou = true;
                         }
                     }
-                }
-                if (Achou == false)
-                    Sair = true;
-            } while (Sair == false);
-            return Texto;
+                    if (Achou == false)
+                        Sair = true;
+                } while (Sair == false);
+                return Texto;
+            }
         }
 
     }

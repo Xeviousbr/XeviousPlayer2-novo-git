@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Data.Common;
 using XeviousPlayer2.tbs;
+using System.Diagnostics;
 
 namespace XeviousPlayer2
 {
@@ -102,13 +103,14 @@ namespace XeviousPlayer2
 
         // **** Main **********************************************************************************
 
-        private bool Tocando = false;
+        //private bool Tocando = false;
         private long eToEnd = -1;
         private int IndiceNaLista;
         private bool TratarFinalDaMusica = true;
         private bool ProgLigada = false;
         private int ListaAtu = -1;
         private string TocandoAgora = "";
+        private bool TemVideo = false;
 
         #region Main
 
@@ -748,7 +750,8 @@ namespace XeviousPlayer2
                 Status.Text = "Tocando " + Nome + " de " + metaData.Artist;
                 myOverlay.subtitlesLabel.Text = metaData.Artist + "\r\n" + Nome;
                 panel1.Visible = myPlayer.Has.Video;
-                if (!myPlayer.Has.Video)
+                this.TemVideo = myPlayer.Has.Video;
+                if (!this.TemVideo)
                 {
                     panel1.Visible = false;
                     if (metaData.Image != null)
@@ -793,31 +796,32 @@ namespace XeviousPlayer2
         // Display the elapsed and remaining playback time
         private void MyPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
         {
-            // all lengths are in 'ticks' - 10000 ticks = 1 millisecond - use TimeSpan.FromTicks:
-
             label1.Text = TimeSpan.FromTicks(e.FromStart).ToString().Substring(0, 8); // "hh:mm:ss"
             lbTempo.Text = label1.Text;
-                                                                                      //label2.Text = TimeSpan.FromTicks(e.ToStop).ToString().Substring(0, 8);    // "hh:mm:ss"
-
-            // from .NET 4.0 TimeSpan supports (custom) format strings e.g.
-            // label1.Text = TimeSpan.FromTicks(e.FromStart).ToString(@"hh\:mm\:ss"); // "hh:mm:ss"
-
             if (this.TratarFinalDaMusica==true)
             {
-                if (this.eToEnd > -1)
+                if (this.TemVideo)
                 {
-                    if (this.eToEnd < e.ToEnd)
-                    {
+                    if (e.ToStop < 1000000) {
                         this.ProxMusica();
                     }
-                    else
+                } else
+                { 
+                    if (this.eToEnd > -1)
                     {
-                        if (e.ToEnd == 0)
+                        if (this.eToEnd < e.ToEnd)
                         {
                             this.ProxMusica();
                         }
-                    }
-                } 
+                        else
+                        {
+                            if (e.ToEnd == 0)
+                            {
+                                this.ProxMusica();
+                            }
+                        }
+                    }                    
+                }
                 this.eToEnd = e.ToEnd;
             }
         }
@@ -1001,7 +1005,7 @@ namespace XeviousPlayer2
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
             PlayMedia();
-            Tocando = true;
+            //Tocando = true;
         }
 
         #endregion
