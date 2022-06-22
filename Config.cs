@@ -2,8 +2,6 @@
 using System.Data.SQLite;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Data;
-using System.Data.Common;
 
 namespace XeviousPlayer2
 {
@@ -15,24 +13,13 @@ namespace XeviousPlayer2
         {
             InitializeComponent();
             tbs.tbConfig Config = new tbs.tbConfig();
-            textBox1.Text = Config.PathBase;
-            cbSkin.SelectedIndex = Config.Skin;
-            vazio = false;
             //ColocaSkin(Config.Skin);
+            vazio = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                textBox1.Text = folderBrowserDialog1.SelectedPath;
-                button4.Enabled = true;
-            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -59,6 +46,7 @@ namespace XeviousPlayer2
 
         private void ColocaSkin(int Skin)
         {
+            if (Skin == 0) Skin = 1;
             using (var cmd = new SQLiteCommand(DalHelper.DbConnection()))
             {
                 cmd.CommandText = "Select * From Skin Where ID = " + Skin;
@@ -74,7 +62,6 @@ namespace XeviousPlayer2
                     this.BackColor = Color.FromArgb(thiBacA, thiBacB, thiBacC);
                     button1.BackColor = Color.FromArgb(lvA, lvB, lvC);
                     button2.BackColor = button1.BackColor;
-                    button3.BackColor = button1.BackColor;
                     button4.BackColor = button1.BackColor;
                     btPrograma.BackColor = button1.BackColor;
                 }
@@ -83,10 +70,9 @@ namespace XeviousPlayer2
 
         private void button4_Click(object sender, EventArgs e)
         {
-            Gen.PastaMp3 = textBox1.Text;
-            AdicionaMusicas fAdi = new AdicionaMusicas();
-            fAdi.ShowDialog();
-            fAdi.Dispose();
+            Importar fImp = new Importar();
+            fImp.ShowDialog();
+            fImp.Dispose();
             this.Close();
         }
 
@@ -98,10 +84,6 @@ namespace XeviousPlayer2
             this.Close();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            button4.Enabled = (textBox1.Text.Length > 4);
-        }
     }
 
 }
