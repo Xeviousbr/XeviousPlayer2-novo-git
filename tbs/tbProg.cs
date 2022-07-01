@@ -76,7 +76,6 @@ namespace XeviousPlayer2.tbs
                 }
             }
         }
-
         private bool Consulta(string SQL)
         {
             bool ret = false;
@@ -93,5 +92,22 @@ namespace XeviousPlayer2.tbs
             }
             return ret;
         }
+
+        public List<string> listas()
+        {
+            string SQL = "Select Nome From Listas Order By Nome";
+            List<string> ret = new List<string>();
+            SQLiteCommand command = new SQLiteCommand(SQL, DalHelper.sqliteConnection);
+            using (DbDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string Nome = reader.GetString(0);
+                    ret.Add(Nome);
+                }
+            }
+            return ret;
+        }
+
     }
 }

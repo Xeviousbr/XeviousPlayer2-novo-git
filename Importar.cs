@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
 
 namespace XeviousPlayer2
@@ -8,8 +10,6 @@ namespace XeviousPlayer2
         public Importar()
         {
             InitializeComponent();
-            tbs.tbConfig Config = new tbs.tbConfig();
-            textBox1.Text = Config.PathBase;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -35,5 +35,19 @@ namespace XeviousPlayer2
         {
             button4.Enabled = (textBox1.Text.Length > 4);
         }
+
+        private void Importar_Load(object sender, EventArgs e)
+        {
+            tbs.tbConfig Config = new tbs.tbConfig();
+            textBox1.Text = Config.PathBase;
+            tbs.tbProg cProg = new tbs.tbProg();
+            List<string> Listas = cProg.listas();
+            for (int i = 0; i < Listas.Count; i++)
+            {
+                cbListas.Items.Add(Listas[i]);
+            }
+        }
+
     }
 }
+

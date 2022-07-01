@@ -35,7 +35,7 @@ namespace XeviousPlayer2
             this.label1 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbListas = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // button4
@@ -61,7 +61,7 @@ namespace XeviousPlayer2
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 31);
+            this.textBox1.Location = new System.Drawing.Point(15, 31);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(274, 20);
             this.textBox1.TabIndex = 15;
@@ -85,13 +85,13 @@ namespace XeviousPlayer2
             this.label2.TabIndex = 18;
             this.label2.Text = "Lista";
             // 
-            // comboBox1
+            // cbListas
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(15, 70);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(271, 21);
-            this.comboBox1.TabIndex = 19;
+            this.cbListas.FormattingEnabled = true;
+            this.cbListas.Location = new System.Drawing.Point(15, 70);
+            this.cbListas.Name = "cbListas";
+            this.cbListas.Size = new System.Drawing.Size(271, 21);
+            this.cbListas.TabIndex = 19;
             // 
             // Importar
             // 
@@ -99,7 +99,7 @@ namespace XeviousPlayer2
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(379, 119);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbListas);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -112,6 +112,7 @@ namespace XeviousPlayer2
             this.Name = "Importar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Importar";
+            this.Load += new System.EventHandler(this.Importar_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,6 +126,6 @@ namespace XeviousPlayer2
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbListas;
     }
 }
