@@ -321,7 +321,6 @@ namespace XeviousPlayer2
                     string[] sPartesTag = Tague.Split('|');
                     EssaProg.IdProg = Convert.ToInt16(sPartesTag[2]);
                     progrs.Add(EssaProg);
-
                 }
             }
         }

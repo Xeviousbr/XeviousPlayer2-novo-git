@@ -17,6 +17,8 @@ namespace XeviousPlayer2
         private OperacoesBD Opbd;
         private int passo=0;
 
+        public int Lista { get; internal set; }
+
         public AdicionaMusicas()
         {
             InitializeComponent();

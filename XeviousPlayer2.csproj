@@ -161,6 +161,7 @@
     </Compile>
     <Compile Include="tbs\tbBanda.cs" />
     <Compile Include="tbs\tbConfig.cs" />
+    <Compile Include="tbs\tbListas.cs" />
     <Compile Include="tbs\tbProg.cs" />
     <Compile Include="tbs\tbMusicas.cs" />
     <EmbeddedResource Include="AdicionaMusicas.resx">

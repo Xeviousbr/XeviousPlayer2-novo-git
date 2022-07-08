@@ -15,7 +15,10 @@ namespace XeviousPlayer2
         private void button4_Click(object sender, EventArgs e)
         {
             Gen.PastaMp3 = textBox1.Text;
+            string SQL = "Select IdLista From Listas Where Nome = " + Gen.FA(cbListas.Text);
+            string ret = DalHelper.Consulta(SQL);
             AdicionaMusicas fAdi = new AdicionaMusicas();
+            fAdi.Lista = int.Parse(ret);
             fAdi.ShowDialog();
             fAdi.Dispose();
             this.Close();
