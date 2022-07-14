@@ -22,7 +22,6 @@ namespace XeviousPlayer2
             fAdi.ShowDialog();
             fAdi.Dispose();
             this.Close();
-
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -46,9 +45,8 @@ namespace XeviousPlayer2
             tbs.tbProg cProg = new tbs.tbProg();
             List<string> Listas = cProg.listas();
             for (int i = 0; i < Listas.Count; i++)
-            {
                 cbListas.Items.Add(Listas[i]);
-            }
+            cbListas.SelectedIndex = 0;
         }
 
     }

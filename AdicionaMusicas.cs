@@ -126,18 +126,20 @@ namespace XeviousPlayer2
             // Apaga a tabela de musicas a fim de testes
             // Na versão final deve ter uma opção para zerar a base de dados caso o usuário queira
             // mas a importação deve ser sempre incremental
-            DalHelper.ExecSql("Delete from Musicas");
-            DalHelper.ExecSql("Delete from Bandas");
-            DalHelper.ExecSql("Delete from LisMus");
-            DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Bandas' ");
-            DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Musicas' ");
-            DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'LisMus' ");
+            //DalHelper.ExecSql("Delete from Musicas");
+            //DalHelper.ExecSql("Delete from Bandas");
+            //DalHelper.ExecSql("Delete from LisMus");
+            //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Bandas' ");
+            //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Musicas' ");
+            //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'LisMus' ");
 
             string SQL = "Select Max(IDMusica) From Musicas";
             string ret = DalHelper.Consulta(SQL);
             int UltimoIDMusica = ret == "" ? 0 : int.Parse(ret);
-            BuscaMusicas(Gen.PastaMp3);
-            DalHelper.ExecSql("Insert Into LisMus (Lista, idMusica) Select 1 as Lista, IDMusica From Musicas Where IdMusica > " + UltimoIDMusica.ToString());
+            BuscaMusicas(Gen.PastaMp3);        
+
+            DalHelper.ExecSql("Insert Into LisMus (Lista, idMusica) Select " + Lista.ToString() +", IDMusica From Musicas Where IdMusica > " + UltimoIDMusica.ToString());
+
             Gen.Lista = -1;
             this.Close();
         }
