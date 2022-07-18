@@ -16,6 +16,7 @@ namespace XeviousPlayer2
         private int Lidos = 0;
         private OperacoesBD Opbd;
         private int passo=0;
+        public string PastaMp3 = "";
 
         public int Lista { get; internal set; }
 
@@ -119,10 +120,20 @@ namespace XeviousPlayer2
             passo++;
             Opbd = new OperacoesBD();
             label1.Text = "Contando Arquivos ";
-            VeTotal(Gen.PastaMp3);
+            VeTotal(PastaMp3);
             label1.Text = "Quantidade localizada : " + Quant.ToString();
             progressBar1.Maximum = Quant;
+            string SQL = "Select Max(IDMusica) From Musicas";
+            string ret = DalHelper.Consulta(SQL);
+            int UltimoIDMusica = ret == "" ? 0 : int.Parse(ret);
+            BuscaMusicas(PastaMp3);
+            DalHelper.ExecSql("Insert Into LisMus (Lista, idMusica) Select " + Lista.ToString() +", IDMusica From Musicas Where IdMusica > " + UltimoIDMusica.ToString());
+            Gen.Lista = Lista;
+            this.Close();
+        }
 
+        private void ZeraDB()
+        {
             // Apaga a tabela de musicas a fim de testes
             // Na versão final deve ter uma opção para zerar a base de dados caso o usuário queira
             // mas a importação deve ser sempre incremental
@@ -133,15 +144,6 @@ namespace XeviousPlayer2
             //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Musicas' ");
             //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'LisMus' ");
 
-            string SQL = "Select Max(IDMusica) From Musicas";
-            string ret = DalHelper.Consulta(SQL);
-            int UltimoIDMusica = ret == "" ? 0 : int.Parse(ret);
-            BuscaMusicas(Gen.PastaMp3);        
-
-            DalHelper.ExecSql("Insert Into LisMus (Lista, idMusica) Select " + Lista.ToString() +", IDMusica From Musicas Where IdMusica > " + UltimoIDMusica.ToString());
-
-            Gen.Lista = -1;
-            this.Close();
         }
 
         private void AdicionaMusicas_Shown(object sender, EventArgs e)

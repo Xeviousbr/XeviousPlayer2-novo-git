@@ -10,6 +10,10 @@ using System.Data.Common;
 using XeviousPlayer2.tbs;
 using System.Diagnostics;
 
+// Provavelmente não de pra pegar informações de visualização das musicas
+// Então pelo FFMpeg deve dar
+// https://www.codeproject.com/Articles/5337264/NET-Wrapper-of-FFmpeg-libraries
+
 namespace XeviousPlayer2
 {
     public partial class Form1 : Form

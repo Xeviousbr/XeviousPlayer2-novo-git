@@ -31,11 +31,12 @@ namespace XeviousPlayer2
         {
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txPasta = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.label2 = new System.Windows.Forms.Label();
             this.cbListas = new System.Windows.Forms.ComboBox();
+            this.txNovo = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button4
@@ -59,13 +60,13 @@ namespace XeviousPlayer2
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // textBox1
+            // txPasta
             // 
-            this.textBox1.Location = new System.Drawing.Point(15, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(274, 20);
-            this.textBox1.TabIndex = 15;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.txPasta.Location = new System.Drawing.Point(15, 31);
+            this.txPasta.Name = "txPasta";
+            this.txPasta.Size = new System.Drawing.Size(274, 20);
+            this.txPasta.TabIndex = 15;
+            this.txPasta.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -90,21 +91,31 @@ namespace XeviousPlayer2
             this.cbListas.FormattingEnabled = true;
             this.cbListas.Location = new System.Drawing.Point(15, 70);
             this.cbListas.Name = "cbListas";
-            this.cbListas.Size = new System.Drawing.Size(271, 21);
+            this.cbListas.Size = new System.Drawing.Size(274, 21);
             this.cbListas.TabIndex = 19;
+            this.cbListas.SelectedIndexChanged += new System.EventHandler(this.cbListas_SelectedIndexChanged);
+            // 
+            // txNovo
+            // 
+            this.txNovo.Location = new System.Drawing.Point(15, 71);
+            this.txNovo.Name = "txNovo";
+            this.txNovo.Size = new System.Drawing.Size(274, 20);
+            this.txNovo.TabIndex = 20;
+            this.txNovo.Visible = false;
             // 
             // Importar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(48)))), ((int)(((byte)(48)))));
-            this.ClientSize = new System.Drawing.Size(379, 119);
+            this.ClientSize = new System.Drawing.Size(379, 104);
             this.Controls.Add(this.cbListas);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txPasta);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.txNovo);
             this.ForeColor = System.Drawing.SystemColors.GrayText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -122,10 +133,11 @@ namespace XeviousPlayer2
 
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txPasta;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cbListas;
+        private System.Windows.Forms.TextBox txNovo;
     }
 }
