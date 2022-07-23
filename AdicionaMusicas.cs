@@ -132,20 +132,6 @@ namespace XeviousPlayer2
             this.Close();
         }
 
-        private void ZeraDB()
-        {
-            // Apaga a tabela de musicas a fim de testes
-            // Na versão final deve ter uma opção para zerar a base de dados caso o usuário queira
-            // mas a importação deve ser sempre incremental
-            //DalHelper.ExecSql("Delete from Musicas");
-            //DalHelper.ExecSql("Delete from Bandas");
-            //DalHelper.ExecSql("Delete from LisMus");
-            //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Bandas' ");
-            //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Musicas' ");
-            //DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'LisMus' ");
-
-        }
-
         private void AdicionaMusicas_Shown(object sender, EventArgs e)
         {
             timer1.Enabled = true;

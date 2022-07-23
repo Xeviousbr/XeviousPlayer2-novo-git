@@ -18,6 +18,13 @@ namespace XeviousPlayer2
         private void button4_Click(object sender, EventArgs e)
         {
             int NrLista = 0;
+            if (chZerar.Checked)
+                if (MessageBox.Show(this, "Tem certeza que quer zerar a base de dados.", "Help Caption", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)== DialogResult.Yes)
+                {
+                    ZeraDB();
+                    NrLista = 1;
+                } else
+                    return;              
             if (txNovo.Visible)
             {
                 tbListas cLista = new tbListas();
@@ -38,6 +45,18 @@ namespace XeviousPlayer2
             fAdi.Dispose();
             this.Close();
         }
+
+        private void ZeraDB()
+        {
+            DalHelper.ExecSql("Delete from Musicas");
+            DalHelper.ExecSql("Delete from Bandas");
+            DalHelper.ExecSql("Delete from LisMus");
+            DalHelper.ExecSql("Delete from Lista Where IdLista > 1");
+            DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Bandas' ");
+            DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Musicas' ");
+            DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'LisMus' ");
+        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
