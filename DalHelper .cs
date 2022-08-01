@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 // http://www.macoratti.net/17/04/cshp_sqlite1.htm

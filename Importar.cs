@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using XeviousPlayer2.tbs;
 
@@ -51,7 +50,7 @@ namespace XeviousPlayer2
             DalHelper.ExecSql("Delete from Musicas");
             DalHelper.ExecSql("Delete from Bandas");
             DalHelper.ExecSql("Delete from LisMus");
-            DalHelper.ExecSql("Delete from Lista Where IdLista > 1");
+            DalHelper.ExecSql("Delete from Listas Where IdLista > 1");
             DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Bandas' ");
             DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'Musicas' ");
             DalHelper.ExecSql("Update sqlite_sequence Set seq = 0 Where name = 'LisMus' ");

@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Data.Common;
 using XeviousPlayer2.tbs;
-using System.Diagnostics;
 
 // Provavelmente não de pra pegar informações de visualização das musicas
 // Então pelo FFMpeg deve dar
@@ -120,14 +119,17 @@ namespace XeviousPlayer2
 
         public Form1()
         {
-            InitializeComponent();                      // this call is required by the designer
+            Gen.Loga("InitializeComponent");
+            InitializeComponent();                      // this call is required by the designer            
 
+            Gen.Loga("new Player()");
             myPlayer                = new Player();     // create a player
             myPlayer.Display.Window = panel1;           // and set its display to panel1
             myPlayer.Repeat         = false;             // repeat media playback when finished
 
             myPlayer.SleepDisabled  = true;             // prevent the computer from entering sleep mode
 
+            Gen.Loga("new OpenFileDialog()");
             myOpenFileDlg = new OpenFileDialog()        // create a file selector
             {
                 Title       = "Play Media",
@@ -213,6 +215,7 @@ namespace XeviousPlayer2
             // A display overlay is a form that allows you to display items on top of a movie.
             // The sample overlay 'Overlay' is created with the Visual Studio designer.
 
+            Gen.Loga("new Overlay(myPlayer)");
             myOverlay = new Overlay(myPlayer);     // create (an instance of) the overlay
             myPlayer.Overlay.Window = myOverlay;   // and attach it to the player
 
@@ -623,17 +626,25 @@ namespace XeviousPlayer2
 
             //Toca(@"H:\Temp\Mp3Novos\Ave Maria  Aria Vol 2  Cafe del Mar.mp3");
             string[] arguments = Environment.GetCommandLineArgs();
-            if (arguments.Length > 1)
+            if (arguments.Length > 1) { 
+                Gen.Loga("Musica arguments[1].ToString()");
                 Toca(arguments[1].ToString());
+            }
             else
             {
+                Gen.Loga("new tbConfig()");
                 tbConfig Config = new tbConfig();
+                Gen.Loga("Config.Carrega()");
                 Config.Carrega();
                 this.ProgLigada = Config.Progr;
                 if (this.ProgLigada)
                 {
+                    Gen.Loga("ProgLigada");
                     tsProg.Image = ligadoToolStripMenuItem.Image;
                     VePrograma();
+                } else
+                {
+                    Gen.Loga("Prog Não Ligada");
                 }
             }
         }

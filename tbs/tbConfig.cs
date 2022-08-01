@@ -17,17 +17,24 @@ namespace XeviousPlayer2.tbs
 
         public void Carrega ()
         {
-            string SQL = "Select PathBase, Skin, Progr From Config";
-            using (var cmd = new SQLiteCommand(DalHelper.DbConnection()))
+            try
             {
-                cmd.CommandText = SQL;
-                using (SQLiteDataReader reg = cmd.ExecuteReader())
+                string SQL = "Select PathBase, Skin, Progr From Config";
+                using (var cmd = new SQLiteCommand(DalHelper.DbConnection()))
                 {
-                    reg.Read();
-                    this.PathBase = reg["PathBase"].ToString();
-                    this.Skin = int.Parse(reg["Skin"].ToString());
-                    this.Progr = (reg["Progr"].ToString() == "1");
+                    cmd.CommandText = SQL;
+                    using (SQLiteDataReader reg = cmd.ExecuteReader())
+                    {
+                        reg.Read();
+                        this.PathBase = reg["PathBase"].ToString();
+                        this.Skin = int.Parse(reg["Skin"].ToString());
+                        this.Progr = (reg["Progr"].ToString() == "1");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Gen.Loga(ex.Message);
             }
         }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Windows.Forms;
 
 namespace XeviousPlayer2
 {
@@ -124,6 +126,21 @@ namespace XeviousPlayer2
                 } while (Sair == false);
                 return Texto;
             }
+        }
+
+        private static string NomeLog = "";
+        public static void Loga(string texto)
+        {
+            if (NomeLog.Length==0)
+            {
+                string Pasta = Application.StartupPath + @"\Log";
+                if (Directory.Exists(Pasta) == false)
+                    Directory.CreateDirectory(Pasta);
+                string sData = DateTime.Now.ToShortDateString().Replace("/", "-");
+                NomeLog = Pasta + @"\XeviousPlayer2" + sData + ".Log";
+            }
+            Console.WriteLine(texto);
+            File.AppendAllText(NomeLog, DateTime.Now.ToString() + " " + texto + Environment.NewLine);
         }
 
     }
