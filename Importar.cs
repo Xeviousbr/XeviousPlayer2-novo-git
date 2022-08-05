@@ -20,7 +20,7 @@ namespace XeviousPlayer2
             if (chZerar.Checked)
                 if (MessageBox.Show(this, "Tem certeza que quer zerar a base de dados.", "Help Caption", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)== DialogResult.Yes)
                 {
-                    ZeraDB();
+                    ZeraDB();                    
                     NrLista = 1;
                 } else
                     return;              
@@ -42,6 +42,8 @@ namespace XeviousPlayer2
             fAdi.PastaMp3 = txPasta.Text;
             fAdi.ShowDialog();
             fAdi.Dispose();
+            if (chZerar.Checked)
+                Gen.Lista = -1;
             this.Close();
         }
 

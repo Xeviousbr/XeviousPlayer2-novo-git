@@ -82,9 +82,14 @@ namespace XeviousPlayer2
                 this.ID = int.Parse(ret);
             else
             {
-                tbBanda tbB = new tbBanda();
-                tbB.Nome = this.NomeBanda;
-                this.ID = tbB.Adiciona();
+                if (this.NomeBanda == null)
+                    this.ID = 0;
+                else
+                {
+                    tbBanda tbB = new tbBanda();
+                    tbB.Nome = this.NomeBanda;
+                    this.ID = tbB.Adiciona();
+                }                    
             }
             return this.ID; 
         }
