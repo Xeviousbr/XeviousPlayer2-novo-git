@@ -56,24 +56,30 @@ namespace XeviousPlayer2
         public int SetaBanda(string bandaTemp)
         {
             bool MusValida = true;
-            if (bandaTemp.Length < 3) MusValida = false;
-            if (bandaTemp == "Mp3") MusValida = false;
+            if (bandaTemp == null)
+                MusValida = false;
+            else
+            {
+                if (bandaTemp.Length < 3) MusValida = false;
+                if (bandaTemp == "Mp3") MusValida = false;
+            }            
             if (MusValida == false)
             {
                 int PosHifen = Nome.IndexOf('-');
                 if (PosHifen > -1) 
                 {
                     int PosUltHifen = Nome.LastIndexOf('-');
-                    if (PosUltHifen!= PosHifen)
-                        this.NomeBanda = Nome.Substring(PosUltHifen+2);
+                    if (PosUltHifen != PosHifen)
+                        if ((PosUltHifen + 2) > Nome.Length)
+                            this.NomeBanda = Nome.Substring(0, PosHifen - 1);
+                        else
+                            this.NomeBanda = Nome.Substring(PosUltHifen + 2);
                     else
-                        this.NomeBanda = Nome.Substring(PosHifen+2);
+                        this.NomeBanda = Nome.Substring(PosHifen + 2);
                     
                 } 
             } else
-            {
                 this.NomeBanda = bandaTemp;
-            }
 
             // Procurar pela banda
             string SQL = "Select IDBanda From Bandas Where NomeBanda = '" + this.NomeBanda + "'";
