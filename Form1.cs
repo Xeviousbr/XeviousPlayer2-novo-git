@@ -1116,10 +1116,12 @@ namespace XeviousPlayer2
             // Configurações
             Config cConfig = new Config();
             cConfig.ShowDialog();
-            if (Gen.Lista==-1)
+
+            setaLista(Gen.Lista);
+            /* if (Gen.Lista==-1)
             {
                 setaLista(1);
-            }
+            } */
         }
 
         #endregion
