@@ -103,23 +103,19 @@ namespace XeviousPlayer2
                     {
                         char Letra = letras[i];
                         if (Finais == false)
-                        {
-                            // if (Texto[1]!=null)
                             if (Texto != null)
-                                if (Texto[1] == Letra)
-                                {
-                                    Texto = Texto.Substring(2);
-                                    Achou = true;
-                                }
-                        }
+                                if (Texto.Length>1)
+                                    if (Texto[1] == Letra)
+                                    {
+                                        Texto = Texto.Substring(2);
+                                        Achou = true;
+                                    }
                         else
-                        {
                             if (Texto[Texto.Length - 1] == Letra)
                             {
                                 Texto = Texto.Substring(0, Texto.Length - 1);
                                 Achou = true;
                             }
-                        }
                     }
                     if (Achou == false)
                         Sair = true;

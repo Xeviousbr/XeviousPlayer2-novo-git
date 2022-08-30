@@ -79,28 +79,28 @@ namespace XeviousPlayer2
 
         #region Class Fields
 
-        private Player          myPlayer;
-        private Overlay         myOverlay;          // in file 'Overlay.cs'
+        private Player myPlayer;
+        private Overlay myOverlay;          // in file 'Overlay.cs'
 
-        private int             shapeStatus;        // shapes - 0:none, 1:oval, 2:none, 3:rounded, 4:none, 5:star
+        private int shapeStatus;        // shapes - 0:none, 1:oval, 2:none, 3:rounded, 4:none, 5:star
 
-        private InfoLabel       myInfoLabel;
-        private StringBuilder   myInfoLabelText     = new StringBuilder(64);
+        private InfoLabel myInfoLabel;
+        private StringBuilder myInfoLabelText = new StringBuilder(64);
 
         // used with drawing audio output levels
         // levelUnit is the size of 1 unit (of 32767) and 140 is the width of panel4 and panel5
-        private double          levelUnit           = 140; // size of panel
-        private int             leftLevel;
-        private int             rightLevel;
-        private Brush           levelBrush          = new HatchBrush(HatchStyle.LightVertical, Color.FromArgb(179,173,146));
+        private double levelUnit = 140; // size of panel
+        private int leftLevel;
+        private int rightLevel;
+        private Brush levelBrush = new HatchBrush(HatchStyle.LightVertical, Color.FromArgb(179, 173, 146));
 
-        private Metadata        metaData;           // media metadata properties
-        private OpenFileDialog  myOpenFileDlg;      // used with selection of media to play
+        private Metadata metaData;           // media metadata properties
+        private OpenFileDialog myOpenFileDlg;      // used with selection of media to play
         /* private const string    OPENMEDIA_DIALOG_FILTER =
             " Media Files (*.*)|*.3g2; *.3gp; *.3gp2; *.3gpp; *.aac; *.adts; *.asf; *.avi; *.m4a; *.m4v; *.mkv; *.mov; *.mp3; *.mp4; *.mpeg; *.mpg; *.sami; *.smi; *.wav; *.webm; *.wma; *.wmv|" +
             " All Files|*.*"; */
 
-        private bool            isDisposed;         // used with cleaning up
+        private bool isDisposed;         // used with cleaning up
 
         #endregion
 
@@ -111,9 +111,23 @@ namespace XeviousPlayer2
         private int IndiceNaLista;
         private bool TratarFinalDaMusica = true;
         private bool ProgLigada = false;
-        private int ListaAtu = -1;
+        // private int ListaAtu = -1;
         private string TocandoAgora = "";
         private bool TemVideo = false;
+
+        private int _ListaAtu = -1;
+        public int ListaAtu
+        {
+            get { return _ListaAtu; }
+            set { 
+                if (value!= _ListaAtu)
+                {
+                    _ListaAtu = value;
+                    tbConfig Config = new tbConfig();
+                    Config.SetaUltLista(value);
+                }                
+            }
+        }
 
         #region Main
 
@@ -646,6 +660,11 @@ namespace XeviousPlayer2
                 {
                     Gen.Loga("Prog Não Ligada");
                 }
+                if (Config.UltLista > 0)
+                {
+                    this._ListaAtu = Config.UltLista;
+                    setaLista(this.ListaAtu);
+                }
             }
         }
 
@@ -656,10 +675,14 @@ namespace XeviousPlayer2
 
             // ATC
             // SEMPRE 1 PQ NA IMPORTAÇÃO TO ZERANDO AS LISTAS
-            this.ListaAtu = 1;
-            // this.ListaAtu = tbH.Lista;
+            // this.ListaAtu = 1;
 
-            setaLista(this.ListaAtu);
+            if (tbH.Lista > 0)
+            {
+                this.ListaAtu = tbH.Lista;
+                setaLista(this.ListaAtu);
+            } 
+            
         }
 
         // Show display overlay at start up
@@ -1113,15 +1136,11 @@ namespace XeviousPlayer2
 
         private void toolStripButton22_Click(object sender, EventArgs e)
         {
-            // Configurações
             Config cConfig = new Config();
             cConfig.ShowDialog();
-
             setaLista(Gen.Lista);
-            /* if (Gen.Lista==-1)
-            {
-                setaLista(1);
-            } */
+            tbConfig tConfig = new tbConfig();
+            tConfig.SetaUltLista(Gen.Lista);
         }
 
         #endregion
@@ -1267,18 +1286,14 @@ namespace XeviousPlayer2
                 if (this.ProgLigada == true)
                 {
                     tbProg tbH = new tbProg();
-
-                    // ATC
-                    // FIXO 1 POR CAUSA DA IMPORTAÇÃO DE LISTAS QUE TA ZERANDO
-                    // tbH.getProg();
-                    tbH.Lista = 1;
-
-                    if (tbH.Lista!= this.ListaAtu)
-                    {
-                        this.ListaAtu = tbH.Lista;
-                        setaLista(this.ListaAtu);
-                        return;
-                    }
+                    tbH.getProg();
+                    if (tbH.Lista>0)
+                        if (tbH.Lista != this.ListaAtu)
+                        {
+                            this.ListaAtu = tbH.Lista;
+                            setaLista(this.ListaAtu);
+                            return;
+                        }
                 }
             if (this.IndiceNaLista > -1)
             {

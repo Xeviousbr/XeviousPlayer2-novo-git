@@ -15,11 +15,13 @@ namespace XeviousPlayer2.tbs
 
         public bool Progr { get; set; }
 
+        public int UltLista { get; set; }
+
         public void Carrega ()
         {
             try
             {
-                string SQL = "Select PathBase, Skin, Progr From Config";
+                string SQL = "Select PathBase, Skin, Progr, UltLista From Config";
                 using (var cmd = new SQLiteCommand(DalHelper.DbConnection()))
                 {
                     cmd.CommandText = SQL;
@@ -29,6 +31,7 @@ namespace XeviousPlayer2.tbs
                         this.PathBase = reg["PathBase"].ToString();
                         this.Skin = int.Parse(reg["Skin"].ToString());
                         this.Progr = (reg["Progr"].ToString() == "1");
+                        this.UltLista = int.Parse(reg["UltLista"].ToString());
                     }
                 }
             }
@@ -43,6 +46,12 @@ namespace XeviousPlayer2.tbs
             string sProgr = "0";
             if (this.Progr == true) sProgr = "1";
             DalHelper.ExecSql("Update Config set Progr = " + sProgr);
+        }
+
+        public void SetaUltLista(int iUltLista)
+        {
+            DalHelper.ExecSql("Update Config set UltLista = " + iUltLista.ToString());
+            this.UltLista = iUltLista;
         }
     }
 }

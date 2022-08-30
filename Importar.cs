@@ -75,7 +75,7 @@ namespace XeviousPlayer2
 
         private void Importar_Load(object sender, EventArgs e)
         {
-            tbs.tbConfig Config = new tbs.tbConfig();
+            tbs.tbConfig Config = new tbConfig();
             txPasta.Text = Config.PathBase;
             tbs.tbProg cProg = new tbs.tbProg();
             List<string> Listas = cProg.listas();
