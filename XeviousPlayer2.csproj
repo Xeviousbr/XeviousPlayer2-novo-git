@@ -152,6 +152,12 @@
     <Compile Include="Importar.Designer.cs">
       <DependentUpon>Importar.cs</DependentUpon>
     </Compile>
+    <Compile Include="Listas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listas.Designer.cs">
+      <DependentUpon>Listas.cs</DependentUpon>
+    </Compile>
     <Compile Include="OperacoesBD.cs" />
     <Compile Include="Overlay.cs">
       <SubType>Form</SubType>
@@ -191,6 +197,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Importar.resx">
       <DependentUpon>Importar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listas.resx">
+      <DependentUpon>Listas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Overlay.resx">
       <DependentUpon>Overlay.cs</DependentUpon>

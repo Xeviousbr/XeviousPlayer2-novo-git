@@ -111,11 +111,12 @@ namespace XeviousPlayer2
         private int IndiceNaLista;
         private bool TratarFinalDaMusica = true;
         private bool ProgLigada = false;
-        // private int ListaAtu = -1;
         private string TocandoAgora = "";
         private bool TemVideo = false;
-
         private int _ListaAtu = -1;
+
+        private bool Fechando = false;
+
         public int ListaAtu
         {
             get { return _ListaAtu; }
@@ -646,9 +647,7 @@ namespace XeviousPlayer2
             }
             else
             {
-                Gen.Loga("new tbConfig()");
                 tbConfig Config = new tbConfig();
-                Gen.Loga("Config.Carrega()");
                 Config.Carrega();
                 this.ProgLigada = Config.Progr;
                 if (this.ProgLigada)
@@ -657,9 +656,7 @@ namespace XeviousPlayer2
                     tsProg.Image = ligadoToolStripMenuItem.Image;
                     VePrograma();
                 } else
-                {
                     Gen.Loga("Prog Não Ligada");
-                }
                 if (Config.UltLista > 0)
                 {
                     this._ListaAtu = Config.UltLista;
@@ -834,33 +831,39 @@ namespace XeviousPlayer2
         // Display the elapsed and remaining playback time
         private void MyPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
         {
-            label1.Text = TimeSpan.FromTicks(e.FromStart).ToString().Substring(0, 8); // "hh:mm:ss"
-            lbTempo.Text = label1.Text;
-            if (this.TratarFinalDaMusica==true)
+            if (Fechando==false)
             {
-                if (this.TemVideo)
+                label1.Text = TimeSpan.FromTicks(e.FromStart).ToString().Substring(0, 8); // "hh:mm:ss"
+                lbTempo.Text = label1.Text;
+                if (this.TratarFinalDaMusica == true)
                 {
-                    if (e.ToStop < 1000000) {
-                        this.ProxMusica();
-                    }
-                } else
-                { 
-                    if (this.eToEnd > -1)
+                    if (this.TemVideo)
                     {
-                        if (this.eToEnd < e.ToEnd)
+                        if (e.ToStop < 1000000)
                         {
                             this.ProxMusica();
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (this.eToEnd > -1)
                         {
-                            if (e.ToEnd == 0)
+                            if (this.eToEnd < e.ToEnd)
                             {
                                 this.ProxMusica();
                             }
+                            else
+                            {
+                                if (e.ToEnd == 0)
+                                {
+                                    this.ProxMusica();
+                                }
+                            }
                         }
-                    }                    
+                    }
+                    this.eToEnd = e.ToEnd;
                 }
-                this.eToEnd = e.ToEnd;
+
             }
         }
 
@@ -1426,6 +1429,17 @@ namespace XeviousPlayer2
             Full cFull = new Full();
             cFull.Show();
             cFull.Toca(this.TocandoAgora);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Fechando = true;
+        }
+
+        private void toolStripButton11_Click(object sender, EventArgs e)
+        {
+            Listas cListas = new Listas();
+            cListas.Show();
         }
     }
 }
