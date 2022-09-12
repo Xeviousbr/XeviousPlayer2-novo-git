@@ -29,17 +29,19 @@ namespace XeviousPlayer2
         /// </summary>
         private void InitializeComponent()
         {
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.lsLista = new System.Windows.Forms.ListBox();
             this.btAcionar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // listBox1
+            // lsLista
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(12, 12);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(270, 589);
-            this.listBox1.TabIndex = 0;
+            this.lsLista.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lsLista.FormattingEnabled = true;
+            this.lsLista.ItemHeight = 25;
+            this.lsLista.Location = new System.Drawing.Point(12, 12);
+            this.lsLista.Name = "lsLista";
+            this.lsLista.Size = new System.Drawing.Size(270, 579);
+            this.lsLista.TabIndex = 0;
             // 
             // btAcionar
             // 
@@ -56,17 +58,19 @@ namespace XeviousPlayer2
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(296, 651);
             this.Controls.Add(this.btAcionar);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.lsLista);
+            this.MaximizeBox = false;
             this.Name = "Listas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lista";
+            this.Load += new System.EventHandler(this.Listas_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox lsLista;
         private System.Windows.Forms.Button btAcionar;
     }
 }
