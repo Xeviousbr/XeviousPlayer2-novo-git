@@ -1439,7 +1439,20 @@ namespace XeviousPlayer2
         private void toolStripButton11_Click(object sender, EventArgs e)
         {
             Listas cListas = new Listas();
-            cListas.Show();
+            cListas.ShowDialog();
+            if (cListas.DialogResult== DialogResult.OK)
+            {
+                string nmLista = cListas.nmLista;
+                string sql = "Select IdLista From Listas Where Nome = '" + nmLista + "'";
+                string ret = DalHelper.Consulta(sql);
+                int ID = int.Parse(ret);
+                setaLista(ID);
+            }
+        }
+
+        private void setaLista(object lista)
+        {
+            throw new NotImplementedException();
         }
     }
 }

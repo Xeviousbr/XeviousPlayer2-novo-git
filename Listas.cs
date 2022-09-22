@@ -16,15 +16,24 @@ namespace XeviousPlayer2
             InitializeComponent();
         }
 
+        public string nmLista { get; internal set; }        
+
         private void Listas_Load(object sender, EventArgs e)
         {
             tbs.tbProg cProg = new tbs.tbProg();
             List<string> Listas = cProg.listas();
             for (int i = 0; i < Listas.Count; i++)
                 lsLista.Items.Add(Listas[i]);                    
-                    /* .Items.Add(Listas[i]);
-            cbListas.Items.Add(NovaLista);
-            cbListas.SelectedIndex = 0; */
+        }
+
+        private void btAcionar_Click(object sender, EventArgs e)
+        {
+            nmLista = lsLista.SelectedItems[0].ToString();
+        }
+
+        private void lsLista_DoubleClick(object sender, EventArgs e)
+        {
+            nmLista = lsLista.SelectedItems[0].ToString();
         }
     }
 }

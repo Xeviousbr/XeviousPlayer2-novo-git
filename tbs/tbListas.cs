@@ -30,5 +30,18 @@ namespace XeviousPlayer2.tbs
                 throw ex;
             }            
         }
+
+        /* public int IdPeloNome(string Nome)
+        {
+            using (var cmd = DalHelper.DbConnection().CreateCommand())
+            {
+                string sql = "Select IdLista From Listas Where Nome = '" + Nome + "'";
+                string ret = DalHelper.Consulta(SQL);
+                int ID = int.Parse(ret);
+                return ID;
+            }
+
+            return 0;
+        } */
     }
 }
