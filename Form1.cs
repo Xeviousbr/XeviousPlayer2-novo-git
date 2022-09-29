@@ -1298,24 +1298,32 @@ namespace XeviousPlayer2
                             return;
                         }
                 }
-            if (this.IndiceNaLista > -1)
+            bool Sair = false;
+            while (Sair==false)
             {
-                this.listView.Items[this.IndiceNaLista].Focused = false;
-                this.listView.Items[this.IndiceNaLista].Selected = false;
-            }
-            this.IndiceNaLista++;
-            if (this.listView.Items.Count>0)
-            {
-                string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
-                float VolAnt = 0;
+                if (this.IndiceNaLista > -1)
+                {
+                    this.listView.Items[this.IndiceNaLista].Focused = false;
+                    this.listView.Items[this.IndiceNaLista].Selected = false;
+                }
+                this.IndiceNaLista++;
+                if (this.listView.Items.Count > 0)
+                {
+                    string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
+                    float VolAnt = 0;
+                    if (System.IO.File.Exists(Tocar))
+                    {
 #if DEBUG
-                VolAnt = (float)0.01;
+                        VolAnt = (float)0.01;
 #else
                 VolAnt = myPlayer.Audio.Volume;
 #endif
-                this.Toca(Tocar);
-                myPlayer.Audio.Volume = VolAnt;
-                this.ColocaDadosMusica();
+                        this.Toca(Tocar);
+                        myPlayer.Audio.Volume = VolAnt;
+                        this.ColocaDadosMusica();
+                        Sair = true;
+                    } 
+                }
             }
         }
 
