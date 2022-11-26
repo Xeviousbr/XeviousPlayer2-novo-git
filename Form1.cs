@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.Data.Common;
 using XeviousPlayer2.tbs;
+using System.Drawing.Imaging;
 
 // Provavelmente não de pra pegar informações de visualização das musicas
 // Então pelo FFMpeg deve dar
@@ -102,6 +103,8 @@ namespace XeviousPlayer2
 
         private bool isDisposed;         // used with cleaning up
 
+        private string NomeLista = "";
+
         #endregion
 
         // **** Main **********************************************************************************
@@ -114,6 +117,7 @@ namespace XeviousPlayer2
         private string TocandoAgora = "";
         private bool TemVideo = false;
         private int _ListaAtu = -1;
+        private string Lista = "";
 
         private bool Fechando = false;
 
@@ -677,6 +681,7 @@ namespace XeviousPlayer2
             if (tbH.Lista > 0)
             {
                 this.ListaAtu = tbH.Lista;
+                this.Lista = tbH.getnmLista();
                 setaLista(this.ListaAtu);
             } 
             
@@ -781,8 +786,7 @@ namespace XeviousPlayer2
                 lbGenero.Text = metaData.Genre;
                 lbAno.Text = metaData.Year;
                 lbLocal.Text = Musica;
-                lbBandaNome.Text = lbArtista.Text + " " + lbMusica.Text;
-                Status.Text = "Tocando " + Nome + " de " + metaData.Artist;
+                lbBandaNome.Text = lbArtista.Text + " " + lbMusica.Text;                
                 myOverlay.subtitlesLabel.Text = metaData.Artist + "\r\n" + Nome;
                 panel1.Visible = myPlayer.Has.Video;
                 this.TemVideo = myPlayer.Has.Video;
@@ -790,9 +794,19 @@ namespace XeviousPlayer2
                 {
                     panel1.Visible = false;
                     if (metaData.Image != null)
-                        picImg.Image = metaData.Image;
+                    {
+                        // NÃO TA CARREGANDO A IMAGEM
+                        string ArqImg = Application.StartupPath + @"\img.bmp";
+                        metaData.Image.Save(ArqImg, ImageFormat.Bmp);
+                        picImg.Load(ArqImg);
+                        picImg.Visible = true;
+                        picImg.Refresh();
+                    }                        
                 }
-                    
+                string sStatus = "Tocando " + Nome + " de " + metaData.Artist;
+                if (this.NomeLista.Length >0)
+                    sStatus += " Lista: "+this.NomeLista;
+                Status.Text = sStatus;
             }
             this.eToEnd = -1;
             this.TratarFinalDaMusica = true;
@@ -1185,14 +1199,12 @@ namespace XeviousPlayer2
         {
 
             StringBuilder SQL = new StringBuilder();
-
             SQL.AppendLine("Select Musicas.IDMusica, Musicas.Nome, Musicas.Lugar, Musicas.Vezes, Musicas.TocadoEm, ");
-
-            SQL.AppendLine("Musicas.Tamanho, Musicas.Tempo ");
-
+            SQL.AppendLine("Musicas.Tamanho, Musicas.Tempo, Listas.Nome as NomeLista");
             SQL.AppendLine("From LisMus");
             SQL.AppendLine("Inner Join Musicas on Musicas.IDMusica = LisMus.IdMusica");
             SQL.AppendLine("Inner Join Bandas on Bandas.IDBanda = Musicas.Banda");
+            SQL.AppendLine("Inner Join Listas on Listas.IdLista = LisMus.Lista");
             SQL.AppendLine("Where LisMus.Lista = "+ ilista.ToString());
 
             SQLiteCommand command = new SQLiteCommand(SQL.ToString(), DalHelper.DbConnection());
@@ -1219,6 +1231,7 @@ namespace XeviousPlayer2
                         string Tamanho = sTam.ToString() + " Kb";
                         ListViewItem listViewItem1 = new ListViewItem(new string[] { Nome, Lugar, Vezes, TocadoEm, Tamanho }, -1);
                         listView.Items.Add(listViewItem1);
+                        this.NomeLista = reader.GetString(7);
                     }
                 }
             }

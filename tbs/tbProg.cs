@@ -109,5 +109,22 @@ namespace XeviousPlayer2.tbs
             return ret;
         }
 
+        public string getnmLista()
+        {
+            // this.ID
+            string SQL = "";
+            SQLiteCommand command = new SQLiteCommand(SQL, DalHelper.sqliteConnection);
+            using (DbDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    this.ID = reader.GetInt16(0);
+                    this.HorIn = reader.GetDateTime(1);
+                    this.Lista = reader.GetInt16(2);
+                    //  ret = true;
+                }
+            }
+            return "";
+        }
     }
 }
