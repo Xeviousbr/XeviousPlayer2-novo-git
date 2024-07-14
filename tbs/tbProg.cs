@@ -79,7 +79,8 @@ namespace XeviousPlayer2.tbs
         private bool Consulta(string SQL)
         {
             bool ret = false;
-            SQLiteCommand command = new SQLiteCommand(SQL, DalHelper.sqliteConnection);
+            using (var connection = DalHelper.DbConnection())
+            using (var command = new SQLiteCommand(SQL, connection))
             using (DbDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -97,7 +98,8 @@ namespace XeviousPlayer2.tbs
         {
             string SQL = "Select Nome From Listas Order By Nome";
             List<string> ret = new List<string>();
-            SQLiteCommand command = new SQLiteCommand(SQL, DalHelper.sqliteConnection);
+            using (var connection = DalHelper.DbConnection())
+            using (var command = new SQLiteCommand(SQL, connection))
             using (DbDataReader reader = command.ExecuteReader())
             {
                 while (reader.Read())
@@ -111,20 +113,20 @@ namespace XeviousPlayer2.tbs
 
         public string getnmLista()
         {
-            // this.ID
-            string SQL = "";
-            SQLiteCommand command = new SQLiteCommand(SQL, DalHelper.sqliteConnection);
+            string SQL = $"SELECT Nome, HorIn, Lista FROM AlgumaTabela WHERE ID = {this.ID}";
+            using (var connection = DalHelper.DbConnection())
+            using (var command = new SQLiteCommand(SQL, connection))
             using (DbDataReader reader = command.ExecuteReader())
             {
-                while (reader.Read())
+                if (reader.Read())
                 {
-                    this.ID = reader.GetInt16(0);
                     this.HorIn = reader.GetDateTime(1);
                     this.Lista = reader.GetInt16(2);
-                    //  ret = true;
+                    return reader.GetString(0); // Supondo que o nome é o que você quer retornar.
                 }
             }
-            return "";
+            return ""; // Retorne um valor padrão ou nulo se não encontrar nada.
         }
     }
+
 }

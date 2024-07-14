@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 using System.Data.SQLite;
-using System.Linq;
-using System.Text;
 
 namespace XeviousPlayer2.tbs
 {
@@ -17,27 +12,68 @@ namespace XeviousPlayer2.tbs
 
         public int UltLista { get; set; }
 
-        public void Carrega ()
+        public void Carrega()
         {
             try
             {
-                string SQL = "Select PathBase, Skin, Progr, UltLista From Config";
-                using (var cmd = new SQLiteCommand(DalHelper.DbConnection()))
+                string SQL = "SELECT PathBase, Skin, Progr, UltLista FROM Config";
+                using (var connection = DalHelper.DbConnection())
+                using (var cmd = new SQLiteCommand(SQL, connection))
                 {
-                    cmd.CommandText = SQL;
                     using (SQLiteDataReader reg = cmd.ExecuteReader())
                     {
-                        reg.Read();
-                        this.PathBase = reg["PathBase"].ToString();
-                        this.Skin = int.Parse(reg["Skin"].ToString());
-                        this.Progr = (reg["Progr"].ToString() == "1");
-                        this.UltLista = int.Parse(reg["UltLista"].ToString());
+                        if (reg.HasRows)
+                        {
+                            reg.Read();
+                            this.PathBase = reg["PathBase"].ToString();
+                            this.Skin = int.Parse(reg["Skin"].ToString());
+                            this.Progr = reg["Progr"].ToString() == "1";
+                            this.UltLista = int.Parse(reg["UltLista"].ToString());
+                        }
+                        else
+                        {
+                            Gen.Loga("Nenhuma configuração encontrada.");
+                        }
                     }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Gen.Loga(ex.Message);
+                if (ex.Message.Contains("no such table"))
+                {
+                    CriarTabelaConfig();
                 }
             }
             catch (Exception ex)
             {
-                Gen.Loga(ex.Message);
+                Gen.Loga("Erro genérico: " + ex.Message);
+            }
+        }
+
+        private void CriarTabelaConfig()
+        {
+            try
+            {
+                using (var connection = DalHelper.DbConnection())
+                {
+                    string createTableSQL = @"
+                        CREATE TABLE IF NOT EXISTS Config (
+                            PathBase TEXT NOT NULL,
+                            Skin INTEGER NOT NULL,
+                            Progr BOOLEAN NOT NULL,
+                            UltLista INTEGER NOT NULL
+                        )";
+                    using (var cmd = new SQLiteCommand(createTableSQL, connection))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                Gen.Loga("Tabela 'Config' criada com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                Gen.Loga("Erro ao criar a tabela 'Config': " + ex.Message);
             }
         }
 
