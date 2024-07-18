@@ -81,7 +81,7 @@ namespace XeviousPlayer2
             List<string> Listas = cProg.listas();
             for (int i = 0; i < Listas.Count; i++)
                 cbListas.Items.Add(Listas[i]);
-            cbListas.Items.Add(NovaLista);            
+            cbListas.Items.Add(NovaLista);
             cbListas.SelectedIndex = 0;
         }
 
