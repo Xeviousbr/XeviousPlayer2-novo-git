@@ -89,5 +89,13 @@ namespace XeviousPlayer2.tbs
             DalHelper.ExecSql("Update Config set UltLista = " + iUltLista.ToString());
             this.UltLista = iUltLista;
         }
+
+        public void SetaPath(string Path)
+        {
+            this.PathBase = Path;
+            string PATH = "Update Config set PathBase = " + Gen.FA(Path);
+            DalHelper.ExecSql(PATH);
+        }
+
     }
 }

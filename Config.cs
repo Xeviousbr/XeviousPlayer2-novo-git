@@ -2,6 +2,7 @@
 using System.Data.SQLite;
 using System.Windows.Forms;
 using System.Drawing;
+using XeviousPlayer2.tbs;
 
 namespace XeviousPlayer2
 {
@@ -41,6 +42,8 @@ namespace XeviousPlayer2
             ////{
             ////    DalHelper.ExecSql("Update Config Set PathBase = '" + textBox1.Text + "'");
             ////}
+            ///
+
             this.Close();
         }
 
@@ -86,7 +89,13 @@ namespace XeviousPlayer2
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-            int x = 0;
+
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string pasta = folderBrowserDialog1.SelectedPath;
+                tbConfig Config = new tbConfig();
+                Config.SetaPath(pasta);
+            }
         }
     }
 

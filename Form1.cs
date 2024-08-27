@@ -1154,10 +1154,14 @@ namespace XeviousPlayer2
         private void toolStripButton22_Click(object sender, EventArgs e)
         {
             Config cConfig = new Config();
+            int ListaAtu = Gen.Lista;
             cConfig.ShowDialog();
-            setaLista(Gen.Lista);
-            tbConfig tConfig = new tbConfig();
-            tConfig.SetaUltLista(Gen.Lista);
+            if (ListaAtu!= Gen.Lista)
+            {
+                setaLista(Gen.Lista);
+                tbConfig tConfig = new tbConfig();
+                tConfig.SetaUltLista(Gen.Lista);
+            }
         }
 
         #endregion
