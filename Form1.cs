@@ -764,7 +764,7 @@ namespace XeviousPlayer2
             myPlayer.Play(Musica);
             this.TocandoAgora = Musica;
 #if DEBUG
-            myPlayer.Audio.Volume = (float)0.01;
+            // myPlayer.Audio.Volume = (float)0.01;
 #endif
             if (myPlayer.LastError)
                 MessageBox.Show(myPlayer.LastErrorString);

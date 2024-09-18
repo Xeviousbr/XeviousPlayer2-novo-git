@@ -100,15 +100,48 @@ namespace XeviousPlayer2.tbs
             List<string> ret = new List<string>();
             using (var connection = DalHelper.DbConnection())
             using (var command = new SQLiteCommand(SQL, connection))
-            using (DbDataReader reader = command.ExecuteReader())
             {
-                while (reader.Read())
+                try
                 {
-                    string Nome = reader.GetString(0);
-                    ret.Add(Nome);
+                    // Executa a consulta para obter os nomes
+                    using (DbDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string Nome = reader.GetString(0);
+                            ret.Add(Nome);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Em caso de erro, chama o método para criar a tabela
+                    CriaTabela(connection);
+
+                    // Tenta executar novamente a consulta após criar a tabela
+                    using (var retryCommand = new SQLiteCommand(SQL, connection))
+                    using (DbDataReader reader = retryCommand.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string Nome = reader.GetString(0);
+                            ret.Add(Nome);
+                        }
+                    }
                 }
             }
             return ret;
+        }
+
+        private void CriaTabela(SQLiteConnection connection)
+        {
+            string createTableSQL = @"CREATE TABLE IF NOT EXISTS Listas (
+                                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                Nome TEXT NOT NULL)";
+            using (var createCommand = new SQLiteCommand(createTableSQL, connection))
+            {
+                createCommand.ExecuteNonQuery();
+            }
         }
 
         public string getnmLista()
