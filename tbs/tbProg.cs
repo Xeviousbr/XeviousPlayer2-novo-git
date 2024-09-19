@@ -116,7 +116,7 @@ namespace XeviousPlayer2.tbs
                 catch (Exception ex)
                 {
                     // Em caso de erro, chama o método para criar a tabela
-                    CriaTabela(connection);
+                    CriaTabelas(connection);
 
                     // Tenta executar novamente a consulta após criar a tabela
                     using (var retryCommand = new SQLiteCommand(SQL, connection))
@@ -133,16 +133,68 @@ namespace XeviousPlayer2.tbs
             return ret;
         }
 
-        private void CriaTabela(SQLiteConnection connection)
+        private void CriaTabelas(SQLiteConnection connection)
         {
-            string createTableSQL = @"CREATE TABLE IF NOT EXISTS Listas (
-                                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                Nome TEXT NOT NULL)";
-            using (var createCommand = new SQLiteCommand(createTableSQL, connection))
+            // Cria a tabela Listas
+            string createListasTableSQL = @"CREATE TABLE IF NOT EXISTS Listas (
+                                    IdLista INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    Nome TEXT NOT NULL)";
+            using (var createCommand = new SQLiteCommand(createListasTableSQL, connection))
+            {
+                createCommand.ExecuteNonQuery();
+            }
+
+            // Cria a tabela Bandas
+            string createBandasTableSQL = @"CREATE TABLE IF NOT EXISTS Bandas (
+                                    IDBanda INTEGER PRIMARY KEY AUTOINCREMENT,
+                                    Nome TEXT NOT NULL)";
+            using (var createCommand = new SQLiteCommand(createBandasTableSQL, connection))
+            {
+                createCommand.ExecuteNonQuery();
+            }
+
+            // Cria a tabela Musicas
+            string createMusicasTableSQL = @"CREATE TABLE IF NOT EXISTS Musicas (
+                                     IDMusica INTEGER PRIMARY KEY AUTOINCREMENT,
+                                     Nome TEXT NOT NULL,
+                                     Lugar TEXT,
+                                     Vezes INTEGER,
+                                     TocadoEm TEXT,
+                                     Tamanho INTEGER,
+                                     Tempo TEXT,
+                                     Banda INTEGER,
+                                     FOREIGN KEY (Banda) REFERENCES Bandas(IDBanda)
+                                    )";
+            using (var createCommand = new SQLiteCommand(createMusicasTableSQL, connection))
+            {
+                createCommand.ExecuteNonQuery();
+            }
+
+            // Cria a tabela LisMus
+            string createLisMusTableSQL = @"CREATE TABLE IF NOT EXISTS LisMus (
+                                    IdMusica INTEGER NOT NULL,
+                                    Lista INTEGER NOT NULL,
+                                    PRIMARY KEY (IdMusica, Lista),
+                                    FOREIGN KEY (IdMusica) REFERENCES Musicas(IDMusica),
+                                    FOREIGN KEY (Lista) REFERENCES Listas(IdLista)
+                                   )";
+            using (var createCommand = new SQLiteCommand(createLisMusTableSQL, connection))
             {
                 createCommand.ExecuteNonQuery();
             }
         }
+
+
+        //private void CriaTabela(SQLiteConnection connection)
+        //{
+        //    string createTableSQL = @"CREATE TABLE IF NOT EXISTS Listas (
+        //                        IdLista INTEGER PRIMARY KEY AUTOINCREMENT,
+        //                        Nome TEXT NOT NULL)";
+        //    using (var createCommand = new SQLiteCommand(createTableSQL, connection))
+        //    {
+        //        createCommand.ExecuteNonQuery();
+        //    }
+        //}
 
         public string getnmLista()
         {

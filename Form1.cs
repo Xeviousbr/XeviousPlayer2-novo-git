@@ -1225,7 +1225,7 @@ namespace XeviousPlayer2
                         string Lugar = reader.GetString(2);
 
                         // É NECESSÁRIO UM AJUSTE DE SQL, pra trocar de para H:
-                        Lugar = Lugar.Replace("F:", "E:");
+                        // Lugar = Lugar.Replace("F:", "E:");
 
                         string Vezes = reader.GetInt16(3).ToString();
                         string TocadoEm = reader.GetDateTime(4).ToString();
@@ -1268,8 +1268,14 @@ namespace XeviousPlayer2
             {
                 if (this.IndiceNaLista > -1)
                 {
-                    this.listView.Items[this.IndiceNaLista].Focused = false;
-                    this.listView.Items[this.IndiceNaLista].Selected = false;
+                    if (this.listView.Items.Count>0)
+                    {
+                        this.listView.Items[this.IndiceNaLista].Focused = false;
+                        this.listView.Items[this.IndiceNaLista].Selected = false;
+                    } else
+                    {
+                        Sair = true;
+                    }
                 }
                 this.IndiceNaLista++;
                 if (this.listView.Items.Count > 0)
@@ -1417,47 +1423,37 @@ namespace XeviousPlayer2
                 {
                     string nmLista = cListas.nmLista;
                     int ID = 0;
-                    using (SQLiteConnection conn = new SQLiteConnection(DalHelper.DbConnection()))
+                    using (SQLiteConnection conn = DalHelper.DbConnection()) // A conexão já está aberta aqui
                     {
-                        try
+                        // Verifica se a lista já existe
+                        string sql = "SELECT IdLista FROM Listas WHERE Nome = @Nome";
+                        using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                         {
-                            conn.Open();
+                            cmd.Parameters.AddWithValue("@Nome", nmLista);
 
-                            // Verifica se a lista já existe
-                            string sql = "SELECT IdLista FROM Listas WHERE Nome = @Nome";
-                            using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
                             {
+                                ID = Convert.ToInt32(result);
+                            }
+                            else
+                            {
+                                // Insere nova lista e obtém o ID
+                                sql = "INSERT INTO Listas (Nome) VALUES (@Nome); SELECT last_insert_rowid();";
+                                cmd.CommandText = sql;
+                                cmd.Parameters.Clear();
                                 cmd.Parameters.AddWithValue("@Nome", nmLista);
 
-                                object result = cmd.ExecuteScalar();
+                                result = cmd.ExecuteScalar();
                                 if (result != null && result != DBNull.Value)
                                 {
                                     ID = Convert.ToInt32(result);
                                 }
                                 else
                                 {
-                                    // Insere nova lista e obtém o ID
-                                    sql = "INSERT INTO Listas (Nome) VALUES (@Nome); SELECT last_insert_rowid();";
-                                    cmd.CommandText = sql;
-                                    cmd.Parameters.Clear();
-                                    cmd.Parameters.AddWithValue("@Nome", nmLista);
-
-                                    result = cmd.ExecuteScalar();
-                                    if (result != null && result != DBNull.Value)
-                                    {
-                                        ID = Convert.ToInt32(result);
-                                    }
-                                    else
-                                    {
-                                        throw new Exception("Falha ao inserir nova lista.");
-                                    }
+                                    throw new Exception("Falha ao inserir nova lista.");
                                 }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message);
-                            return;
                         }
                     }
                     setaLista(ID);
@@ -1465,25 +1461,60 @@ namespace XeviousPlayer2
             }
         }
 
+
         //private void toolStripButton11_Click(object sender, EventArgs e)
         //{
-        //    Listas cListas = new Listas();
-        //    cListas.ShowDialog();
-        //    if (cListas.DialogResult== DialogResult.OK)
+        //    using (Listas cListas = new Listas())
         //    {
-        //        string nmLista = cListas.nmLista;
-        //        string sql = "Select IdLista From Listas Where Nome = '" + nmLista + "'";
-        //        string ret = DalHelper.Consulta(sql);
-        //        int ID = 0;
-        //        if (ret == null)
+        //        if (cListas.ShowDialog() == DialogResult.OK)
         //        {
-        //            // Criar o Registro da lista
-        //            // e retornar o ID na variavel ID
-        //        } else
-        //        {
-        //            ID = int.Parse(ret);
-        //        }                
-        //        setaLista(ID);
+        //            string nmLista = cListas.nmLista;
+        //            int ID = 0;
+        //            using (SQLiteConnection conn = new SQLiteConnection(DalHelper.DbConnection()))
+        //            {
+        //                //try
+        //                //{
+        //                    conn.Open();
+
+        //                    // Verifica se a lista já existe
+        //                    string sql = "SELECT Id FROM Listas WHERE Nome = @Nome";
+        //                    using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+        //                    {
+        //                        cmd.Parameters.AddWithValue("@Nome", nmLista);
+
+        //                        object result = cmd.ExecuteScalar();
+        //                        if (result != null && result != DBNull.Value)
+        //                        {
+        //                            ID = Convert.ToInt32(result);
+        //                        }
+        //                        else
+        //                        {
+        //                            // Insere nova lista e obtém o ID
+        //                            sql = "INSERT INTO Listas (Nome) VALUES (@Nome); SELECT last_insert_rowid();";
+        //                            cmd.CommandText = sql;
+        //                            cmd.Parameters.Clear();
+        //                            cmd.Parameters.AddWithValue("@Nome", nmLista);
+
+        //                            result = cmd.ExecuteScalar();
+        //                            if (result != null && result != DBNull.Value)
+        //                            {
+        //                                ID = Convert.ToInt32(result);
+        //                            }
+        //                            else
+        //                            {
+        //                                throw new Exception("Falha ao inserir nova lista.");
+        //                            }
+        //                        }
+        //                    }
+        //                //}
+        //                //catch (Exception ex)
+        //                //{
+        //                //    MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message);
+        //                //    return;
+        //                //}
+        //            }
+        //            setaLista(ID);
+        //        }
         //    }
         //}
 
