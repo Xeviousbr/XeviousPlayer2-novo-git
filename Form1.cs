@@ -1245,60 +1245,8 @@ namespace XeviousPlayer2
             this.IndiceNaLista = -1;
             ProxMusica(false);
 
-            //string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
-            //this.Toca(Tocar);
-            // this.Toca(this.listView.GetItemAt[0]);
-
-            // this.listView.ColumnClick += new ColumnClickEventHandler(ColumnClick);
-            //show header
-
-
-
-            // Loop through and size each column header to fit the column header text.
-            //foreach (ColumnHeader ch in this.listView.Columns)
-            //{
-            //    ch.Width = -2;
-            //}
 
         }
-
-        //private void button1_Click(object sender, EventArgs e)
-        //{
-        //    ListViewItem listviewitem;
-
-        //    listviewitem = new ListViewItem("John");
-        //    listviewitem.SubItems.Add("Smith");
-        //    listviewitem.SubItems.Add("kaya");
-        //    listviewitem.SubItems.Add("bun");
-        //    this.listView.Items.Add(listviewitem);
-        //    // this.listView.ColumnClick += new ColumnClickEventHandler(ColumnClick);
-        //    //show header
-        //    listView.View = View.Details;
-        //    this.listView.Refresh();
-
-        //}
-
-        //private void button1_Click_1(object sender, EventArgs e)
-        //{
-        //    ListViewItem listviewitem;
-        //    listviewitem = new ListViewItem("John");
-        //    listviewitem.SubItems.Add("Smith");
-        //    listviewitem.SubItems.Add("kaya");
-        //    listviewitem.SubItems.Add("bun");
-        //    this.listView.Items.Add(listviewitem);
-        //    // this.listView.ColumnClick += new ColumnClickEventHandler(ColumnClick);
-        //    //show header
-        //    listView.View = View.List;
-        //    this.listView.Refresh();
-        //}
-
-        //private void ColumnClick(object o, ColumnClickEventArgs e)
-        //{
-        //    // Set the ListViewItemSorter property to a new ListViewItemComparer 
-        //    // object. Setting this property immediately sorts the 
-        //    // ListView using the ListViewItemComparer object.
-        //    this.listView.ListViewItemSorter = new ListViewItemComparer(e.Column);
-        //}
 
         private void ProxMusica(bool PreverProgramacao=true)
         {
@@ -1463,17 +1411,81 @@ namespace XeviousPlayer2
 
         private void toolStripButton11_Click(object sender, EventArgs e)
         {
-            Listas cListas = new Listas();
-            cListas.ShowDialog();
-            if (cListas.DialogResult== DialogResult.OK)
+            using (Listas cListas = new Listas())
             {
-                string nmLista = cListas.nmLista;
-                string sql = "Select IdLista From Listas Where Nome = '" + nmLista + "'";
-                string ret = DalHelper.Consulta(sql);
-                int ID = int.Parse(ret);
-                setaLista(ID);
+                if (cListas.ShowDialog() == DialogResult.OK)
+                {
+                    string nmLista = cListas.nmLista;
+                    int ID = 0;
+                    using (SQLiteConnection conn = new SQLiteConnection(DalHelper.DbConnection()))
+                    {
+                        try
+                        {
+                            conn.Open();
+
+                            // Verifica se a lista já existe
+                            string sql = "SELECT IdLista FROM Listas WHERE Nome = @Nome";
+                            using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@Nome", nmLista);
+
+                                object result = cmd.ExecuteScalar();
+                                if (result != null && result != DBNull.Value)
+                                {
+                                    ID = Convert.ToInt32(result);
+                                }
+                                else
+                                {
+                                    // Insere nova lista e obtém o ID
+                                    sql = "INSERT INTO Listas (Nome) VALUES (@Nome); SELECT last_insert_rowid();";
+                                    cmd.CommandText = sql;
+                                    cmd.Parameters.Clear();
+                                    cmd.Parameters.AddWithValue("@Nome", nmLista);
+
+                                    result = cmd.ExecuteScalar();
+                                    if (result != null && result != DBNull.Value)
+                                    {
+                                        ID = Convert.ToInt32(result);
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Falha ao inserir nova lista.");
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao acessar o banco de dados: " + ex.Message);
+                            return;
+                        }
+                    }
+                    setaLista(ID);
+                }
             }
         }
+
+        //private void toolStripButton11_Click(object sender, EventArgs e)
+        //{
+        //    Listas cListas = new Listas();
+        //    cListas.ShowDialog();
+        //    if (cListas.DialogResult== DialogResult.OK)
+        //    {
+        //        string nmLista = cListas.nmLista;
+        //        string sql = "Select IdLista From Listas Where Nome = '" + nmLista + "'";
+        //        string ret = DalHelper.Consulta(sql);
+        //        int ID = 0;
+        //        if (ret == null)
+        //        {
+        //            // Criar o Registro da lista
+        //            // e retornar o ID na variavel ID
+        //        } else
+        //        {
+        //            ID = int.Parse(ret);
+        //        }                
+        //        setaLista(ID);
+        //    }
+        //}
 
         private void setaLista(object lista)
         {

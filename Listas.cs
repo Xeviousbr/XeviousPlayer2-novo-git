@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -23,12 +24,12 @@ namespace XeviousPlayer2
 
         private void btAcionar_Click(object sender, EventArgs e)
         {
-            nmLista = lsLista.SelectedItems[0].ToString();
+            this.nmLista = Interaction.InputBox("Digite o nome da lista:", "Nome da Lista", "");
         }
 
         private void lsLista_DoubleClick(object sender, EventArgs e)
         {
-            nmLista = lsLista.SelectedItems[0].ToString();
+            this.nmLista = lsLista.SelectedItems[0].ToString();
         }
     }
 }
