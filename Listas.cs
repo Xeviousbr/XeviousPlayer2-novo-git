@@ -30,6 +30,8 @@ namespace XeviousPlayer2
         private void lsLista_DoubleClick(object sender, EventArgs e)
         {
             this.nmLista = lsLista.SelectedItems[0].ToString();
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
     }
 }
