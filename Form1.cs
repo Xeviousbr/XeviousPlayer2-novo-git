@@ -1081,7 +1081,8 @@ namespace XeviousPlayer2
                 if (myOpenFileDlg.ShowDialog() == DialogResult.OK)
                 {
                     string novaMidia = myOpenFileDlg.FileName;
-                    AdicionarMidiaNaLista(novaMidia); // Adiciona a nova mídia no início da lista
+                    string nomeBanda = ExtrairNomeBanda(novaMidia);
+                    AdicionarMidiaNaLista(novaMidia, nomeBanda); 
 
                     // Tocar a nova mídia imediatamente
                     Toca(novaMidia);
@@ -1104,26 +1105,30 @@ namespace XeviousPlayer2
             }
         }
 
-        private void AdicionarMidiaNaLista(string novaMidia)
+        private void AdicionarMidiaNaLista(string novaMidia, string nomeBanda)
         {
-            string nome = System.IO.Path.GetFileNameWithoutExtension(novaMidia); // Obtém o nome da música sem a extensão
+            string nome = Path.GetFileNameWithoutExtension(novaMidia); // Obtém o nome da música sem a extensão
             string lugar = novaMidia; // Caminho completo da mídia no HD
 
             FileInfo fileInfo = new FileInfo(novaMidia);
             long tamanhoBytes = fileInfo.Length;
-            string tamanhoKB = (tamanhoBytes / 1024f).ToString(); 
+            long lTamanho = tamanhoBytes / 1024;
+            string tamanhoKB = lTamanho.ToString(); 
 
             // Abre a conexão com o banco de dados
             using (var connection = DalHelper.DbConnection())
             {
-                // Obtém ou insere a música no banco de dados
-                int idMusica = InserirOuObterIdMusica(connection, nome, lugar, tamanhoKB);
+                // Obtém ou insere a banda no banco de dados
+                int idBanda = InserirOuObterIdBanda(connection, nomeBanda);
+
+                // Obtém ou insere a música no banco de dados, passando o ID da banda
+                int idMusica = InserirOuObterIdMusica(connection, nome, lugar, tamanhoKB, idBanda);
 
                 // Adiciona a música à lista no banco de dados
                 AdicionarMusicaNaLista(connection, idMusica, this.ListaAtu);
 
                 // Adiciona a música ao ListView na interface
-                System.Windows.Forms.ListViewItem novoItem = new System.Windows.Forms.ListViewItem(new string[] {
+                ListViewItem novoItem = new ListViewItem(new string[] {
                     idMusica.ToString(), // ID da música
                     nome,
                     lugar, // Caminho da mídia
@@ -1134,6 +1139,24 @@ namespace XeviousPlayer2
 
                 // Adiciona o item no início da lista (ListView)
                 listView.Items.Insert(0, novoItem);
+            }
+        }
+
+        private string ExtrairNomeBanda(string caminhoArquivo)
+        {
+            // Obtém o nome do arquivo sem o caminho completo
+            string nomeArquivo = Path.GetFileNameWithoutExtension(caminhoArquivo);
+
+            // Divide o nome do arquivo por " - " e pega a primeira parte como o nome da banda
+            string[] partes = nomeArquivo.Split(new string[] { " - " }, StringSplitOptions.None);
+
+            if (partes.Length > 1)
+            {
+                return partes[0]; // A primeira parte antes do " - " é o nome da banda
+            }
+            else
+            {
+                return "Banda Desconhecida"; // Retorna um valor padrão se não for possível extrair o nome da banda
             }
         }
 
@@ -1161,11 +1184,48 @@ namespace XeviousPlayer2
             }
         }
 
-        private int InserirOuObterIdMusica(SQLiteConnection connection, string nome, string lugar, string tamanho)
+        private int InserirOuObterIdBanda(SQLiteConnection connection, string nomeBanda)
+        {
+            int idBanda = 0;
+
+            // Verifica se a banda já existe no banco de dados
+            string sqlVerifica = "SELECT IDBanda FROM Bandas WHERE Nome = @Nome";
+            using (var commandVerifica = new SQLiteCommand(sqlVerifica, connection))
+            {
+                commandVerifica.Parameters.AddWithValue("@Nome", nomeBanda);
+
+                var result = commandVerifica.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    idBanda = Convert.ToInt32(result); // A banda já existe, retorna o ID
+                }
+            }
+
+            // Se a banda não existir, insere-a
+            if (idBanda == 0)
+            {
+                string sqlInserir = @"INSERT INTO Bandas (Nome) VALUES (@Nome); 
+                              SELECT last_insert_rowid();";
+                using (var commandInserir = new SQLiteCommand(sqlInserir, connection))
+                {
+                    commandInserir.Parameters.AddWithValue("@Nome", nomeBanda);
+
+                    var result = commandInserir.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        idBanda = Convert.ToInt32(result); // Banda inserida, retorna o novo ID
+                    }
+                }
+            }
+
+            return idBanda;
+        }
+
+        private int InserirOuObterIdMusica(SQLiteConnection connection, string nome, string lugar, string tamanho, int idBanda)
         {
             int idMusica = 0;
 
-            // Verificar se a música já existe no banco de dados
+            // Verifica se a música já existe no banco de dados
             string sqlVerifica = "SELECT IDMusica FROM Musicas WHERE Nome = @Nome AND Lugar = @Lugar";
             using (var commandVerifica = new SQLiteCommand(sqlVerifica, connection))
             {
@@ -1182,8 +1242,8 @@ namespace XeviousPlayer2
             // Se a música não existe, inseri-la no banco de dados
             if (idMusica == 0)
             {
-                string sqlInserir = @"INSERT INTO Musicas (Nome, Lugar, Vezes, TocadoEm, Tamanho) 
-                              VALUES (@Nome, @Lugar, 0, @TocadoEm, @Tamanho);
+                string sqlInserir = @"INSERT INTO Musicas (Nome, Lugar, Vezes, TocadoEm, Tamanho, Banda) 
+                              VALUES (@Nome, @Lugar, 0, @TocadoEm, @Tamanho, @Banda);
                               SELECT last_insert_rowid();";
                 using (var commandInserir = new SQLiteCommand(sqlInserir, connection))
                 {
@@ -1191,6 +1251,7 @@ namespace XeviousPlayer2
                     commandInserir.Parameters.AddWithValue("@Lugar", lugar);
                     commandInserir.Parameters.AddWithValue("@TocadoEm", DateTime.Now.ToString("yyyy-MM-dd"));
                     commandInserir.Parameters.AddWithValue("@Tamanho", tamanho);
+                    commandInserir.Parameters.AddWithValue("@Banda", idBanda); // Adiciona o ID da banda
 
                     var result = commandInserir.ExecuteScalar();
                     if (result != null && result != DBNull.Value)
@@ -1199,7 +1260,6 @@ namespace XeviousPlayer2
                     }
                 }
             }
-
             return idMusica;
         }
 
@@ -1545,18 +1605,16 @@ namespace XeviousPlayer2
                 {
                     this.nmLista = cListas.nmLista;
                     int ID = 0;
-                    using (SQLiteConnection conn = DalHelper.DbConnection()) // A conexão já está aberta aqui
+                    using (SQLiteConnection conn = DalHelper.DbConnection()) 
                     {
-                        // Verifica se a lista já existe
                         string sql = "SELECT IdLista FROM Listas WHERE Nome = @Nome";
                         using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                         {
                             cmd.Parameters.AddWithValue("@Nome", this.nmLista);
-
                             object result = cmd.ExecuteScalar();
                             if (result != null && result != DBNull.Value)
                             {
-                                ID = Convert.ToInt32(result);
+                                ID = Convert.ToInt32(result);                                
                             }
                             else
                             {
@@ -1576,6 +1634,7 @@ namespace XeviousPlayer2
                                     throw new Exception("Falha ao inserir nova lista.");
                                 }
                             }
+                            this.ListaAtu = ID;
                         }
                     }
                     setaLista(ID);

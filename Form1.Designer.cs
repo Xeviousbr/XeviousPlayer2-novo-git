@@ -30,20 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem(new string[] {
-            "111",
-            "Nome",
-            "Lugar",
-            "0",
-            "01/01/2021",
-            "10"}, -1);
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem(new string[] {
-            "222",
-            "Nome2",
-            "Lugar2",
-            "1",
-            "02/02/2021",
-            "20"}, -1);
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.trackBar2 = new System.Windows.Forms.TrackBar();
@@ -794,11 +780,6 @@
             this.listView.HideSelection = false;
             this.listView.HotTracking = true;
             this.listView.HoverSelection = true;
-            listViewItem3.StateImageIndex = 0;
-            listViewItem4.StateImageIndex = 0;
-            this.listView.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3,
-            listViewItem4});
             this.listView.Location = new System.Drawing.Point(16, 219);
             this.listView.Name = "listView";
             this.listView.Size = new System.Drawing.Size(720, 305);
