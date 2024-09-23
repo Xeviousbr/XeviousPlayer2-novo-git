@@ -1077,16 +1077,32 @@ namespace XeviousPlayer2
             // Verifica se existe uma lista carregada (nmLista não é nula nem vazia)
             if (!string.IsNullOrEmpty(nmLista))
             {
-                // Adicionar a nova mídia ao início da lista
                 if (myOpenFileDlg.ShowDialog() == DialogResult.OK)
                 {
-                    string novaMidia = myOpenFileDlg.FileName;
-                    string nomeBanda = ExtrairNomeBanda(novaMidia);
-                    AdicionarMidiaNaLista(novaMidia, nomeBanda); 
+                    string[] arquivosSelecionados = myOpenFileDlg.FileNames; // Obter todos os arquivos selecionados
 
-                    // Tocar a nova mídia imediatamente
-                    Toca(novaMidia);
+                    foreach (string novaMidia in arquivosSelecionados)
+                    {
+                        string nomeBanda = ExtrairNomeBanda(novaMidia);
+                        AdicionarMidiaNaLista(novaMidia, nomeBanda);
+                    }
+
+                    // Tocar a primeira mídia imediatamente, se desejar
+                    if (arquivosSelecionados.Length > 0)
+                    {
+                        Toca(arquivosSelecionados[0]);
+                    }
                 }
+                // Adicionar a nova mídia ao início da lista
+                //if (myOpenFileDlg.ShowDialog() == DialogResult.OK)
+                //{
+                //    string novaMidia = myOpenFileDlg.FileName;
+                //    string nomeBanda = ExtrairNomeBanda(novaMidia);
+                //    AdicionarMidiaNaLista(novaMidia, nomeBanda); 
+
+                //    // Tocar a nova mídia imediatamente
+                //    Toca(novaMidia);
+                //}
             }
             else
             {
@@ -1464,7 +1480,7 @@ namespace XeviousPlayer2
                 {
                     string Tocar = this.listView.Items[this.IndiceNaLista].SubItems[1].Text;
                     float VolAnt = 0;
-                    if (System.IO.File.Exists(Tocar))
+                    if (File.Exists(Tocar))
                     {
 #if DEBUG
                         VolAnt = (float)0.01;
