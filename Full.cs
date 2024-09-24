@@ -25,11 +25,19 @@ namespace XeviousPlayer2
             this.Close();
         }
 
+        public void Para()
+        {
+            myPlayer.Stop();
+        }
+
         public void Toca(string Arquivo)
         {
-            myPlayer = new Player();
+            if (myPlayer==null)
+            {
+                myPlayer = new Player();
+            }            
             myPlayer.SleepDisabled = true;
-            myOverlay = new Overlay(myPlayer);     // create (an instance of) the overlay
+            myOverlay = new Overlay(myPlayer);
             myPlayer.Overlay.Window = myOverlay;   // and attach it to the player
             myPlayer.Display.Window = panel1;
             myPlayer.Overlay.Blend = OverlayBlend.Transparent;
