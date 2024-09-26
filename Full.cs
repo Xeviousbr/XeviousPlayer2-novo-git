@@ -6,7 +6,7 @@ namespace XeviousPlayer2
 {
     public partial class Full : Form
     {
-        private Player myPlayer;
+        public Player myPlayer;
         private Overlay myOverlay;
 
         public Full()

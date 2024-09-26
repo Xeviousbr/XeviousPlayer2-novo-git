@@ -816,13 +816,25 @@ namespace XeviousPlayer2
 
         private void toolStripButton15_Click(object sender, EventArgs e)
         {
-            myPlayer.Paused = false;
+            if (cFull == null)
+            {
+                myPlayer.Paused = false;
+            }
+            else
+            {
+                cFull.myPlayer.Paused = false;
+            }            
         }
 
         private void toolStripButton16_Click(object sender, EventArgs e)
         {
-            // Pausa
-            myPlayer.Paused = true;
+            if (cFull==null)
+            {
+                myPlayer.Paused = true;
+            } else
+            {
+                cFull.myPlayer.Paused = true;                
+            }            
         }
 
         private void toolStripButton17_Click(object sender, EventArgs e)
@@ -991,8 +1003,17 @@ namespace XeviousPlayer2
 #else
                 VolAnt = myPlayer.Audio.Volume;
 #endif
-                        this.Toca(Tocar);
-                        myPlayer.Audio.Volume = VolAnt;
+
+                        if (cFull == null)
+                        {
+                            this.Toca(Tocar);
+                            myPlayer.Audio.Volume = VolAnt;
+                        }
+                        else
+                        {
+                            cFull.Toca(Tocar);
+                            cFull.myPlayer.Audio.Volume = VolAnt;
+                        }
                         this.ColocaDadosMusica();
                         Sair = true;
                     } 
@@ -1097,19 +1118,8 @@ namespace XeviousPlayer2
         private void listView_Click(object sender, EventArgs e)
         {
             string Tocar = listView.SelectedItems[0].SubItems[1].Text;
-
-            // Verifica se a tela Full está visível
-            //if (Application.OpenForms["Full"] != null)
-            //{
-            //    // Obtém a instância do formulário Full e fecha
-            //    Full fullForm = (Full)Application.OpenForms["Full"];
-            //    fullForm.Close(); // Fecha o formulário para abrir novamente com a nova música
-            //}
-
-            // Tocar a música na tela cheia ou na tela principal, dependendo do caso
             if (panel1.Visible) // Verifica se o player principal está visível
             {
-                // Toca a música na tela principal
                 this.AjustaIndice(Tocar);
                 this.Toca(Tocar);
             }
@@ -1124,8 +1134,6 @@ namespace XeviousPlayer2
                     cFull.Para();
                     cFull.Show();
                 }
-
-                // Verifica se há uma segunda tela para posicionar o Full na segunda tela
                 if (Screen.AllScreens.Length > 1)
                 {
                     Screen segundaTela = Screen.AllScreens[1];
