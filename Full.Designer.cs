@@ -29,7 +29,9 @@ namespace XeviousPlayer2
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // panel1
@@ -42,6 +44,9 @@ namespace XeviousPlayer2
             this.panel1.Size = new System.Drawing.Size(800, 450);
             this.panel1.TabIndex = 2;
             this.panel1.DoubleClick += new System.EventHandler(this.panel1_DoubleClick);
+            // 
+            // timer1
+            // 
             // 
             // Full
             // 
@@ -63,5 +68,6 @@ namespace XeviousPlayer2
         #endregion
 
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

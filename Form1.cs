@@ -32,7 +32,7 @@ namespace XeviousPlayer2
         private Player myPlayer;
         private Overlay myOverlay;          // in file 'Overlay.cs'
 
-        private int shapeStatus;        // shapes - 0:none, 1:oval, 2:none, 3:rounded, 4:none, 5:star
+        // private int shapeStatus;        // shapes - 0:none, 1:oval, 2:none, 3:rounded, 4:none, 5:star
 
         private InfoLabel myInfoLabel;
         private StringBuilder myInfoLabelText = new StringBuilder(64);
@@ -150,9 +150,8 @@ namespace XeviousPlayer2
             //myInfoLabel.TextSize = myInfoLabel.TextSize;  // set size + autosize off
             //myInfoLabel.BackImage = Image.FromFile(@"C:\Users\Public\Pictures\Sample Pictures\Desert.jpg");
 
-
             // Display an info label above the position slider's thumb using the slider's scroll event:
-            trackBar1.Scroll += TrackBar1_Scroll;   // see eventhandler below
+            // trackBar1.Scroll += TrackBar1_Scroll;   // see eventhandler below
 
             // Same for the audio volume and balance sliders:
             trackBar2.Scroll += TrackBar2_Scroll;   // see eventhandler below
@@ -327,6 +326,7 @@ namespace XeviousPlayer2
             }
             this.eToEnd = -1;
             this.TratarFinalDaMusica = true;
+            this.SyncTimer.Start();
         }
 
         //private void PauseMedia()
@@ -524,24 +524,24 @@ namespace XeviousPlayer2
         }
 
         // Show an info label on the position slider of the player when scrolled
-        private void TrackBar1_Scroll(object sender, System.EventArgs e)
-        {
-            // Get the position slider's x-coordinate of the current position (= thumb location)
-            // (myInfoLabel.AlignOffset has been set to 0, 7)
-            Point myInfoLabelLocation = myPlayer.Sliders.ValueToPoint(trackBar1, trackBar1.Value);
+        //private void TrackBar1_Scroll(object sender, System.EventArgs e)
+        //{
+        //    // Get the position slider's x-coordinate of the current position (= thumb location)
+        //    // (myInfoLabel.AlignOffset has been set to 0, 7)
+        //    Point myInfoLabelLocation = myPlayer.Sliders.ValueToPoint(trackBar1, trackBar1.Value);
 
-            // Show the infolabel
-            myInfoLabel.Show(myPlayer.Position.FromStart.ToString().Substring(0, 8), trackBar1, myInfoLabelLocation);
-        }
+        //    // Show the infolabel
+        //    myInfoLabel.Show(myPlayer.Position.FromStart.ToString().Substring(0, 8), trackBar1, myInfoLabelLocation);
+        //}
 
-        // Show an info label on the audio volume slider of the player when scrolled
         private void TrackBar2_Scroll(object sender, System.EventArgs e)
         {
-            // Get the audio volume slider's x-coordinate of the current volume (= thumb location)
-            // (myInfoLabel.AlignOffset has been set to 0, 7)
+            if (cFull!=null)
+            {
+                float novoVolume = trackBar2.Value / 100f;
+                cFull.AjustarVolume(novoVolume);
+            }
             Point myInfoLabelLocation = myPlayer.Sliders.ValueToPoint(trackBar2, trackBar2.Value);
-
-            // Show the infolabel
             myInfoLabel.Show("Volume: " + (myPlayer.Audio.Volume).ToString("0.00"), trackBar2, myInfoLabelLocation);
         }
 
@@ -1011,8 +1011,8 @@ namespace XeviousPlayer2
                         }
                         else
                         {
-                            cFull.Toca(Tocar);
-                            cFull.myPlayer.Audio.Volume = VolAnt;
+                            cFull.Toca(Tocar, VolAnt);
+                            // cFull.myPlayer.Audio.Volume = VolAnt;
                         }
                         this.ColocaDadosMusica();
                         Sair = true;
@@ -1128,7 +1128,7 @@ namespace XeviousPlayer2
                 // Abrir a tela Full novamente e tocar a nova música
                 if (cFull == null)
                 {
-                    cFull = new Full();
+                    AbrirFull();
                 } else
                 {
                     cFull.Para();
@@ -1145,21 +1145,17 @@ namespace XeviousPlayer2
                 {
                     cFull.WindowState = FormWindowState.Maximized;
                 }                
-                cFull.Toca(Tocar); // Toca a nova música na tela cheia
+                cFull.Toca(Tocar, myPlayer.Audio.Volume); 
                 panel1.Visible = false;
             }
         }
 
-        private void panel1_DoubleClick(object sender, EventArgs e)
+
+        private void AbrirFull()
         {
-            // Full cFull = new Full();
-            // cFull.Para();
             if (cFull == null)
             {
                 cFull = new Full();
-            } else
-            {
-                cFull.Para();
             }
             if (Screen.AllScreens.Length > 1)
             {
@@ -1173,7 +1169,43 @@ namespace XeviousPlayer2
                 cFull.WindowState = FormWindowState.Maximized;
             }
             cFull.Show();
-            cFull.Toca(this.TocandoAgora);
+
+            // Define a posição inicial do vídeo em Full com base na posição atual do Form1
+            double posicaoAtual = trackBar1.Value / (double)trackBar1.Maximum;
+            cFull.MudarPosicao(posicaoAtual);
+        }
+
+        //private void AbrirFull()
+        //{
+        //    if (cFull == null)
+        //    {
+        //        cFull = new Full();
+        //    }
+        //    if (Screen.AllScreens.Length > 1)
+        //    {
+        //        Screen segundaTela = Screen.AllScreens[1];
+        //        cFull.StartPosition = FormStartPosition.Manual;
+        //        cFull.Location = segundaTela.Bounds.Location;
+        //        cFull.WindowState = FormWindowState.Maximized; // Tela cheia
+        //    }
+        //    else
+        //    {
+        //        cFull.WindowState = FormWindowState.Maximized;
+        //    }
+        //    cFull.Show();
+        //    cFull.SincronizarTrackBar(trackBar1); // Sincroniza o trackBar1 do Form1 com o Full
+        //}
+
+        private void panel1_DoubleClick(object sender, EventArgs e)
+        {
+            if (cFull == null)
+            {
+                AbrirFull();
+            } else
+            {
+                cFull.Para();
+            }
+            cFull.Toca(this.TocandoAgora, myPlayer.Audio.Volume);
             panel1.Visible = false;
             myPlayer.Paused = true;
         }
@@ -1233,6 +1265,53 @@ namespace XeviousPlayer2
         {
             // panel1.c
             int x = 0;
+        }
+
+        private void trackBar1_MouseUp_1(object sender, MouseEventArgs e)
+        {
+            double novaPosicao = trackBar1.Value / (double)trackBar1.Maximum; // Normaliza o valor entre 0 e 1
+            myPlayer.Position.FromStart = TimeSpan.FromTicks((long)(myPlayer.Position.ToStop.Ticks * novaPosicao)); // Atualiza a posição no Form1
+
+            // Se o Full estiver aberto, atualiza a posição no Full também
+            if (cFull != null && cFull.Visible)
+            {
+                cFull.MudarPosicao(novaPosicao); // Método no Full para alterar a posição do vídeo
+            }
+        }
+
+        private void SyncTimer_Tick(object sender, EventArgs e)
+        {
+            if (cFull != null && cFull.Visible && cFull.myPlayer.Playing)
+            {
+                // Atualiza o trackBar1 no Form1 com base na posição do vídeo no Full
+                double posicaoAtual = cFull.myPlayer.Position.FromStart.TotalMilliseconds;
+                double duracaoTotal = cFull.myPlayer.Position.ToStop.TotalMilliseconds;
+
+                if (duracaoTotal > 0)
+                {
+                    int novaPosicao = (int)((posicaoAtual / duracaoTotal) * trackBar1.Maximum);
+                    try
+                    {
+                        trackBar1.Value = novaPosicao;
+                    }
+                    catch (Exception)
+                    {
+                        // não faz nada
+                    }                    
+                }
+            }
+            else if (myPlayer.Playing)
+            {
+                // Atualiza o trackBar1 no Form1 com base na posição do vídeo no Form1
+                double posicaoAtual = myPlayer.Position.FromStart.TotalMilliseconds;
+                double duracaoTotal = myPlayer.Position.ToStop.TotalMilliseconds;
+
+                if (duracaoTotal > 0)
+                {
+                    int novaPosicao = (int)((posicaoAtual / duracaoTotal) * trackBar1.Maximum);
+                    trackBar1.Value = novaPosicao;
+                }
+            }
         }
     }
 }
