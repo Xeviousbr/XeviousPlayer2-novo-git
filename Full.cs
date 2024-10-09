@@ -8,10 +8,21 @@ namespace XeviousPlayer2
     {
         public Player myPlayer;
         private Overlay myOverlay;
+        private TrackBar EsseTrack;
 
         public Full()
         {
-            InitializeComponent();
+            InitializeComponent();                        
+        }
+
+        public void SetaTrack(TrackBar Track)
+        {
+            this.EsseTrack = Track;
+        }
+
+        private void MyPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
+        {
+            // throw new NotImplementedException();
         }
 
         private void panel1_DoubleClick(object sender, EventArgs e)
@@ -35,14 +46,18 @@ namespace XeviousPlayer2
             if (myPlayer==null)
             {
                 myPlayer = new Player();
+                myPlayer.Events.MediaPositionChanged += MyPlayer_MediaPositionChanged; 
+                myPlayer.Sliders.Position.TrackBar = EsseTrack;
             }            
             myPlayer.SleepDisabled = true;
             myOverlay = new Overlay(myPlayer);
-            myPlayer.Overlay.Window = myOverlay;   // and attach it to the player
+            myPlayer.Overlay.Window = myOverlay;
             myPlayer.Display.Window = panel1;
             myPlayer.Overlay.Blend = OverlayBlend.Transparent;
             myPlayer.Audio.Volume = volume;
             myPlayer.Play(Arquivo);
+
+            // this.WindowState = FormWindowState.Minimized;
         }
 
         private void Full_KeyUp(object sender, KeyEventArgs e)
@@ -82,35 +97,6 @@ namespace XeviousPlayer2
                 }
             }
         }
-        //public void SincronizarTrackBar(TrackBar trackBar)
-        //{
-        //    if (myPlayer != null)
-        //    {
-        //        // Sincroniza o trackBar do Full com o myPlayer do Form1
-        //        myPlayer.Sliders.Position.TrackBar = trackBar;
-        //    }
-        //}
-
-        //public void SincronizarTrackBar(double novaPosicao)
-        //{
-        //    if (trackBarFull != null)
-        //    {
-        //        int novaPosicaoTrackBar = (int)(novaPosicao * trackBarFull.Maximum);
-
-        //        // Verifica se a nova posição está dentro do intervalo válido
-        //        if (novaPosicaoTrackBar >= 0 && novaPosicaoTrackBar <= trackBarFull.Maximum)
-        //        {
-        //            try
-        //            {
-        //                trackBarFull.Value = novaPosicaoTrackBar;
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                MessageBox.Show("Erro ao ajustar a posição do trackBar: " + ex.Message);
-        //            }
-        //        }
-        //    }
-        //}
 
     }
 }

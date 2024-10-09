@@ -1246,6 +1246,7 @@ namespace XeviousPlayer2
             if (cFull == null)
             {
                 cFull = new Full();
+                cFull.SetaTrack(this.trackBar1);
             }
             if (Screen.AllScreens.Length > 1)
             {
@@ -1261,14 +1262,17 @@ namespace XeviousPlayer2
             cFull.Show();
 
             // Define a posição inicial do vídeo em Full com base na posição atual do Form1
-            double posicaoAtual = trackBar1.Value / (double)trackBar1.Maximum;
-            cFull.MudarPosicao(posicaoAtual);
+            // double posicaoAtual = trackBar1.Value / (double)trackBar1.Maximum;
+            // cFull.MudarPosicao(posicaoAtual);
         }
 
         private void panel1_DoubleClick(object sender, EventArgs e)
         {
             if (cFull == null)
             {
+                // myPlayer.TaskbarProgress.Mode = null;
+                // myPlayer.Events.MediaPositionChanged = null;
+                myPlayer.Sliders.Position.TrackBar = null;
                 AbrirFull();
             }
             else
@@ -1282,57 +1286,57 @@ namespace XeviousPlayer2
 
         private void trackBar1_MouseUp_1(object sender, MouseEventArgs e)
         {
-            Gen.Loga("trackBar1_MouseUp_1");
-            Gen.Loga($"Duração total atual: {myPlayer.Position.ToStop}");
+            //Gen.Loga("trackBar1_MouseUp_1");
+            //Gen.Loga($"Duração total atual: {myPlayer.Position.ToStop}");
 
-            usuarioInteragindoComTrackBar = false;
+            //usuarioInteragindoComTrackBar = false;
 
-            // Calcular a nova posição baseada no trackBar
-            double novaPosicao = trackBar1.Value / (double)trackBar1.Maximum;
-            TimeSpan novaPosicaoTempo = TimeSpan.FromTicks((long)(myPlayer.Position.ToStop.Ticks * novaPosicao));
+            //// Calcular a nova posição baseada no trackBar
+            //double novaPosicao = trackBar1.Value / (double)trackBar1.Maximum;
+            //TimeSpan novaPosicaoTempo = TimeSpan.FromTicks((long)(myPlayer.Position.ToStop.Ticks * novaPosicao));
 
-            Gen.Loga($"Nova posição calculada (percentual): {novaPosicao}");
-            Gen.Loga($"Nova posição em TimeSpan: {novaPosicaoTempo}");
+            //Gen.Loga($"Nova posição calculada (percentual): {novaPosicao}");
+            //Gen.Loga($"Nova posição em TimeSpan: {novaPosicaoTempo}");
 
-            try
-            {
-                // Pausar o player antes de ajustar a posição
-                myPlayer.Pause();
+            //try
+            //{
+            //    // Pausar o player antes de ajustar a posição
+            //    myPlayer.Pause();
 
-                // Atualiza a posição no player
-                myPlayer.Position.FromStart = novaPosicaoTempo;
+            //    // Atualiza a posição no player
+            //    myPlayer.Position.FromStart = novaPosicaoTempo;
 
-                Gen.Loga($"Posição definida no player: {myPlayer.Position.FromStart}");
+            //    Gen.Loga($"Posição definida no player: {myPlayer.Position.FromStart}");
 
-                // Reconectar o trackbar ao player
-                myPlayer.Sliders.Position.TrackBar = trackBar1;
+            //    // Reconectar o trackbar ao player
+            //    myPlayer.Sliders.Position.TrackBar = trackBar1;
 
-                // Forçar a atualização do trackbar
-                trackBar1.Value = (int)(novaPosicao * trackBar1.Maximum);
+            //    // Forçar a atualização do trackbar
+            //    trackBar1.Value = (int)(novaPosicao * trackBar1.Maximum);
 
-                // Retomar a reprodução
-                myPlayer.Resume();
+            //    // Retomar a reprodução
+            //    myPlayer.Resume();
 
-                Gen.Loga($"Player está tocando? {myPlayer.Playing}");
-            }
-            catch (Exception ex)
-            {
-                Gen.Loga($"Erro ao ajustar a posição do vídeo: {ex.Message}");
-            }
+            //    Gen.Loga($"Player está tocando? {myPlayer.Playing}");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Gen.Loga($"Erro ao ajustar a posição do vídeo: {ex.Message}");
+            //}
 
-            // Atualizar o Full, se necessário
-            if (cFull != null && cFull.Visible)
-            {
-                cFull.MudarPosicao(novaPosicao);
-                Gen.Loga($"Sincronizando Full na posição: {novaPosicao}");
-            }
+            //// Atualizar o Full, se necessário
+            //if (cFull != null && cFull.Visible)
+            //{
+            //    cFull.MudarPosicao(novaPosicao);
+            //    Gen.Loga($"Sincronizando Full na posição: {novaPosicao}");
+            //}
 
-            Gen.Loga($"Duração da mídia depois do ajuste: {myPlayer.Position.ToStop}");
-            Gen.Loga($"Verificando posição do player após o ajuste manual: {myPlayer.Position.FromStart}");
+            //Gen.Loga($"Duração da mídia depois do ajuste: {myPlayer.Position.ToStop}");
+            //Gen.Loga($"Verificando posição do player após o ajuste manual: {myPlayer.Position.FromStart}");
 
-            // Reiniciar o SyncTimer diretamente, sem usar o delayTimer
-            SyncTimer.Start();
-            Gen.Loga("SyncTimer reiniciado.");
+            //// Reiniciar o SyncTimer diretamente, sem usar o delayTimer
+            //SyncTimer.Start();
+            //Gen.Loga("SyncTimer reiniciado.");
         }
 
         private void SyncTimer_Tick(object sender, EventArgs e)
@@ -1406,38 +1410,16 @@ namespace XeviousPlayer2
             SyncTimer.Start();
         }
 
-        //private void DelayTimer_Tick(object sender, EventArgs e)
-        //{
-        //    Gen.Loga("DelayTimer_Tick: Reiniciando SyncTimer");
-        //    delayTimer.Stop();
-        //    SyncTimer.Start();
-        //    UpdatePlayerUI(); // Força uma atualização imediata após o delay
-        //}
-
-        //private void DelayTimer_Tick(object sender, EventArgs e)
-        //{
-        //    // Para o temporizador de atraso e reinicia o SyncTimer
-        //    delayTimer.Stop();
-        //    SyncTimer.Start();
-        //}
 
         private void trackBar1_MouseDown(object sender, MouseEventArgs e)
         {
-            Gen.Loga("trackBar1_MouseDown");
-            usuarioInteragindoComTrackBar = true;
-            SyncTimer.Stop();
+            //Gen.Loga("trackBar1_MouseDown");
+            //usuarioInteragindoComTrackBar = true;
+            //SyncTimer.Stop();
 
-            // Desconectar o trackbar do player
-            myPlayer.Sliders.Position.TrackBar = null;
+            //// Desconectar o trackbar do player
+            //myPlayer.Sliders.Position.TrackBar = null;
         }
-
-        //private void trackBar1_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    Gen.Loga("trackBar1_MouseDown");
-        //    usuarioInteragindoComTrackBar = true;
-        //    SyncTimer.Stop();
-        //    myPlayer.Pause(); // Pausa o player durante o ajuste
-        //}
 
         #endregion
 
