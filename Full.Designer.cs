@@ -80,6 +80,6 @@ namespace XeviousPlayer2
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.TrackBar trackBarFull;
+        public System.Windows.Forms.TrackBar trackBarFull;
     }
 }

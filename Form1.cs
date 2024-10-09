@@ -1200,7 +1200,7 @@ namespace XeviousPlayer2
             if (cFull == null)
             {
                 cFull = new Full(this);
-                // cFull.SetaTrack(this.trackBar1);
+                cFull.SetaTrack(this.trackBar1);
             }
             if (Screen.AllScreens.Length > 1)
             {
