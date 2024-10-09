@@ -53,7 +53,7 @@ namespace XeviousPlayer2
 
         public void MudarPosicao(double novaPosicao)
         {
-            if (myPlayer != null && myPlayer.Has.Video)
+            if (myPlayer != null)
             {
                 // Obter o tempo total do vídeo no Full
                 TimeSpan totalTempo = myPlayer.Position.ToStop;
@@ -71,15 +71,46 @@ namespace XeviousPlayer2
             myPlayer.Audio.Volume = novoVolume;
         }
 
-        public void SincronizarTrackBar(TrackBar trackBar)
+        public void SincronizarTrackBar(double novaPosicao)
         {
-            if (myPlayer != null)
+            if (trackBarFull != null && !trackBarFull.Capture)
             {
-                // Sincroniza o trackBar do Full com o myPlayer do Form1
-                myPlayer.Sliders.Position.TrackBar = trackBar;
+                int novaPosicaoTrackBar = (int)(novaPosicao * trackBarFull.Maximum);
+                if (novaPosicaoTrackBar >= trackBarFull.Minimum && novaPosicaoTrackBar <= trackBarFull.Maximum)
+                {
+                    trackBarFull.Value = novaPosicaoTrackBar;
+                }
             }
         }
+        //public void SincronizarTrackBar(TrackBar trackBar)
+        //{
+        //    if (myPlayer != null)
+        //    {
+        //        // Sincroniza o trackBar do Full com o myPlayer do Form1
+        //        myPlayer.Sliders.Position.TrackBar = trackBar;
+        //    }
+        //}
 
+        //public void SincronizarTrackBar(double novaPosicao)
+        //{
+        //    if (trackBarFull != null)
+        //    {
+        //        int novaPosicaoTrackBar = (int)(novaPosicao * trackBarFull.Maximum);
+
+        //        // Verifica se a nova posição está dentro do intervalo válido
+        //        if (novaPosicaoTrackBar >= 0 && novaPosicaoTrackBar <= trackBarFull.Maximum)
+        //        {
+        //            try
+        //            {
+        //                trackBarFull.Value = novaPosicaoTrackBar;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                MessageBox.Show("Erro ao ajustar a posição do trackBar: " + ex.Message);
+        //            }
+        //        }
+        //    }
+        //}
 
     }
 }

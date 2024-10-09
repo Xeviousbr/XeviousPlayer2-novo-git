@@ -32,6 +32,8 @@ namespace XeviousPlayer2
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.trackBarFull = new System.Windows.Forms.TrackBar();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarFull)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -45,14 +47,22 @@ namespace XeviousPlayer2
             this.panel1.TabIndex = 2;
             this.panel1.DoubleClick += new System.EventHandler(this.panel1_DoubleClick);
             // 
-            // timer1
+            // trackBarFull
             // 
+            this.trackBarFull.Location = new System.Drawing.Point(22, 203);
+            this.trackBarFull.Name = "trackBarFull";
+            this.trackBarFull.Size = new System.Drawing.Size(757, 45);
+            this.trackBarFull.TabIndex = 3;
+            this.trackBarFull.TickFrequency = 10000;
+            this.trackBarFull.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBarFull.Visible = false;
             // 
             // Full
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.trackBarFull);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.KeyPreview = true;
@@ -61,7 +71,9 @@ namespace XeviousPlayer2
             this.Text = "Full";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Full_KeyUp);
+            ((System.ComponentModel.ISupportInitialize)(this.trackBarFull)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -69,5 +81,6 @@ namespace XeviousPlayer2
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.TrackBar trackBarFull;
     }
 }

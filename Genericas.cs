@@ -125,6 +125,7 @@ namespace XeviousPlayer2
         }
 
         private static string NomeLog = "";
+        private static int nrLog = 0;
         public static void Loga(string texto)
         {
             if (NomeLog.Length==0)
@@ -135,6 +136,8 @@ namespace XeviousPlayer2
                 string sData = DateTime.Now.ToShortDateString().Replace("/", "-");
                 NomeLog = Pasta + @"\XeviousPlayer2" + sData + ".Log";
             }
+            nrLog++;
+            texto = nrLog.ToString() + ": " + texto;
             Console.WriteLine(texto);
             File.AppendAllText(NomeLog, DateTime.Now.ToString() + " " + texto + Environment.NewLine);
         }

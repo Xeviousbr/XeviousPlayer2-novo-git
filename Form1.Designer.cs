@@ -125,6 +125,7 @@
             this.trackBar1.TabIndex = 1;
             this.trackBar1.TickFrequency = 10000;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
+            this.trackBar1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseDown);
             this.trackBar1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseUp_1);
             // 
             // label1
