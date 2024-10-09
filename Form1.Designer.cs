@@ -102,7 +102,6 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.SyncTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar3)).BeginInit();
@@ -125,8 +124,6 @@
             this.trackBar1.TabIndex = 1;
             this.trackBar1.TickFrequency = 10000;
             this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.Both;
-            this.trackBar1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseDown);
-            this.trackBar1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseUp_1);
             // 
             // label1
             // 
@@ -875,11 +872,6 @@
             this.pictureBox1.TabIndex = 16;
             this.pictureBox1.TabStop = false;
             // 
-            // SyncTimer
-            // 
-            this.SyncTimer.Interval = 500;
-            this.SyncTimer.Tick += new System.EventHandler(this.SyncTimer_Tick);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1008,7 +1000,6 @@
         private System.Windows.Forms.ToolStripMenuItem ligadoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem desligadoToolStripMenuItem;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Timer SyncTimer;
     }
 }
 

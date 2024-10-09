@@ -69,7 +69,6 @@ namespace XeviousPlayer2
             this.Name = "Full";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Full";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Full_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarFull)).EndInit();
             this.ResumeLayout(false);

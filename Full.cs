@@ -9,11 +9,15 @@ namespace XeviousPlayer2
         public Player myPlayer;
         private Overlay myOverlay;
         private TrackBar EsseTrack;
+        private bool jaChamouProxima = false;
+        private Form1 parentForm;
 
-        public Full()
+        public Full(Form1 parent)
         {
-            InitializeComponent();                        
+            InitializeComponent();
+            this.parentForm = parent;
         }
+
 
         public void SetaTrack(TrackBar Track)
         {
@@ -22,7 +26,11 @@ namespace XeviousPlayer2
 
         private void MyPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
         {
-            // throw new NotImplementedException();
+            if (e.ToStop < 1000000 && !jaChamouProxima)
+            {
+                jaChamouProxima = true;
+                parentForm.ProxMusica();
+            }
         }
 
         private void panel1_DoubleClick(object sender, EventArgs e)
@@ -56,8 +64,7 @@ namespace XeviousPlayer2
             myPlayer.Overlay.Blend = OverlayBlend.Transparent;
             myPlayer.Audio.Volume = volume;
             myPlayer.Play(Arquivo);
-
-            // this.WindowState = FormWindowState.Minimized;
+            jaChamouProxima = false;
         }
 
         private void Full_KeyUp(object sender, KeyEventArgs e)
@@ -66,36 +73,9 @@ namespace XeviousPlayer2
                 Fecha();
         }
 
-        public void MudarPosicao(double novaPosicao)
-        {
-            if (myPlayer != null)
-            {
-                // Obter o tempo total do vídeo no Full
-                TimeSpan totalTempo = myPlayer.Position.ToStop;
-
-                // Calcular a nova posição
-                long novaPosicaoTicks = (long)(totalTempo.Ticks * novaPosicao);
-
-                // Definir a nova posição no player do Full
-                myPlayer.Position.FromStart = TimeSpan.FromTicks(novaPosicaoTicks);
-            }
-        }
-
         internal void AjustarVolume(float novoVolume)
         {
             myPlayer.Audio.Volume = novoVolume;
-        }
-
-        public void SincronizarTrackBar(double novaPosicao)
-        {
-            if (trackBarFull != null && !trackBarFull.Capture)
-            {
-                int novaPosicaoTrackBar = (int)(novaPosicao * trackBarFull.Maximum);
-                if (novaPosicaoTrackBar >= trackBarFull.Minimum && novaPosicaoTrackBar <= trackBarFull.Maximum)
-                {
-                    trackBarFull.Value = novaPosicaoTrackBar;
-                }
-            }
         }
 
     }
